@@ -21,9 +21,9 @@ public class Comment {
     private String content;
 
     private double rate;
-    @DocumentReference(lazy = true)
-    @JsonIgnore
-    private Product product;
+//    @DocumentReference(lazy = true)
+//    @JsonIgnore
+//    private Product product;
     @DocumentReference(lazy = true)
     @JsonIgnore
     private User user;
