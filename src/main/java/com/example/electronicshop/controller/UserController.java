@@ -1,18 +1,30 @@
 package com.example.electronicshop.controller;
 
+import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.models.ResponseObject;
+import com.example.electronicshop.models.enity.User;
+import com.example.electronicshop.notification.AppException;
+import com.example.electronicshop.security.jwt.JwtUtils;
 import com.example.electronicshop.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-public class UserController {
- /*   private final UserService userService;
+import javax.servlet.http.HttpServletRequest;
 
+
+@RestController
+@AllArgsConstructor
+@RequestMapping("/api")
+public class UserController {
+    private final UserService userService;
+    private final JwtUtils jwtUtils;
 
     @GetMapping(path = "/admin/manage/users")
     public ResponseEntity<ResponseObject> findAll (@PageableDefault(size = 5) @ParameterObject Pageable pageable){
@@ -20,15 +32,11 @@ public class UserController {
     }
 
     @PostMapping(path = "/admin/manage/users")
-    public ResponseEntity<?> addUser (@RequestBody RegisterReq req){
+    public ResponseEntity<?> addUser (@RequestBody Register req){
         return userService.addUser(req);
     }
 
-    @PutMapping(path = "/admin/manage/users/{userId}")
-    public ResponseEntity<?> updateUserAdmin (@Valid @RequestBody UserReq req,
-                                              @PathVariable("userId") String userId){
-        return userService.updateUser(userId, req);
-    }
+
 
     @DeleteMapping(path = "/admin/manage/users/{userId}")
     public ResponseEntity<?> deactivatedUser (@PathVariable("userId") String userId){
@@ -36,44 +44,15 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/{userId}")
-    public ResponseEntity<?> updateUser (@Valid @RequestBody UserReq req,
-                                         @PathVariable("userId") String userId,
-                                         HttpServletRequest request){
+    public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
+                                          @PathVariable("userId") String userId,
+                                          HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (user.getId().equals(userId) || !user.getId().isBlank())
             return userService.updateUser(userId, req);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
-    @PutMapping(path = "/users/password/{userId}")
-    public ResponseEntity<?> updatePasswordUser (@Valid @RequestBody ChangePasswordReq req,
-                                                 @PathVariable("userId") String userId,
-                                                 HttpServletRequest request){
-        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-        if (user.getId().equals(userId) || !user.getId().isBlank())
-            return userService.updatePassword(userId, req);
-        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-    }
-
-    @PutMapping(path = "/users/reset/password/{userId}")
-    public ResponseEntity<?> updatePasswordReset (@Valid @RequestBody ChangePasswordReq req,
-                                                  @PathVariable("userId") String userId,
-                                                  HttpServletRequest request){
-        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-        if (user.getId().equals(userId) || !user.getId().isBlank())
-            return userService.updatePasswordReset(userId, req);
-        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-    }
-
-    @PostMapping(path = "/users/avatar/{userId}")
-    public ResponseEntity<?> updateUser (@PathVariable("userId") String userId,
-                                         HttpServletRequest request,
-                                         @RequestParam MultipartFile file){
-        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-        if (user.getId().equals(userId) || !user.getId().isBlank())
-            return userService.updateUserAvatar(userId, file);
-        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-    }
 
     @GetMapping(path = "/users/{userId}")
     public ResponseEntity<?> findUserById (@PathVariable("userId") String userId,
@@ -84,11 +63,4 @@ public class UserController {
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
-    @GetMapping(path = "/users/order/history")
-    public ResponseEntity<?> getUserOrderHistory (HttpServletRequest request){
-        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-        if (!user.getId().isBlank())
-            return userService.getUserOrderHistory(user.getId());
-        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-    }*/
 }

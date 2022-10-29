@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.request.ChangePassword;
 import com.example.electronicshop.communication.request.Register;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.communication.response.UserResponse;
@@ -163,6 +164,21 @@ public class UserService {
                     new ResponseObject("true", "Delete user success", ""));
         }
         throw new NotFoundException("Can not find use");
+    }
+    @Transactional
+    public ResponseEntity<?> updatePassword(String id, ChangePassword req) {
+        Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
+        if (user.isPresent()) {
+            if (passwordEncoder.matches(req.getOldpasss(), user.get().getPassword())
+                    && !req.getNewpass().equals(req.getOldpasss())) {
+                user.get().setPassword(passwordEncoder.encode(req.getNewpass()));
+                userRepository.save(user.get());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("true", "Change password success", ""));
+            } else throw new AppException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Your old password is wrong" +
+                    " or same with new password");
+        }
+        throw new NotFoundException("Can not found user with id" );
     }
 
 }

@@ -15,6 +15,8 @@ public class UserMap {
         if (user != null) {
             loginRes.setId(user.getId());
             loginRes.setName(user.getName());
+            loginRes.setAddress(user.getAddress());
+            loginRes.setPhonne(user.getPhone());
             loginRes.setEmail(user.getEmail());
             loginRes.setRole(user.getRole());
 

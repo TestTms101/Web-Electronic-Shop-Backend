@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponese {
+public class CategoryResponse {
     private String id;
-    private String email;
     private String name;
-    private String address;
-    private String phonne;
-    private String role;
-    private String accessToken;
+    private String state;
 }
