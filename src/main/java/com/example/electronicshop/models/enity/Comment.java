@@ -1,5 +1,6 @@
 package com.example.electronicshop.models.enity;
 
+import com.example.electronicshop.models.product.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -21,9 +22,9 @@ public class Comment {
     private String content;
 
     private double rate;
-//    @DocumentReference(lazy = true)
-//    @JsonIgnore
-//    private Product product;
+    @DocumentReference(lazy = true)
+    @JsonIgnore
+    private Product product;
     @DocumentReference(lazy = true)
     @JsonIgnore
     private User user;
@@ -34,4 +35,12 @@ public class Comment {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @LastModifiedDate
     LocalDateTime lastModifiedDate;
+
+    public Comment(String content, double rate, Product product, User user, boolean enable) {
+        this.content = content;
+        this.rate = rate;
+        this.product = product;
+        this.user = user;
+        this.enable = enable;
+    }
 }
