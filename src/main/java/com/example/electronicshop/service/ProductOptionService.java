@@ -58,7 +58,6 @@ public class ProductOptionService {
                     new ResponseObject("true", "Add product option success", option.get()));
         }
     }
-
     public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
         ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
         productOption.getSelects().add(newValue);
@@ -66,7 +65,7 @@ public class ProductOptionService {
             productOptionRepository.save(productOption);
         } catch (MongoWriteException e) {
             log.error(e.getMessage());
-            throw new AppException(HttpStatus.CONFLICT.value(), "Color already exists");
+            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
         }
     }
 

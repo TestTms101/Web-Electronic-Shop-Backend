@@ -20,5 +20,5 @@ public class ProductOptionReq {
     @NotNull(message = "Stock is required")
     @Min(value = 1)
     private Long stock;
-    private List<MultipartFile> images;
+//    private List<MultipartFile> images;
 }

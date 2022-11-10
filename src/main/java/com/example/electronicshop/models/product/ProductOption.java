@@ -37,4 +37,8 @@ public class ProductOption {
     public ProductOption(String name) {
         this.name = name;
     }
+    public Long getInStock() {
+        return selects.stream().map(ProductSelects::getStock)
+                .reduce(0L, Long::sum);
+    }
 }
