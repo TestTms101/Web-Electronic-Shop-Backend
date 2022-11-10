@@ -1,16 +1,15 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.ProductMapper;
 import com.example.electronicshop.models.enity.Category;
 import com.example.electronicshop.models.ResponseObject;
-import com.example.electronicshop.models.enity.Brand;
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductAttribute;
+import com.example.electronicshop.models.product.ProductImage;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.ProductReq;
-import com.example.electronicshop.communication.response.ProductListRes;
 import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.repository.BrandRepository;
 import com.example.electronicshop.repository.CategoryRepository;
@@ -27,11 +26,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,19 +39,20 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionRepository productOptionRepository;
     private final CategoryRepository categoryRepository;
-    private final BrandRepository brandRepository;
     private final ProductMapper productMapper;
+    private final CloudinaryConfig cloudinary;
+
     public ResponseEntity<?> findAll(boolean isAdmin, Pageable pageable) {
         Page<Product> products;
         if (isAdmin) products = productRepository.findAll(pageable);
         else products = productRepository.findAllByState(Constant.ENABLE, pageable);
-        List<ProductListRes> resList = products.getContent().stream().map(productMapper::toProductListRes).collect(Collectors.toList());
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product");
     }
 
-    private ResponseEntity<?> addPageableToRes(Page<Product> products, List<ProductListRes> resList) {
+    private ResponseEntity<?> addPageableToRes(Page<Product> products, List<ProductRes> resList) {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalQuantity", products.getTotalElements());
@@ -82,12 +81,12 @@ public class ProductService {
                 List<ObjectId> subCat = category.get().getSubCategories().stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
                 products = productRepository.findProductsByCategory(new ObjectId(id),
                         subCat, pageable);
-            } else products = productRepository.findAllByCategory_IdOrBrand_IdAndState(new ObjectId(id),
-                    new ObjectId(id),Constant.ENABLE, pageable);
+            } else products = productRepository.findAllByCategory_IdAndState(new ObjectId(id),
+                    Constant.ENABLE, pageable);
         } catch (Exception e) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");
         }
-        List<ProductListRes> resList = products.stream().map(productMapper::toProductListRes).collect(Collectors.toList());
+        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with category or brand id: "+id);
@@ -102,7 +101,7 @@ public class ProductService {
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
-        List<ProductListRes> resList = products.getContent().stream().map(productMapper::toProductListRes).collect(Collectors.toList());
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with: "+key);
@@ -112,6 +111,7 @@ public class ProductService {
         if (req != null) {
             Product product = productMapper.toProduct(req);
             try {
+                processUploadImage(req.getImages(),product);
                 productRepository.save(product);
             } catch (Exception e) {
                 throw new AppException(HttpStatus.CONFLICT.value(), "Product name already exists");
@@ -125,7 +125,21 @@ public class ProductService {
                 new ResponseObject("false", "Request is null", "")
         );
     }
-
+    public List<ProductImage> processUploadImage (List<MultipartFile> images, Product product) {
+        if (images == null || images.isEmpty()) throw new AppException(HttpStatus.BAD_REQUEST.value(), "images is empty");
+        for (int i = 0; i < images.size(); i++) {
+            try {
+                String url = cloudinary.uploadImage(images.get(i), null);
+                if (i == 0) product.getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+                else product.getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+            } catch (IOException e) {
+                log.error(e.getMessage());
+                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload images");
+            }
+            productRepository.save(product);
+        }
+        return product.getImages();
+    }
     @Transactional
     public ResponseEntity<?> updateProduct(String id, ProductReq req) {
         Optional<Product> product = productRepository.findById(id);
@@ -159,12 +173,12 @@ public class ProductService {
                 product.setCategory(category.get());
             else throw new NotFoundException("Can not found category with id: "+req.getCategory());
         }
-        if (!req.getBrand().equals(product.getBrand().getId())) {
-            Optional<Brand> brand = brandRepository.findBrandByIdAndState(req.getBrand(), Constant.ENABLE);
-            if (brand.isPresent())
-                product.setBrand(brand.get());
-            else throw new NotFoundException("Can not found brand with id: "+req.getBrand());
-        }
+//        if (!req.getBrand().equals(product.getBrand().getId())) {
+//            Optional<Brand> brand = brandRepository.findBrandByIdAndState(req.getBrand(), Constant.ENABLE);
+//            if (brand.isPresent())
+//                product.setBrand(brand.get());
+//            else throw new NotFoundException("Can not found brand with id: "+req.getBrand());
+//        }
         if (req.getState() != null && !req.getState().isEmpty() &&
                 (req.getState().equalsIgnoreCase(Constant.ENABLE) ||
                         req.getState().equalsIgnoreCase(Constant.DISABLE)))
@@ -196,47 +210,6 @@ public class ProductService {
             }
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Destroy product successfully ", "")
-            );
-        } throw new NotFoundException("Can not found product with id: "+id);
-    }
-
-    @Transactional
-    public ResponseEntity<?> addAttribute(String id, ProductAttribute req) {
-        Optional<Product> product = productRepository.findProductByIdAndState(id, Constant.ENABLE);
-        if (product.isPresent()) {
-            if (product.get().getAttr().stream().anyMatch(a -> a.getName().equals(req.getName())))
-                throw new AppException(HttpStatus.CONFLICT.value(), "Attribute name already exists");
-            ProductAttribute attribute = new ProductAttribute(req.getName(), req.getVal());
-            product.get().getAttr().add(attribute);
-            productRepository.save(product.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Add attribute successfully", attribute)
-            );
-        } throw new NotFoundException("Can not found product with id: "+id);
-    }
-
-    @Transactional
-    public ResponseEntity<?> updateAttribute(String id, ProductAttribute req) {
-        Optional<Product> product = productRepository.findProductByIdAndState(id, Constant.ENABLE);
-        if (product.isPresent()) {
-            product.get().getAttr().forEach(a -> {
-                if (a.getName().equals(req.getName())) a.setVal(req.getVal());
-            });
-            productRepository.save(product.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update attribute successfully", "")
-            );
-        } throw new NotFoundException("Can not found product with id: "+id);
-    }
-
-    @Transactional
-    public ResponseEntity<?> deleteAttribute(String id, String name) {
-        Optional<Product> product = productRepository.findProductByIdAndState(id, Constant.ENABLE);
-        if (product.isPresent() && !name.isBlank()) {
-            product.get().getAttr().removeIf(a -> a.getName().equals(name));
-            productRepository.save(product.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delete attribute successfully", "")
             );
         } throw new NotFoundException("Can not found product with id: "+id);
     }

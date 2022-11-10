@@ -33,61 +33,47 @@ public class Product {
     private String id;
     @NotBlank(message = "Name is required")
     @Indexed(unique = true)
-    @TextIndexed(weight = 10)
     private String name;
-    @NotBlank(message = "Description is required")
-    @TextIndexed(weight = 1)
-    private String description;
-    @NotNull(message = "Price is required")
-    private BigDecimal price;
-    @NotNull(message = "Discount is required")
-    @Range(min = 0, max = 100, message = "Invalid discount! Only from 0 to 100")
-    private int discount = 0;
-    @NotBlank(message = "Category is required")
-    @DocumentReference
-    private Category category;
-    @NotBlank(message = "Brand is required")
-    @DocumentReference
-    private Brand brand;
-    private double rate = 0;
-    @TextIndexed(weight = 8)
-    private List<ProductAttribute> attr = new ArrayList<>();
-    @NotBlank(message = "State is required")
-    private String state;
-    @ReadOnlyProperty
-    @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
-    private List<ProductOption> productOptions;
+    @NotBlank(message = "slugify is required")
+    private String slugify;
     //    @ReadOnlyProperty
 //    @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
 //    private List<ProductImage> images = new ArrayList<>();
+    private List<ProductImage> images = new ArrayList<>();
+    @NotNull(message = "Price is required")
+    private BigDecimal price;
+//    @NotNull(message = "Quantity is required")
+//    private int quantity;
+    private double sale;
+    private double rate = 0;
+    @NotBlank(message = "summary is required")
+    private String summary;
     @ReadOnlyProperty
     @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
-    private List<Comment> comments;
+    private List<ProductOption> options;
+    @NotBlank(message = "tags is required")
+    private List<String> tags;
+    @NotBlank(message = "Description is required")
+    private String description;
+    @NotBlank(message = "Category is required")
+    @DocumentReference
+    private Category category;
+    @NotBlank(message = "State is required")
+    private String state;
     @CreatedDate
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    @LastModifiedDate
-    LocalDateTime lastModifiedDate;
-    @TextScore
-    Float score;
 
-    public Product(String name, String description, BigDecimal price, Category category, Brand brand, String state, int discount) {
+    public Product(String name, String slugify, BigDecimal price, double sale, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
         this.name = name;
-        this.description = description;
+        this.slugify = slugify;
         this.price = price;
+        this.sale = sale;
+        this.summary = summary;
+        this.tags = tags;
+        this.description = description;
         this.category = category;
-        this.brand = brand;
         this.state = state;
-        this.discount = discount;
-    }
-
-    @Transient
-    public int getRateCount() {
-        try {
-            return comments.size();
-        } catch (Exception e) {
-            return 0;
-        }
+        this.createdDate = createdDate;
     }
 }

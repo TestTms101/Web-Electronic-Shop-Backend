@@ -59,7 +59,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject(String.format("%s,%s", user.getId(), user.getEmail()))
                 .setIssuedAt(new Date())
-                .setIssuer("CNPM")
+                .setIssuer("TLCN")
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET.getBytes())
                 .compact();

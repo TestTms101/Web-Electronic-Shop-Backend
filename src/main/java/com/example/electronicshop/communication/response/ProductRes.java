@@ -1,13 +1,17 @@
 package com.example.electronicshop.communication.response;
 
-import com.example.electronicshop.models.product.ProductAttribute;
+import com.example.electronicshop.models.product.ProductImage;
 import com.example.electronicshop.models.product.ProductOption;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,16 +21,17 @@ import java.util.List;
 public class ProductRes {
     private String id;
     private String name;
-    private String description;
+    private String slugify;
+    private List<ProductImage> images;
     private BigDecimal price;
-    private BigDecimal discountPrice;
-    private int discount;
+    private double sale;
     private double rate;
-    private int rateCount;
-    private String category;
-    private String brand;
-    private String state;
-    private List<ProductAttribute> attr;
+    private String summary;
     private List<ProductOption> options;
-//    private List<ProductImage> images;
+    private List<String> tags;
+    private String description;
+    private String category;
+    private String state;
+    LocalDateTime createdDate;
+
 }

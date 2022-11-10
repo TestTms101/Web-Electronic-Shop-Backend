@@ -13,12 +13,12 @@ import java.util.List;
 public class ProductOptionReq {
     @NotBlank(message = "Name is required")
     private String name;
+//    @NotBlank(message = "Label is required")
+//    private String label;
+    @NotBlank(message = "Value is required")
+    private String value;
     @NotNull(message = "Stock is required")
     @Min(value = 1)
     private Long stock;
-    @NotBlank(message = "ProductVariant is required")
-    private String color;
-    @NotNull(message = "Extra fee is required")
-    private BigDecimal extraFee = BigDecimal.ZERO;
     private List<MultipartFile> images;
 }

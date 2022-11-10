@@ -10,8 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImage {
-    private String imageId;
+    private String id_image;
     private String url;
-    private boolean thumbnail;
-    private String color;
 }

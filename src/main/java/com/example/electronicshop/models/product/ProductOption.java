@@ -27,21 +27,14 @@ public class ProductOption {
     @NotBlank(message = "Name is required")
     @TextIndexed(weight = 9)
     private String name;
-    private List<ProductVariant> variants = new ArrayList<>();
-    private BigDecimal extraFee;
     @DocumentReference(lazy = true)
     @JsonIgnore
     private Product product;
+    private List<ProductSelects> selects = new ArrayList<>();
     @Transient
     private Long inStock;
 
-    public ProductOption(String name, BigDecimal extraFee) {
+    public ProductOption(String name) {
         this.name = name;
-        this.extraFee = extraFee;
-    }
-
-    public Long getInStock() {
-        return variants.stream().map(ProductVariant::getStock)
-                .reduce(0L, Long::sum);
     }
 }

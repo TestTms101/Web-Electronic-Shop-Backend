@@ -1,7 +1,6 @@
 package com.example.electronicshop.controller;
 
 import com.example.electronicshop.communication.request.ProductReq;
-import com.example.electronicshop.models.product.ProductAttribute;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.service.ProductService;
 import lombok.AllArgsConstructor;
@@ -49,12 +48,11 @@ public class ProductController {
         return productService.findAll(true,pageable);
     }
 
-    @PostMapping("/addproduct")
-    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductReq req) {
-        return productService.addProduct(req);
-    }
+    @PostMapping("/add")
+    public ResponseEntity<?> addProduct(@Valid @ModelAttribute ProductReq req) {
+        return productService.addProduct(req);}
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") String id,
                                            @Valid @RequestBody ProductReq req) {
         return productService.updateProduct(id, req);
@@ -70,21 +68,4 @@ public class ProductController {
         return productService.destroyProduct(id);
     }
 
-    @PostMapping("/products/attribute/{productId}")
-    public ResponseEntity<?> addAttribute(@PathVariable("productId") String id ,
-                                          @Valid @RequestBody ProductAttribute req) {
-        return productService.addAttribute(id, req);
-    }
-
-    @PutMapping("/products/attribute/{productId}")
-    public ResponseEntity<?> updateAttribute(@PathVariable("productId") String id,
-                                             @Valid @RequestBody ProductAttribute req) {
-        return productService.updateAttribute(id, req);
-    }
-
-    @DeleteMapping("/products/attribute/{productId}")
-    public ResponseEntity<?> deleteAttribute(@PathVariable("productId") String id,
-                                             @RequestBody ProductAttribute req) {
-        return productService.deleteAttribute(id, req.getName());
-    }
 }
