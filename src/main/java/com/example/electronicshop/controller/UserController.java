@@ -67,7 +67,7 @@ public class UserController {
     @PostMapping(path = "/users/avatar/{userId}")
     public ResponseEntity<?> updateUserAvatar (@PathVariable("userId") String userId,
                                          HttpServletRequest request,
-                                         @RequestParam MultipartFile file){
+                                               @ModelAttribute MultipartFile file){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (user.getId().equals(userId) || !user.getId().isBlank())
             return userService.updateUserAvatar(userId, file);
