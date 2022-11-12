@@ -1,5 +1,6 @@
 package com.example.electronicshop.models.enity;
 
+import com.example.electronicshop.models.product.ProductImage;
 import com.example.electronicshop.models.provider.ESocial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "users")
 @Data
@@ -30,24 +33,35 @@ public class User {
     @JsonIgnore
     private String password;
     private String phone;
-    private String address;
+//    private String address;
     private String role;
+    private String avatar;
     private String state;
     @JsonIgnore
     private Token token;
 
+
     private ESocial social;
 
-    public User(String name, String email, String password, String phone, String address, String role, String state, ESocial social) {
+    public User(String name, String email, String password, String phone/*, String address*/, String role, String state, ESocial social) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.phone = phone;
-        this.address = address;
+      this.phone = phone;
+//        this.address = address;
         this.role = role;
         this.state = state;
         this.social = social;
     }
 
-
+    public User(String name, String email, String password, String phone, String role, String avatar, String state, ESocial social) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.role = role;
+        this.avatar = avatar;
+        this.state = state;
+        this.social = social;
+    }
 }

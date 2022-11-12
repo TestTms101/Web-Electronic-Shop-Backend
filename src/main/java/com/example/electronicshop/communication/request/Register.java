@@ -17,6 +17,6 @@ public class Register {
     @Size( min = 5, max = 50)
     private String password;
     private String phone;
-    private String address;
+//    private String address;
     private String role;
 }

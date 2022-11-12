@@ -8,7 +8,7 @@ public class UserResponse {
     private String email;
     private String name;
     private String phone;
-    private String address;
+    private String avatar;
     private String role;
     private String state;
 }

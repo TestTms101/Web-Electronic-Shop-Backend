@@ -15,9 +15,10 @@ public class UserMap {
         if (user != null) {
             loginRes.setId(user.getId());
             loginRes.setName(user.getName());
-            loginRes.setAddress(user.getAddress());
-            loginRes.setPhonne(user.getPhone());
+//            loginRes.setAddress(user.getAddress());
+           loginRes.setPhone(user.getPhone());
             loginRes.setEmail(user.getEmail());
+            loginRes.setAvatar(user.getAvatar());
             loginRes.setRole(user.getRole());
 
         }
@@ -31,16 +32,15 @@ public class UserMap {
             userRes.setEmail(user.getEmail());
             userRes.setRole(user.getRole());
             userRes.setState(user.getState());
-            userRes.setPhone(user.getPhone());
-            userRes.setAddress(user.getAddress());
+           userRes.setPhone(user.getPhone());
+//            userRes.setAddress(user.getAddress());
         }
         return userRes;
     }
     public User toUser(Register req) {
         if (req != null) {
-
             return new User(req.getName(), req.getEmail(), req.getPassword(), req.getPhone(),
-                    req.getAddress(), Constant.ROLE_USER, Constant.USER_ACTIVE, ESocial.LOCAL);
+                     Constant.ROLE_USER, Constant.USER_ACTIVE, ESocial.LOCAL);
         }
         return null;
     }
