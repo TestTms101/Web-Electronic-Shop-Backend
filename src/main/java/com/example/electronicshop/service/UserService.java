@@ -4,14 +4,17 @@ import com.example.electronicshop.communication.request.ChangePassword;
 import com.example.electronicshop.communication.request.Register;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.communication.response.UserResponse;
+import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.UserMap;
 import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.User;
+import com.example.electronicshop.models.enity.UserImage;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,18 +22,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserMap userMapper;
-
+    private final CloudinaryConfig cloudinary;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -56,6 +63,26 @@ public class UserService {
                     new ResponseObject("true", "Can't not find user ", ""));
         }
     }
+
+    public ResponseEntity<?> updateUserAvatar(String id, MultipartFile file) {
+        Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
+        if (user.isPresent()) {
+            if (file != null && !file.isEmpty()) {
+                try {
+                    String imgUrl = cloudinary.uploadImage(file, user.get().getAvatar());
+                    user.get().setAvatar(imgUrl);
+                    userRepository.save(user.get());
+                } catch (IOException e) {
+                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload image");
+                }
+            }
+            UserResponse res = userMapper.thisUserRespone(user.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Update user success", res));
+        }
+        throw new NotFoundException("Can not found user with id " + id );
+    }
+
 
 
     @Transactional
@@ -86,8 +113,7 @@ public class UserService {
         if (user.isPresent()) {
             user.get().setName(userReq.getName());
             user.get().setPhone(userReq.getPhone());
-            user.get().setAddress(userReq.getAddress());
-
+//            user.get().setAddress(userReq.getAddress());
 
             try {
                 userRepository.save(user.get());
