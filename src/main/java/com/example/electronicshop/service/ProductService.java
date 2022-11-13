@@ -161,24 +161,29 @@ public class ProductService {
     }
 
     public void processUpdate(ProductReq req, Product product) {
+//        product.setName(req.getName());
+//        product.setDescription(req.getDescription());
+//        product.setPrice(req.getPrice());
+
         if (!req.getName().equals(product.getName()))
             product.setName(req.getName());
         if (!req.getDescription().equals(product.getDescription()))
             product.setDescription(req.getDescription());
         if (!req.getPrice().equals(product.getPrice()))
             product.setPrice(req.getPrice());
+        if (!req.getTags().equals(product.getTags()))
+            product.setTags(req.getTags());
+        if (!req.getSlugify().equals(product.getSlugify()))
+            product.setSlugify(req.getSlugify());
+        if (!req.getSummary().equals(product.getSummary()))
+            product.setSummary(req.getSummary());
+        product.setSale(req.getSale());
         if (!req.getCategory().equals(product.getCategory().getId())) {
             Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);
             if (category.isPresent())
                 product.setCategory(category.get());
             else throw new NotFoundException("Can not found category with id: "+req.getCategory());
         }
-//        if (!req.getBrand().equals(product.getBrand().getId())) {
-//            Optional<Brand> brand = brandRepository.findBrandByIdAndState(req.getBrand(), Constant.ENABLE);
-//            if (brand.isPresent())
-//                product.setBrand(brand.get());
-//            else throw new NotFoundException("Can not found brand with id: "+req.getBrand());
-//        }
         if (req.getState() != null && !req.getState().isEmpty() &&
                 (req.getState().equalsIgnoreCase(Constant.ENABLE) ||
                         req.getState().equalsIgnoreCase(Constant.DISABLE)))
