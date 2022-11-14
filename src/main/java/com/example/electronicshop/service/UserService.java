@@ -114,21 +114,13 @@ public class UserService {
             user.get().setName(userReq.getName());
             user.get().setPhone(userReq.getPhone());
 //            user.get().setAddress(userReq.getAddress());
-
-            try {
                 userRepository.save(user.get());
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ResponseObject("failed", "Phone already exist", "")
-                );
-            }
             UserResponse userRes = userMapper.thisUserRespone(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Update info user successfully", userRes)
             );
 
         }
-
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseObject("failed", "Cannot update info user ", ""));
