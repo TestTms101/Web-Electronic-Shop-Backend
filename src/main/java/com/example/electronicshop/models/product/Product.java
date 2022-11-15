@@ -42,8 +42,8 @@ public class Product {
     private List<ProductImage> images = new ArrayList<>();
     @NotNull(message = "Price is required")
     private BigDecimal price;
-//    @NotNull(message = "Quantity is required")
-//    private int quantity;
+    @NotNull(message = "Quantity is required")
+    private int quantity;
     private double sale;
     private double rate = 0;
     @NotBlank(message = "summary is required")
@@ -64,10 +64,11 @@ public class Product {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
 
-    public Product(String name, String slugify, BigDecimal price, double sale, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
+    public Product(String name, String slugify, BigDecimal price,int quantity, double sale, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
         this.name = name;
         this.slugify = slugify;
         this.price = price;
+        this.quantity = quantity;
         this.sale = sale;
         this.summary = summary;
         this.tags = tags;

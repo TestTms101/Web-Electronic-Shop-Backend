@@ -36,38 +36,51 @@ public class ProductOptionService {
     @Transactional
     public ResponseEntity<?> addOption(String productId , ProductOptionReq req) {
         Optional<ProductOption> checkOption = productOptionRepository.findByNameAndVariantsColorAndProductId(
-                req.getName(), req.getValue(), new ObjectId(productId));
+                req.getValue(), new ObjectId(productId));
         if (checkOption.isPresent()) {
             throw new AppException(HttpStatus.CONFLICT.value(),
-                    String.format("Name: %s, value: %s, product id: %s already exists",
-                            req.getName(), req.getValue(), productId));
+                    String.format("value: %s, product id: %s already exists",
+                            req.getValue(), productId));
         }
-        Optional<ProductOption> option = productOptionRepository.findByNameAndProduct_Id(req.getName(), new ObjectId(productId));
+        Optional<ProductOption> option = productOptionRepository.findByValueAndProduct_Id(req.getValue(), new ObjectId(productId));
         Optional<Product> product = productRepository.findProductByIdAndState(productId, Constant.ENABLE);
         if (product.isEmpty()) throw new NotFoundException("Can not found product with id: "+productId);
         // case does not exist size
+        ProductOption productOption = new ProductOption(req.getValue(), req.getStock());
+        productOption.setProduct(product.get());
         if (option.isEmpty()) {
-            ProductOption productOption = new ProductOption(req.getName());
-            productOption.setProduct(product.get());
-            processVariant(productOption, req.getValue(), req.getStock(), product.get());
+//            productOption.setProduct(product.get());
+            productOptionRepository.save(productOption);
+//            processVariant(productOption, req.getValue(), req.getStock(), product.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product option success", productOption));
         } else {
-            processVariant(option.get(), req.getValue(), req.getStock(), product.get());
+            productOptionRepository.save(productOption);
+//            processVariant(option.get(), req.getValue(), req.getStock(), product.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product option success", option.get()));
         }
     }
-    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
-        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
-        productOption.getSelects().add(newValue);
-        try {
-            productOptionRepository.save(productOption);
-        } catch (MongoWriteException e) {
-            log.error(e.getMessage());
-            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
-        }
-    }
+//    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
+//        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
+//        productOption.getValue();
+//        try {
+//            productOptionRepository.save(productOption);
+//        } catch (MongoWriteException e) {
+//            log.error(e.getMessage());
+//            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
+//        }
+//    }
+//    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
+//        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
+//        productOption.getSelects().add(newValue);
+//        try {
+//            productOptionRepository.save(productOption);
+//        } catch (MongoWriteException e) {
+//            log.error(e.getMessage());
+//            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
+//        }
+//    }
 
     public ResponseEntity<?> findOptionById(String id) {
         Optional<ProductOption> productOption = productOptionRepository.findById(id);
@@ -86,18 +99,19 @@ public class ProductOptionService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateOptionVariant(String id, String value, ProductOptionReq req) {
-        Optional<ProductOption> productOption = productOptionRepository.findByIdAndVariantColor(id, value);
+    public ResponseEntity<?> updateOptionVariant(String id, ProductOptionReq req) {
+        Optional<ProductOption> productOption = productOptionRepository.findById(id);
         if (productOption.isPresent()) {
-            productOption.get().setName(req.getName());
-            productOption.get().getSelects().forEach(variant -> {
-                if (variant.getValue().equals(value)) {
-                    variant.setStock(req.getStock());
-                    if (!variant.getValue().equals(req.getValue())) {
-                        variant.setValue(req.getValue());
-                    }
-                }
-            });
+            productOption.get().setValue(req.getValue());
+            productOption.get().setStock(req.getStock());
+//            productOption.get().getSelects().forEach(variant -> {
+//                if (variant.getValue().equals(value)) {
+//                    variant.setStock(req.getStock());
+//                    if (!variant.getValue().equals(req.getValue())) {
+//                        variant.setValue(req.getValue());
+//                    }
+//                }
+//            });
             try {
                 productOptionRepository.save(productOption.get());
                 return ResponseEntity.status(HttpStatus.OK).body(

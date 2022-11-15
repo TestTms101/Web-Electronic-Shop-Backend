@@ -24,21 +24,21 @@ import java.util.List;
 public class ProductOption {
     @Id
     private String id;
-    @NotBlank(message = "Name is required")
-    @TextIndexed(weight = 9)
-    private String name;
+    @NotBlank(message = "Value is required")
+    private String value;
+    @NotBlank(message = "Stock is required")
+    private Long stock;
     @DocumentReference(lazy = true)
     @JsonIgnore
     private Product product;
-    private List<ProductSelects> selects = new ArrayList<>();
-    @Transient
-    private Long inStock;
+//    private List<ProductSelects> selects = new ArrayList<>();
 
-    public ProductOption(String name) {
-        this.name = name;
-    }
-    public Long getInStock() {
-        return selects.stream().map(ProductSelects::getStock)
-                .reduce(0L, Long::sum);
+//    public ProductOption(String value) {
+//        this.value = value;
+//    }
+
+    public ProductOption(String value, Long stock) {
+        this.value = value;
+        this.stock = stock;
     }
 }

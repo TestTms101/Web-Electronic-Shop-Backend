@@ -20,6 +20,8 @@ public class ProductReq {
     @NotBlank(message = "Slugify is required")
     private String slugify;
     private List<MultipartFile> images;
+    @NotNull(message = "Quantity is required")
+    private int quantity;
     @NotNull(message = "Price is required")
     private BigDecimal price;
     private double sale;

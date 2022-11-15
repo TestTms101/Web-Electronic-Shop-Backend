@@ -11,8 +11,8 @@ import java.util.List;
 
 @Data
 public class ProductOptionReq {
-    @NotBlank(message = "Name is required")
-    private String name;
+//    @NotBlank(message = "Name is required")
+//    private String name;
 //    @NotBlank(message = "Label is required")
 //    private String label;
     @NotBlank(message = "Value is required")

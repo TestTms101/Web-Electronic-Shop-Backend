@@ -23,10 +23,8 @@ public class ProductOptionController {
 
     @PutMapping(value = "/products/option/{id}")
     public ResponseEntity<?> updateOptionVariant(@PathVariable("id") String id,
-                                                 @RequestParam("variantColor") String variantColor,
                                                  @Valid @RequestBody ProductOptionReq req) {
-        variantColor = "#"+variantColor;
-        return productOptionService.updateOptionVariant(id, variantColor, req);
+        return productOptionService.updateOptionVariant(id, req);
     }
 
     @GetMapping("/option")

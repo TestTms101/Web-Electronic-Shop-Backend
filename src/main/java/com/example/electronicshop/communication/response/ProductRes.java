@@ -24,6 +24,7 @@ public class ProductRes {
     private String slugify;
     private List<ProductImage> images;
     private BigDecimal price;
+    private int quantity;
     private double sale;
     private double rate;
     private String summary;
@@ -31,6 +32,7 @@ public class ProductRes {
     private List<String> tags;
     private String description;
     private String category;
+    private String category_id;
     private String state;
     LocalDateTime createdDate;
 

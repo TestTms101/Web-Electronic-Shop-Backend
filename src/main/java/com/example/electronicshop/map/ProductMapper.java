@@ -26,7 +26,7 @@ public class ProductMapper {
         Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
-        return new Product(req.getName(),req.getSlugify(),req.getPrice(),req.getSale(),req.getSummary(),
+        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.getSummary(),
                 req.getTags(),req.getDescription(),category.get(),Constant.ENABLE,req.getCreatedDate());
     }
 
@@ -48,8 +48,10 @@ public class ProductMapper {
 //        String discountString = req.getPrice().multiply(BigDecimal.valueOf((double) (100- req.getDiscount())/100))
 //                .stripTrailingZeros().toPlainString();
 //        BigDecimal discountPrice = new BigDecimal(discountString);
-        return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(), req.getSale(),
-                req.getRate(), req.getSummary(), req.getOptions(),req.getTags(),req.getDescription(),req.getCategory().getName(),
+        return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(),
+                req.getQuantity(), req.getSale(), req.getRate(), req.getSummary(), req.getOptions(),
+                req.getTags(),req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
                 req.getState(),req.getCreatedDate());
+
     }
 }
