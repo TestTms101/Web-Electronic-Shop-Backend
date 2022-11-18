@@ -48,9 +48,8 @@ public class Product {
     private double rate = 0;
     @NotBlank(message = "summary is required")
     private String summary;
-    @ReadOnlyProperty
-    @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
-    private List<ProductOption> options;
+
+    private List<ProductOption> options= new ArrayList<>();
     @NotBlank(message = "tags is required")
     private List<String> tags;
     @NotBlank(message = "Description is required")

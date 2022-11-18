@@ -49,7 +49,7 @@ public class ProductOptionService {
         ProductOption productOption = new ProductOption(req.getValue(), req.getStock());
         productOption.setProduct(product.get());
         if (option.isEmpty()) {
-//            productOption.setProduct(product.get());
+            productOption.setProduct(product.get());
             productOptionRepository.save(productOption);
 //            processVariant(productOption, req.getValue(), req.getStock(), product.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(

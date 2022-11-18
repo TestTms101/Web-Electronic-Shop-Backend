@@ -11,7 +11,6 @@ import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.ProductReq;
 import com.example.electronicshop.communication.response.ProductRes;
-import com.example.electronicshop.repository.BrandRepository;
 import com.example.electronicshop.repository.CategoryRepository;
 import com.example.electronicshop.repository.ProductOptionRepository;
 import com.example.electronicshop.repository.ProductRepository;
@@ -139,6 +138,48 @@ public class ProductService {
             productRepository.save(product);
         }
         return product.getImages();
+    }
+
+    public ResponseEntity<?> updateImage(String id, List<MultipartFile> file) {
+        Optional<Product> product= productRepository.findById(id);
+        if (product.isPresent()) {
+            for (int i = 0; i < file.size(); i++) {
+                try {
+                    String url = cloudinary.uploadImage(file.get(i), null);
+                    if (i == 0) product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+                    else product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload images");
+                }
+        }
+        productRepository.save(product.get());
+            ProductRes res = productMapper.toProductRes(product.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Update user success", res));
+        }
+        throw new NotFoundException("Can not found user with id " + id );
+    }
+    public ResponseEntity<ResponseObject> deleteImage (String id_product, String id_image) {
+        Optional<Product> productImage= productRepository.findByIdAndImagesId(id_product,id_image);
+        if (productImage.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("failed", "Cannot find image ", "")
+            );
+
+        try{
+            if (productImage.get().getImages().get(0).getUrl().startsWith("https://res.cloudinary.com/dnqm1rkqr/image/upload")) {
+                cloudinary.deleteImage(productImage.get().getImages().get(0).getUrl());
+            }
+            productRepository.deleteById(productImage.get().getImages().get(0).getId_image());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Delete image successfully ", "")
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new ResponseObject("failed", "Cannot delete image successfully ", e.getMessage())
+            );
+        }
     }
     @Transactional
     public ResponseEntity<?> updateProduct(String id, ProductReq req) {
