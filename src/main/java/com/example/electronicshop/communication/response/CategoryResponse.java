@@ -11,7 +11,6 @@ public class CategoryResponse {
     private String id;
     private String name;
     private String state;
-
     private String category_image;
 
     public CategoryResponse(String id, String name, String state) {

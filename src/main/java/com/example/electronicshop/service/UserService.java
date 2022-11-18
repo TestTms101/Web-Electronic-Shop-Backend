@@ -125,53 +125,53 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ResponseObject("failed", "Cannot update info user ", ""));
     }
-//    public ResponseEntity<ResponseObject> updateEmailUser(String id, String email){
-//
-//            Optional<User> foundUser = userRepository.findById(id);
-//            if(foundUser.isPresent() && email!=null){
-//                foundUser.get().setEmail(email);
-//                foundUser.get().setState(Constant.USER_ACTIVE);
-//                try{
-//                    userRepository.save(foundUser.get());
-//                }
-//                catch (Exception e){
-//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                            new ResponseObject("failed", "Email  already exist", "")
-//                    );
-//                }
-//                UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
-//                return ResponseEntity.status(HttpStatus.OK).body(
-//                        new ResponseObject("ok", "Update email user successfully", userRes)
-//                );
-//            }
-//
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                new ResponseObject("failed", "Cannot update email user ", "")
-//        );
-//    }
-//    public ResponseEntity<ResponseObject> updatePassUser(String id, String pass){
-//
-//            Optional<User> foundUser = userRepository.findById(id);
-//            if(foundUser.isPresent() && pass!=null){
-//                foundUser.get().setPassword(passwordEncoder.encode(pass));
-//                try{
-//                    userRepository.save(foundUser.get());
-//                }
-//                catch (Exception e){
-//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-//                            new ResponseObject("failed", "Email or Phone already exist", "")
-//                    );
-//                }
-//                UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
-//                return ResponseEntity.status(HttpStatus.OK).body(
-//                        new ResponseObject("ok", "Update pass user successfully", userRes)
-//                );
-//
-//        }
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                new ResponseObject("failed", "Cannot update pass user ", "")
-//        );
-//    }
+    public ResponseEntity<ResponseObject> updateEmailUser(String id, String email){
+
+            Optional<User> foundUser = userRepository.findById(id);
+            if(foundUser.isPresent() && email!=null){
+                foundUser.get().setEmail(email);
+                foundUser.get().setState(Constant.USER_ACTIVE);
+                try{
+                    userRepository.save(foundUser.get());
+                }
+                catch (Exception e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                            new ResponseObject("failed", "Email  already exist", "")
+                    );
+                }
+                UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Update email user successfully", userRes)
+                );
+            }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot update email user ", "")
+        );
+    }
+    public ResponseEntity<ResponseObject> updatePassUser(String id, String pass){
+
+            Optional<User> foundUser = userRepository.findById(id);
+            if(foundUser.isPresent() && pass!=null){
+                foundUser.get().setPassword(passwordEncoder.encode(pass));
+                try{
+                    userRepository.save(foundUser.get());
+                }
+                catch (Exception e){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                            new ResponseObject("failed", "Email or Phone already exist", "")
+                    );
+                }
+                UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("ok", "Update pass user successfully", userRes)
+                );
+
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ResponseObject("failed", "Cannot update pass user ", "")
+        );
+    }
     @Transactional
     public ResponseEntity<?> deletedUser(String id) {
         Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
