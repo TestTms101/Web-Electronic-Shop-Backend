@@ -51,7 +51,7 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@Valid @ModelAttribute ProductReq req) {
+    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductReq req) {
         return productService.addProduct(req);}
 
     @DeleteMapping("/deleteanh/{id}/{id_image}")
