@@ -37,7 +37,7 @@ public class CategoryController {
         return categoryService.updateCategory(id, req);
     }
 
-    @PutMapping(path = "/admin/manage/categories/uploadimage/{id}")
+    @PostMapping(path = "/admin/manage/categories/uploadimage/{id}")
     public ResponseEntity<?> updateCategoryImage (@PathVariable("id") String id, @RequestParam (value = "categoryimage") MultipartFile file){
         return categoryService.updateCateogryImage(id, file);
     }
