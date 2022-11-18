@@ -20,7 +20,7 @@ public class Category {
     private String id;
 
     private String name;
-
+    private String categoryimage;
     private String state;
     @DocumentReference
     private List<Category> subCategories;
@@ -32,5 +32,11 @@ public class Category {
     public List<Category> getSubCategories() {
         subCategories.removeIf(category -> (category.getState().equals(Constant.DISABLE)));
         return subCategories;
+    }
+
+    public Category(String name, String categoryimage, String state) {
+        this.name = name;
+        this.categoryimage = categoryimage;
+        this.state = state;
     }
 }

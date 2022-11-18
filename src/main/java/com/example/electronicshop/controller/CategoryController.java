@@ -6,6 +6,9 @@ import com.example.electronicshop.service.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @AllArgsConstructor
@@ -33,6 +36,11 @@ public class CategoryController {
     public ResponseEntity<ResponseObject> updateCategory (@PathVariable("id") String id,
                                                           @RequestBody CategoryRequest req){
         return categoryService.updateCategory(id, req);
+    }
+
+    @PutMapping(path = "/admin/manage/categories/uploadimage/{id}")
+    public ResponseEntity<?> updateCategoryImage (@PathVariable("id") String id, @RequestParam (value = "categoryimage") MultipartFile file){
+        return categoryService.updateCateogryImage(id, file);
     }
 
 

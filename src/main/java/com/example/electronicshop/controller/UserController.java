@@ -1,5 +1,6 @@
 package com.example.electronicshop.controller;
 
+import com.example.electronicshop.communication.request.ChangePassword;
 import com.example.electronicshop.communication.request.Register;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.models.ResponseObject;
@@ -42,6 +43,15 @@ public class UserController {
     @DeleteMapping(path = "/admin/manage/users/{userId}")
     public ResponseEntity<?> deactivatedUser (@PathVariable("userId") String userId){
         return userService.deletedUser(userId);
+    }
+    @PutMapping(path = "/users/password/{userId}")
+    public ResponseEntity<?> updatePasswordUser ( @RequestBody ChangePassword req,
+                                                  @PathVariable("userId") String userId,
+                                                  HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (user.getId().equals(userId) || !user.getId().isBlank())
+            return userService.updatePassword(userId, req);
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
     @PutMapping(path = "/users/{userId}")
