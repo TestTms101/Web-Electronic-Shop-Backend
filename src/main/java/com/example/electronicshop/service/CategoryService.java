@@ -2,13 +2,11 @@ package com.example.electronicshop.service;
 
 import com.example.electronicshop.communication.request.CategoryRequest;
 import com.example.electronicshop.communication.response.CategoryResponse;
-import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.CategoryMap;
 import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.Category;
-import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.CategoryRepository;
