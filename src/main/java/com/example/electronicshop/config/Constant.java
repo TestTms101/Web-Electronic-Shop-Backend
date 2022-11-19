@@ -9,5 +9,5 @@ public class Constant {
 
     //USER STATE
         public static final String USER_ACTIVE = "active";
-    public static final String USER_NOT_ACTIVE = "not_active";
+    public static final String USER_NOT_ACTIVE = "block";
 }
