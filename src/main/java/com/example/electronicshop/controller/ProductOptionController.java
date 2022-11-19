@@ -17,7 +17,7 @@ public class ProductOptionController {
 
     @PostMapping(value = "/products/option/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addOption(@PathVariable("productId") String id,
-                                       @Valid @ModelAttribute ProductOptionReq req) {
+                                       @Valid @RequestBody ProductOptionReq req) {
         return productOptionService.addOption(id, req);
     }
 

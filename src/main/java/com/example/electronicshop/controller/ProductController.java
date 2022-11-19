@@ -10,8 +10,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -49,9 +51,17 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProduct(@Valid @ModelAttribute ProductReq req) {
+    public ResponseEntity<?> addProduct(@Valid @RequestBody ProductReq req) {
         return productService.addProduct(req);}
 
+    @DeleteMapping("/deleteanh/{id}/{id_image}")
+    public ResponseEntity<?> deleteAnh(@PathVariable("id") String id,@PathVariable("id_image") String id_image){
+        return productService.deleteImage(id,id_image);
+    }
+    @PostMapping(path = "/uploadimage/{id}")
+    public ResponseEntity<?> updateImage (@PathVariable("id") String id,@RequestParam (value = "url") List<MultipartFile> req){
+        return productService.updateImage(id, req);
+    }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") String id,
                                            @Valid @RequestBody ProductReq req) {
