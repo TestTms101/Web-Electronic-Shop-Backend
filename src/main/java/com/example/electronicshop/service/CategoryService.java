@@ -101,20 +101,15 @@ public class CategoryService {
         throw new NotFoundException("Can not found user with id " + id );
     }
     public ResponseEntity<ResponseObject>updateCategory (String id, CategoryRequest categoryRequest) {
-        Optional<Category> category = categoryRepository.findCategoryByIdAndState(id, categoryRequest.getState());
+        Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
-            Optional<Category> updateCategory = categoryRepository.findById(id);
-            updateCategory.get().setName(categoryRequest.getName());
-            updateCategory.get().setState(categoryRequest.getState());
-            Optional<Category> checkCategoryName = categoryRepository.existsCategoriesByNameAndState(updateCategory.get().getName(), updateCategory.get().getState());
-            if (checkCategoryName.isPresent()) {
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("false", "Cannot update category because exits name ", ""));
-            } else
-                categoryRepository.save(updateCategory.get());
-            CategoryResponse categoryResponse = new CategoryResponse(updateCategory.get().getId(), updateCategory.get().getName(), updateCategory.get().getState());
+            category.get().setName(categoryRequest.getName());
+           category.get().setState(categoryRequest.getState());
+
+                categoryRepository.save(category.get());
+            CategoryResponse categoryResponse = new CategoryResponse(category.get().getId(), category.get().getName(), category.get().getState());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Cannot update category because exits name ", ""));
+                    new ResponseObject("true", "update category success ", categoryResponse));
 
         } else {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
