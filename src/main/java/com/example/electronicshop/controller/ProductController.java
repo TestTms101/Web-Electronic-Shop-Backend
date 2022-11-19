@@ -54,10 +54,10 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@Valid @RequestBody ProductReq req) {
         return productService.addProduct(req);}
 
-    @DeleteMapping("/deleteanh/{id}/{id_image}")
-    public ResponseEntity<?> deleteAnh(@PathVariable("id") String id,@PathVariable("id_image") String id_image){
-        return productService.deleteImage(id,id_image);
-    }
+//    @DeleteMapping("/deleteanh/{id}/{id_image}")
+//    public ResponseEntity<?> deleteAnh(@PathVariable("id") String id,@PathVariable("id_image") String id_image){
+//        return productService.deleteImage(id,id_image);
+//    }
     @PostMapping(path = "/uploadimage/{id}")
     public ResponseEntity<?> updateImage (@PathVariable("id") String id,@RequestParam (value = "url") List<MultipartFile> req){
         return productService.updateImage(id, req);
