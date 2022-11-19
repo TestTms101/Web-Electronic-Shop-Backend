@@ -172,7 +172,7 @@ public class ProductService {
                 cloudinary.deleteImage(productImage.get().getImages().get(0).getUrl());
             }
 //            productRepository.deleteById(productImage.get().getImages().get(0).getId_image());
-            productRepository.deleteImageById(id_image);
+//            productRepository.deleteImageById(id_image);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Delete image successfully ", "")
             );
