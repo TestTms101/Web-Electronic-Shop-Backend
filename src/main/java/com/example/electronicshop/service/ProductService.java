@@ -110,7 +110,7 @@ public class ProductService {
         if (req != null) {
             Product product = productMapper.toProduct(req);
             try {
-                processUploadImage(req.getImages(),product);
+//                processUploadImage(req.getImages(),product);
                 productRepository.save(product);
             } catch (Exception e) {
                 throw new AppException(HttpStatus.CONFLICT.value(), "Product name already exists");
@@ -162,16 +162,17 @@ public class ProductService {
     }
     public ResponseEntity<ResponseObject> deleteImage (String id_product, String id_image) {
         Optional<Product> productImage= productRepository.findByIdAndImagesId(id_product,id_image);
+
         if (productImage.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject("failed", "Cannot find image ", "")
             );
-
         try{
             if (productImage.get().getImages().get(0).getUrl().startsWith("https://res.cloudinary.com/dnqm1rkqr/image/upload")) {
                 cloudinary.deleteImage(productImage.get().getImages().get(0).getUrl());
             }
-            productRepository.deleteById(productImage.get().getImages().get(0).getId_image());
+//            productRepository.deleteById(productImage.get().getImages().get(0).getId_image());
+            productRepository.deleteImageById(id_image);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Delete image successfully ", "")
             );
