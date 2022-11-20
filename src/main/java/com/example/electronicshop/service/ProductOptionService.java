@@ -73,7 +73,7 @@ public class ProductOptionService {
 //    }
 //    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
 //        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
-//        productOption.getSelects().add(newValue);
+//        product.getOptions().add(newValue);
 //        try {
 //            productOptionRepository.save(productOption);
 //        } catch (MongoWriteException e) {
