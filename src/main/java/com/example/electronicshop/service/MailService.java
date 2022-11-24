@@ -23,11 +23,11 @@ public class MailService {
     private JavaMailSender mailSender;
     private Configuration configuration;
 
-    final String AUTH_TEMPLATE = "auth-template.ftl";
+    final String VERIFY_TEMPLATE = "verify-template.ftl";
     final String ORDER_TEMPLATE = "order-template.ftl";
     final String FROM_EMAIL = "electronicshop133@gmail.com";
     final String TYPE_EMAIL = "text/html";
-    final String TITLE_EMAIL_AUTH = "Mã xác minh Electric Shop Website";
+    final String TITLE_EMAIL_VERIFY = "Mã xác minh Electric Shop Website";
     final String TITLE_EMAIL_ORDER = "Xác nhận đơn hàng ";
 
     public void sendEmail(String toEmail,
@@ -38,9 +38,9 @@ public class MailService {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMailMessage);
         Template template =null;
         configuration.setClassForTemplateLoading(this.getClass(), "/templates");
-        if (type.equals(MailType.AUTH)) {
-            template = configuration.getTemplate(AUTH_TEMPLATE);
-            model.put("title", TITLE_EMAIL_AUTH);
+        if (type.equals(MailType.VerifyShop)) {
+            template = configuration.getTemplate(VERIFY_TEMPLATE);
+            model.put("title", TITLE_EMAIL_VERIFY);
         }
         else if (type.equals(MailType.ORDER)){
             template = configuration.getTemplate(ORDER_TEMPLATE);

@@ -93,7 +93,7 @@ public class AuthService {
         );
     }
 
-    public ResponseEntity<?> reset(String email) {
+    public ResponseEntity<?> resetpassword(String email) {
         Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_ACTIVE);
         if (user.isPresent()) {
             if (user.get().getSocial().equals(ESocial.LOCAL)) {
@@ -119,7 +119,7 @@ public class AuthService {
         model.put("token", token);
         user.setToken(new Token(token, LocalDateTime.now().plusMinutes(5)));
         userRepository.save(user);
-        mailService.sendEmail(user.getEmail(), model, MailType.AUTH);
+        mailService.sendEmail(user.getEmail(), model, MailType.VerifyShop);
     }
 
 
@@ -140,17 +140,15 @@ public class AuthService {
             if (!user.get().getSocial().equals(ESocial.LOCAL)) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Your account is " +
                     user.get().getSocial() + " account");
             Map<String, Object> res = new HashMap<>();
-            boolean verify = false;
             if (LocalDateTime.now().isBefore(user.get().getToken().getStore())) {
                 if (user.get().getToken().getOtp().equals(otp)) {
                     res.put("id", user.get().getId());
                     res.put("token", jwtUtils.generateTokenFromUserId(user.get()));
                     user.get().setPassword(user.get().getToken().getOtp());
                     userRepository.save(user.get());
-                    verify = true;
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("verify", "OTP with email: " + email + " is " + verify, res));
+                        new ResponseObject("true", "OTP with email: " + email , res));
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());
@@ -164,16 +162,14 @@ public class AuthService {
     private ResponseEntity<?> verifyRegister(String email, String otp) {
         Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_NOT_VERIFY);
         if (user.isPresent()) {
-            boolean verify = false;
             if (LocalDateTime.now().isBefore(user.get().getToken().getStore())) {
                 if (user.get().getToken().getOtp().equals(otp)) {
                     user.get().setState(Constant.USER_ACTIVE);
                     user.get().setToken(null);
                     userRepository.save(user.get());
-                    verify = true;
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("verify", "OTP with email: " + email + " is " + verify, ""));
+                        new ResponseObject("true", "OTP with email: " + email , ""));
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());

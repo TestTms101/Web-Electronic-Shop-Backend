@@ -31,14 +31,14 @@ public class AuthController {
     public ResponseEntity<ResponseObject> register( @RequestBody Register registerReq) {
         return authService.register(registerReq);
     }
-    @PostMapping("/registerwithmail")
-    public ResponseEntity<?> registerwithmail( @RequestBody Register registerReq) {
+    @PostMapping("/registersendmail")
+    public ResponseEntity<?> registerWithMail( @RequestBody Register registerReq) {
         return authService.registerwithmail(registerReq);
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<?> reset(@RequestBody GetOTPRequest req) {
-        if (!req.getEmail().isBlank()) return authService.reset(req.getEmail());
+    public ResponseEntity<?> resetPassword(@RequestBody GetOTPRequest req) {
+        if (!req.getEmail().isBlank()) return authService.resetpassword(req.getEmail());
         throw new AppException(HttpStatus.BAD_REQUEST.value(), "Email is required");
     }
 
