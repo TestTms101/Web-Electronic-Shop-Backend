@@ -16,7 +16,7 @@ public class UserMap {
             loginRes.setId(user.getId());
             loginRes.setName(user.getName());
 //            loginRes.setAddress(user.getAddress());
-           loginRes.setPhone(user.getPhone());
+            loginRes.setPhone(user.getPhone());
             loginRes.setEmail(user.getEmail());
             loginRes.setAvatar(user.getAvatar());
             loginRes.setRole(user.getRole());
@@ -24,6 +24,7 @@ public class UserMap {
         }
         return loginRes;
     }
+
     public UserResponse thisUserRespone(User user) {
         UserResponse userRes = new UserResponse();
         if (user != null) {
@@ -33,15 +34,26 @@ public class UserMap {
             userRes.setRole(user.getRole());
             userRes.setAvatar(user.getAvatar());
             userRes.setState(user.getState());
-           userRes.setPhone(user.getPhone());
+            userRes.setPhone(user.getPhone());
 //            userRes.setAddress(user.getAddress());
         }
         return userRes;
     }
+
     public User toUser(Register req) {
         if (req != null) {
             return new User(req.getName(), req.getEmail(), req.getPassword(), req.getPhone(),
-                     Constant.ROLE_USER, Constant.USER_ACTIVE, ESocial.LOCAL);
+                    Constant.ROLE_USER, Constant.USER_ACTIVE, ESocial.LOCAL);
+        }
+        return null;
+    }
+
+    public User toUserMail(Register req) {
+        if (req != null) {
+
+
+            return new User(req.getName(), req.getEmail(), req.getPassword(), req.getPhone(),
+                    Constant.ROLE_USER, Constant.USER_NOT_VERIFY, ESocial.LOCAL);
         }
         return null;
     }
