@@ -15,7 +15,7 @@ import javax.validation.Valid;
 public class ProductOptionController {
     private ProductOptionService productOptionService;
 
-    @PostMapping(value = "/products/option/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/products/option/{productId}")
     public ResponseEntity<?> addOption(@PathVariable("productId") String id,
                                        @Valid @RequestBody ProductOptionReq req) {
         return productOptionService.addOption(id, req);
