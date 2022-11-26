@@ -54,6 +54,16 @@ public class UserController {
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
+    @PutMapping(path = "/users/resetpassword/{userId}")
+    public ResponseEntity<?> updateResetPasswordUser ( @RequestParam (value="pass") String pass,
+                                                  @PathVariable("userId") String userId,
+                                                  HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (user.getId().equals(userId) || !user.getId().isBlank())
+            return userService.updatePassUser(userId,pass);
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+    }
+
     @PutMapping(path = "/users/{userId}")
     public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
                                           @PathVariable("userId") String userId,

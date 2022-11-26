@@ -93,31 +93,47 @@ public class AuthService {
         );
     }
 
-    public ResponseEntity<?> resetpassword(String email) {
-        Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_ACTIVE);
+
+    public ResponseEntity<?> sendMailGetOTP(String email) {
+        Optional<User> user = userRepository.findUsersByEmail(email);
         if (user.isPresent()) {
-            if (user.get().getSocial().equals(ESocial.LOCAL)) {
                 try {
                     sendVerifyMail(user.get());
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Send email reset password success", email));
+                            new ResponseObject("true", "Send otp email success", email));
                 } catch (Exception e) {
                     e.printStackTrace();
                     log.error(e.getMessage());
                     throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed to send reset email");
                 }
-            } else throw new AppException(HttpStatus.BAD_REQUEST.value(), "Your account is " +
-                    user.get().getSocial() + " account");
         }
         throw new NotFoundException("Can not found user with email " + email + " is activated");
     }
+//    public ResponseEntity<?> resetpassword(String email) {
+//        Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_ACTIVE);
+//        if (user.isPresent()) {
+//            if (user.get().getSocial().equals(ESocial.LOCAL)) {
+//                try {
+//                    sendVerifyMail(user.get());
+//                    return ResponseEntity.status(HttpStatus.OK).body(
+//                            new ResponseObject("true", "Send email reset password success", email));
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    log.error(e.getMessage());
+//                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed to send reset email");
+//                }
+//            } else throw new AppException(HttpStatus.BAD_REQUEST.value(), "Your account is " +
+//                    user.get().getSocial() + " account");
+//        }
+//        throw new NotFoundException("Can not found user with email " + email + " is activated");
+//    }
 
     @SneakyThrows
     public void sendVerifyMail(User user) {
         String token = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
         Map<String, Object> model = new HashMap<>();
         model.put("token", token);
-        user.setToken(new Token(token, LocalDateTime.now().plusMinutes(5)));
+        user.setToken(new Token(token, LocalDateTime.now().plusMinutes(30)));
         userRepository.save(user);
         mailService.sendEmail(user.getEmail(), model, MailType.VerifyShop);
     }
