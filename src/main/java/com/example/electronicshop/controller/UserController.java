@@ -2,6 +2,7 @@ package com.example.electronicshop.controller;
 
 import com.example.electronicshop.communication.request.ChangePassword;
 import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.ResetPassRequest;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.User;
@@ -55,12 +56,12 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/resetpassword/{userId}")
-    public ResponseEntity<?> updateResetPasswordUser ( @RequestParam (value="pass") String pass,
+    public ResponseEntity<?> updateResetPasswordUser ( @RequestBody ResetPassRequest resetPassRequest,
                                                   @PathVariable("userId") String userId,
                                                   HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (user.getId().equals(userId) || !user.getId().isBlank())
-            return userService.updatePassUser(userId,pass);
+            return userService.updatePassUser(userId,resetPassRequest);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 

@@ -2,6 +2,7 @@ package com.example.electronicshop.service;
 
 import com.example.electronicshop.communication.request.ChangePassword;
 import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.ResetPassRequest;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.CloudinaryConfig;
@@ -149,11 +150,11 @@ public class UserService {
                 new ResponseObject("failed", "Cannot update email user ", "")
         );
     }
-    public ResponseEntity<ResponseObject> updatePassUser(String id, String pass){
+    public ResponseEntity<ResponseObject> updatePassUser(String id, ResetPassRequest resetPassRequest){
 
             Optional<User> foundUser = userRepository.findById(id);
-            if(foundUser.isPresent() && pass!=null){
-                foundUser.get().setPassword(passwordEncoder.encode(pass));
+            if(foundUser.isPresent() && resetPassRequest!=null){
+                foundUser.get().setPassword(passwordEncoder.encode(resetPassRequest.getResetpass()));
                 try{
                     userRepository.save(foundUser.get());
                 }
