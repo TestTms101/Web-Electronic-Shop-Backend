@@ -10,4 +10,11 @@ public class Constant {
     //USER STATE
         public static final String USER_ACTIVE = "active";
     public static final String USER_NOT_ACTIVE = "block";
+    public static final String USER_NOT_VERIFY = "not_verify";
+
+    //PAYMENT TYPE
+    public static final String PAY_COD = "cod";
+    public static final String PAY_PAYPAL = "paypal";
+    public static final String PAY_VNPAY = "vnpay";
+
 }
