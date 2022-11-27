@@ -42,7 +42,7 @@ public class Product {
     private List<ProductImage> images = new ArrayList<>();
     @NotNull(message = "Price is required")
     private BigDecimal price;
-    @NotNull(message = "Quantity is required")
+//    @NotNull(message = "Quantity is required")
     private int quantity;
     private double sale;
     private double rate = 0;
