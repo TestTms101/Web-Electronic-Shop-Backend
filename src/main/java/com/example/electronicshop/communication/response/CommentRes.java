@@ -12,8 +12,21 @@ public class CommentRes {
     private String id;
     private String content;
     private double rate;
-    private boolean enable;
+    private String userid;
+    private String state;
     private String reviewedBy;
+    private String productid;
+    private String productname;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime createdDate;
+    public CommentRes(String id, String content, double rate, String state, String reviewedBy, LocalDateTime createdDate) {
+        this.id = id;
+        this.content = content;
+        this.rate = rate;
+        this.state = state;
+        this.reviewedBy = reviewedBy;
+        this.createdDate = createdDate;
+    }
+
+
 }

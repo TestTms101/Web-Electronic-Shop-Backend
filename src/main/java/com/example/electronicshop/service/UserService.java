@@ -1,9 +1,6 @@
 package com.example.electronicshop.service;
 
-import com.example.electronicshop.communication.request.ChangePassword;
-import com.example.electronicshop.communication.request.Register;
-import com.example.electronicshop.communication.request.ResetPassRequest;
-import com.example.electronicshop.communication.request.UserRequest;
+import com.example.electronicshop.communication.request.*;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
@@ -49,6 +46,31 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Get all user", userResList));
         throw new NotFoundException("Can not found any user");
+    }
+
+    public ResponseEntity<ResponseObject> findAllByRole(String role,Pageable pageable) {
+        Page<User> users = userRepository.findUsersByRole(role,pageable);
+        List<UserResponse> userResList = users.stream().map(userMapper::thisUserRespone).collect(Collectors.toList());
+        if (userResList.size() > 0)
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get all user", userResList));
+        throw new NotFoundException("Can not found any user");
+    }
+
+
+    public  ResponseEntity<?> setRoleByAdmin(String id, RoleUserRequest roleUserRequest)
+    {
+        Optional<User>user = userRepository.findById(id);
+        if(user.isPresent()) {
+            user.get().setRole(roleUserRequest.getRole());
+            userRepository.save(user.get());
+            UserResponse res = userMapper.thisUserRespone(user.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get user success", res));
+        }
+        else
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("false", "Can't not find user ", ""));
     }
 
 
@@ -150,7 +172,7 @@ public class UserService {
                 new ResponseObject("failed", "Cannot update email user ", "")
         );
     }
-    public ResponseEntity<ResponseObject> updatePassUser(String id, ResetPassRequest resetPassRequest){
+    public ResponseEntity<ResponseObject> updateResetPassUser(String id, ResetPassRequest resetPassRequest){
 
             Optional<User> foundUser = userRepository.findById(id);
             if(foundUser.isPresent() && resetPassRequest!=null){
@@ -173,6 +195,19 @@ public class UserService {
                 new ResponseObject("failed", "Cannot update pass user ", "")
         );
     }
+
+    @Transactional
+    public ResponseEntity<?> UnblockUser(String id) {
+        Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_NOT_ACTIVE);
+        if (user.isPresent()) {
+            user.get().setState(Constant.USER_ACTIVE);
+            userRepository.save(user.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Unblock user success", user));
+        }
+        throw new NotFoundException("Can not find use");
+    }
+
     @Transactional
     public ResponseEntity<?> deletedUser(String id) {
         Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
