@@ -12,9 +12,9 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentInfor {
-    private String payId;
-    private String payType;
-    private String payToken;
-    private Map<String, Object> getPaymentDetail =new HashMap<>();
+public class PaymentDetail {
+    private String paymentId;
+    private String paymentType;
+    private String paymentToken;
+    private Map<String, Object> paymentInfo = new HashMap<>();
 }
