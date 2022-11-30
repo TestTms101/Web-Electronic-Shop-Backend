@@ -28,7 +28,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class  Product {
     @Id
     private String id;
     @NotBlank(message = "Name is required")

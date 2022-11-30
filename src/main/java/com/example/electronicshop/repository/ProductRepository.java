@@ -24,9 +24,10 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
-//    Optional<Product> findByIdAndIdOptions(String id, ObjectId option_id);
-    @Query(value = "{'id': ?0, 'options.va': ?1}")
-    Optional<Product> findByIdAndOptionsId(String id, String option_id);
+    Optional<Product> findBy(String id, ObjectId option_id);
+//    @Query(value = "{'id': ?0, 'options.va': ?1}")
+//    Optional<Product> findByIdAndOptionsId(String id, String option_id);
     @Query(value = "{'id': ?0, 'images.id_image': ?1}")
     Optional<Product> findByIdAndImagesId(String id, String image_id);
+
 }

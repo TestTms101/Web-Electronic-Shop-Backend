@@ -2,6 +2,7 @@ package com.example.electronicshop.models.enity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.paypal.api.payments.PaymentDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +31,8 @@ public class Order {
     @ReadOnlyProperty
     @DocumentReference(lookup="{'order':?#{#self._id} }", lazy = true)
     private List<OrderItem> items = new ArrayList<>();
-//    private DeliveryDetail deliveryDetail;
-//    private PaymentDetail paymentDetail;
+    private DeliveryDetail deliveryDetail;
+    private PaymentDetail paymentDetail;
     @NotBlank(message = "State is required")
     private String state;
     @CreatedDate

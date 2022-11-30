@@ -1,5 +1,6 @@
 package com.example.electronicshop.communication.response;
 
+import com.example.electronicshop.models.enity.DeliveryDetail;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class OrderRes {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String paymentType;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//    private DeliveryDetail deliveryDetail;
+    private DeliveryDetail deliveryDetail;
     private String state;
 
     public OrderRes(String id, String userId, String userName, long totalProduct, BigDecimal totalPrice, String state) {

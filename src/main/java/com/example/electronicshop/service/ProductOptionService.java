@@ -50,27 +50,30 @@ public class ProductOptionService {
         productOption.setProduct(product.get());
         if (option.isEmpty()) {
             productOption.setProduct(product.get());
+//            product.get().setOptions((List<ProductOption>) productOption);
+            processVariant(productOption, product.get());
             productOptionRepository.save(productOption);
 //            processVariant(productOption, req.getValue(), req.getStock(), product.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product option success", productOption));
         } else {
             productOptionRepository.save(productOption);
+            processVariant(productOption, product.get());
+
 //            processVariant(option.get(), req.getValue(), req.getStock(), product.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product option success", option.get()));
         }
     }
-//    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
-//        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
-//        productOption.getValue();
-//        try {
-//            productOptionRepository.save(productOption);
-//        } catch (MongoWriteException e) {
-//            log.error(e.getMessage());
-//            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
-//        }
-//    }
+    public void processVariant (ProductOption productOption ,Product product) {
+        product.getOptions().add(productOption);
+        try {
+            productRepository.save(product);
+        } catch (MongoWriteException e) {
+            log.error(e.getMessage());
+            throw new AppException(HttpStatus.CONFLICT.value(), "Value already exists");
+        }
+    }
 //    public void processVariant (ProductOption productOption ,String value, Long stock, Product product) {
 //        ProductSelects newValue = new ProductSelects(UUID.randomUUID(), value, stock);
 //        product.getOptions().add(newValue);

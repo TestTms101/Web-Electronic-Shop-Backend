@@ -1,49 +1,49 @@
-//package com.example.electronicshop.service;
-//
-//import com.example.electronicshop.communication.response.OrderRes;
-//import com.example.electronicshop.config.Constant;
-//import com.example.electronicshop.map.OrderMapper;
-//import com.example.electronicshop.models.ResponseObject;
-//import com.example.electronicshop.models.enity.Order;
-//import com.example.electronicshop.notification.AppException;
-//import com.example.electronicshop.notification.NotFoundException;
-//import com.example.electronicshop.repository.OrderRepository;
-//import com.example.electronicshop.service.paypalpayment.PaymentUtils;
-//import lombok.AllArgsConstructor;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.domain.Sort;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
-//import java.time.format.DateTimeParseException;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.stream.Collectors;
-//
-//@Service
-//@AllArgsConstructor
-//public class OrderService {
-//    private final OrderRepository orderRepository;
-//    private final OrderMapper orderMapper;
+package com.example.electronicshop.service;
+
+import com.example.electronicshop.communication.response.OrderRes;
+import com.example.electronicshop.config.Constant;
+import com.example.electronicshop.map.OrderMapper;
+import com.example.electronicshop.models.ResponseObject;
+import com.example.electronicshop.models.enity.Order;
+import com.example.electronicshop.notification.AppException;
+import com.example.electronicshop.notification.NotFoundException;
+import com.example.electronicshop.repository.OrderRepository;
+import com.example.electronicshop.service.paypalpayment.PaymentUtils;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@AllArgsConstructor
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 //    private final PaymentUtils paymentUtils;
-//
-//    public ResponseEntity<?> findAll(String state, Pageable pageable) {
-//        Page<Order> orders;
-//        if (state.isBlank()) orders = orderRepository.findAll(pageable);
-//        else orders = orderRepository.findAllByState(state, pageable);
-//        if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
-//        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes).collect(Collectors.toList());
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject("true", "Get orders success", resList));
-//    }
-//
+
+    public ResponseEntity<?> findAll(String state, Pageable pageable) {
+        Page<Order> orders;
+        if (state.isBlank()) orders = orderRepository.findAll(pageable);
+        else orders = orderRepository.findAllByState(state, pageable);
+        if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
+        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes).collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("true", "Get orders success", resList));
+    }
+
 //    public ResponseEntity<?> findOrderById(String id) {
 //        Optional<Order> order = orderRepository.findById(id);
 //        if (order.isPresent()) {
@@ -63,7 +63,7 @@
 //        }
 //        throw new NotFoundException("Can not found order with id: " + id);
 //    }
-//
+
 //    public ResponseEntity<?> cancelOrder(String id, String userId) {
 //        Optional<Order> order = orderRepository.findById(id);
 //        if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
@@ -86,4 +86,4 @@
 //        }
 //        throw new NotFoundException("Can not found order with id: " + id);
 //    }
-//}
+}

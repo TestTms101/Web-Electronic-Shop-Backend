@@ -1,5 +1,6 @@
 package com.example.electronicshop.models.enity;
 
+import com.example.electronicshop.models.product.Product;
 import com.example.electronicshop.models.product.ProductOption;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -25,9 +26,9 @@ public class OrderItem {
     @Id
     private String id;
     @DocumentReference(lazy = true)
-    private ProductOption item;
+    private Product item;
     @NotBlank
-    private String color;
+    private String value;
     @NotNull
     private long quantity;
     @DocumentReference(lazy = true)
@@ -36,22 +37,22 @@ public class OrderItem {
     @Transient
     private BigDecimal subPrice = BigDecimal.ZERO;
 
-//    public ProductOption getItem() {
-//        item.setVariants(item.getVariants().stream()
-//                .filter(v -> v.getColor().equals(color)).collect(Collectors.toList()));
-//        return item;
-//    }
-//
-//    public BigDecimal getSubPrice() {
-//        BigDecimal originPrice = (item.getProduct().getPrice().add(item.getExtraFee())).multiply(BigDecimal.valueOf(quantity));
-//        String discountString = originPrice.multiply(BigDecimal.valueOf((double) (100- item.getProduct().getDiscount())/100))
-//                .stripTrailingZeros().toPlainString();
-//        return new BigDecimal(discountString);
-//    }
+    public Product getItem() {
+        item.setOptions(item.getOptions().stream()
+                .filter(v -> v.getValue().equals(value)).collect(Collectors.toList()));
+        return item;
+    }
 
-    public OrderItem(ProductOption item, String color, long quantity, Order order) {
+    public BigDecimal getSubPrice() {
+        BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
+        String discountString = originPrice.multiply(BigDecimal.valueOf(item.getSale()))
+                .stripTrailingZeros().toPlainString();
+        return new BigDecimal(discountString);
+    }
+
+    public OrderItem(Product item, String value, long quantity, Order order) {
         this.item = item;
-        this.color = color;
+        this.value = value;
         this.quantity = quantity;
         this.order = order;
     }

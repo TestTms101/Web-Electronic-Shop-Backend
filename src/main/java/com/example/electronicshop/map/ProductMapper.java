@@ -55,7 +55,7 @@ public class ProductMapper {
 //        BigDecimal discountPrice = new BigDecimal(discountString);
         List<ProductOption> option = productOptionRepository.findAllByProduct_Id(new ObjectId(req.getId()));
         return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(),
-                req.getQuantity(), req.getSale(), req.getRate(), req.getSummary(), option,
+                req.getQuantity(), req.getSale(), req.getRate(), req.getSummary(), req.getOptions(),
                 req.getTags(),req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
                 req.getState(),req.getCreatedDate());
 
