@@ -11,7 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, String> {
-    Page<Comment> findAllByProduct_IdAndEnable(ObjectId productId, boolean enable, Pageable pageable);
-    Optional<Comment> findReviewByProduct_IdAndUser_Id(ObjectId productId, ObjectId userId);
-    Page<Comment> findAllByUser_Id(String userId, Pageable pageable);
+    Page<Comment> findAllByProduct_IdAndState(ObjectId productId, String state, Pageable pageable);
+    Optional<Comment> findCommentByProduct_IdAndUser_Id(ObjectId productId, ObjectId userId);
+    /* Page<Comment> findAllByUser_Id(String userId, Pageable pageable);*/
+    Optional<Comment> findCommentByIdAndState(String Id, String userId);
+
 }

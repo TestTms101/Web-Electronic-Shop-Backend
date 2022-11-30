@@ -3,6 +3,8 @@ package com.example.electronicshop.config;
 public class Constant {
     public static final String ENABLE = "enable";
     public static final String DISABLE = "disable";
+    public static final String COMMENT_BLOCK="block";
+    public static final String COMMENT_ENABLE = "enable";
     //ROLE
     public static final String ROLE_ADMIN = "role_admin";
     public static final String ROLE_USER = "role_user";

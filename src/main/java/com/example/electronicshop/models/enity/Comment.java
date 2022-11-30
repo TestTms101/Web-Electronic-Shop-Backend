@@ -28,7 +28,7 @@ public class Comment {
     @DocumentReference(lazy = true)
     @JsonIgnore
     private User user;
-    private boolean enable;
+    private String state;
     @CreatedDate
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
@@ -36,11 +36,11 @@ public class Comment {
     @LastModifiedDate
     LocalDateTime lastModifiedDate;
 
-    public Comment(String content, double rate, Product product, User user, boolean enable) {
+    public Comment(String content, double rate, Product product, User user, String state) {
         this.content = content;
         this.rate = rate;
         this.product = product;
         this.user = user;
-        this.enable = enable;
+        this.state = state;
     }
 }

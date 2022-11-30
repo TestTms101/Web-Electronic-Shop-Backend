@@ -1,9 +1,6 @@
 package com.example.electronicshop.controller;
 
-import com.example.electronicshop.communication.request.ChangePassword;
-import com.example.electronicshop.communication.request.Register;
-import com.example.electronicshop.communication.request.ResetPassRequest;
-import com.example.electronicshop.communication.request.UserRequest;
+import com.example.electronicshop.communication.request.*;
 import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.notification.AppException;
@@ -61,9 +58,23 @@ public class UserController {
                                                   HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (user.getId().equals(userId) || !user.getId().isBlank())
-            return userService.updatePassUser(userId,resetPassRequest);
+            return userService.updateResetPassUser(userId,resetPassRequest);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
+    @GetMapping(path = "/admin/manage/getrole/users")
+    public ResponseEntity<ResponseObject> findUserByRole (@RequestParam(defaultValue = "") String role,@ParameterObject @PageableDefault(size = 10)  Pageable pageable){
+        return userService.findAllByRole(role,pageable);
+    }
+
+    @PutMapping (path = "/admin/manage/users/unblockuser/{userId}")
+    public ResponseEntity<?> unblockUser (@PathVariable("userId") String userId){
+        return userService.UnblockUser(userId);
+    }
+    @PutMapping(path = "/admin/manage/users/setrole/{userId}")
+    public ResponseEntity<?> setUserRole (@PathVariable("userId") String userId,@RequestBody RoleUserRequest req){
+        return userService.setRoleByAdmin(userId,req);
+    }
+
 
     @PutMapping(path = "/users/{userId}")
     public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
