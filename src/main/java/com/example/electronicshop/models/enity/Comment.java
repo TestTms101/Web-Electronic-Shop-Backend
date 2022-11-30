@@ -43,4 +43,13 @@ public class Comment {
         this.user = user;
         this.state = state;
     }
+
+    public Comment(String content, double rate, Product product, User user, String state, LocalDateTime createdDate) {
+        this.content = content;
+        this.rate = rate;
+        this.product = product;
+        this.user = user;
+        this.state = state;
+        this.createdDate = createdDate;
+    }
 }

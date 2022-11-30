@@ -40,6 +40,11 @@ public class  Product {
 //    @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
 //    private List<ProductImage> images = new ArrayList<>();
     private List<ProductImage> images = new ArrayList<>();
+
+    @ReadOnlyProperty
+    @DocumentReference(lookup="{'product':?#{#self._id} }", lazy = true)
+    @Indexed
+    private List<Comment> comment;
     @NotNull(message = "Price is required")
     private BigDecimal price;
 //    @NotNull(message = "Quantity is required")
@@ -75,5 +80,13 @@ public class  Product {
         this.category = category;
         this.state = state;
         this.createdDate = createdDate;
+    }
+    @Transient
+    public int getRateCount() {
+        try {
+            return comment.size();
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

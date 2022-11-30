@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class VNPayService extends PaymentFactory{
+public class VNPayService {
 //    private final OrderRepository orderRepository;
 //    private final PaymentUtils paymentUtils;
 //
