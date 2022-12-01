@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.Term;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,8 @@ public class ProductService {
 
     public ResponseEntity<?> findAll(boolean isAdmin, Pageable pageable) {
         Page<Product> products;
-        if (isAdmin) products = productRepository.findAll(pageable);
+        if (isAdmin)
+            products = productRepository.findAll(pageable);
         else products = productRepository.findAllByState(Constant.ENABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
@@ -95,7 +97,21 @@ public class ProductService {
         Page<Product> products;
         try {
             products = productRepository.findAllBy(TextCriteria
-                            .forDefaultLanguage().matchingAny(key),
+                            .forDefaultLanguage().matching(key),
+                    pageable);
+        } catch (Exception e) {
+            throw new NotFoundException("Can not found any product with: "+key);
+        }
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product with: "+key);
+    }
+
+    public ResponseEntity<?> findbyTags(String key, Pageable pageable){
+        Page<Product> products;
+        try {
+            products = productRepository.findByTags(key,
                     pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
