@@ -42,7 +42,7 @@ private final OrderItemRepository orderItemRepository;
     public PaymentFactory getPaymentMethod(String methodName) {
         switch (methodName) {
             case Constant.PAY_PAYPAL: return context.getBean(PaypalService.class);
-//            case Constant.PAY_VNPAY: return context.getBean(VNPayService.class);
+            case Constant.PAY_VNPAY: return context.getBean(VNPayService.class);
             case Constant.PAY_COD: return context.getBean(CODService.class);
             default: return null;
         }
