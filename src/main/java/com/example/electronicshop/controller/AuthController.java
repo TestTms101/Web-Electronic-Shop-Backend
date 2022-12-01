@@ -44,6 +44,11 @@ public class AuthController {
         if (!email.isBlank()) return authService.sendMailGetOTP(email);
         throw new AppException(HttpStatus.BAD_REQUEST.value(), "Email is required");
     }
+    @PostMapping("/getotpreset")
+    public ResponseEntity<?> getOTPMailReset(@RequestParam  (value ="email")String email) {
+        if (!email.isBlank()) return authService.sendMailResetGetOTP(email);
+        throw new AppException(HttpStatus.BAD_REQUEST.value(), "Email is required");
+    }
 
     @PostMapping("/verify")
     public ResponseEntity<?> verify(@Valid @RequestBody GetOTPRequest req) {

@@ -96,7 +96,7 @@
 
 <!-- start preheader -->
 <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: #fff; opacity: 0;">
-    Mã xác minh Tài khoản Website của bạn (${email})</div>
+    Mã xác minh bạn cần dùng để thay đổi mật khẩu vào Tài khoản Website của mình (${email})</div>
 <!-- end preheader -->
 
 <!-- start body -->
@@ -163,7 +163,7 @@
                 <!-- start copy -->
                 <tr>
                     <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family:Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                        <p style="margin: 0;">Mã xác minh danh cho tài khoản ElectricShop của bạn (
+                        <p style="margin: 0;">Mã xác minh cho tài khoản ElectricShop của bạn (
                             ${email}) là:</p>
                     </td>
                 </tr>
@@ -192,7 +192,7 @@
                 <!-- start copy -->
                 <tr>
                     <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                        <p style="margin: 0;">Xin vui lòng   <a href= localhost:3000/check-otp> vào đây </a>  để xác nhận  <b>không cung cấp mã này cho bất kỳ ai</b> để giữ an toàn cho tài khoản của bạn </p>
+                        <p style="margin: 0;">Xin vui lòng <b>không cung cấp mã này cho bất kỳ ai</b> để giữ an toàn cho tài khoản của bạn </p>
 
                     </td>
                 </tr>
@@ -243,13 +243,13 @@
                 <!-- end unsubscribe -->
 
             </table>
-            </td>
-            </tr>
-            </table>
-            <![endif]-->
         </td>
     </tr>
-    <!-- end footer -->
+</table>
+<![endif]-->
+</td>
+</tr>
+<!-- end footer -->
 
 </table>
 <!-- end body -->

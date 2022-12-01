@@ -1,5 +1,5 @@
 package com.example.electronicshop.service;
 
 public enum MailType {
-    VerifyShop, ORDER
+    VerifyShop, ORDER, Resetpassword
 }

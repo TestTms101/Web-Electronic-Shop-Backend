@@ -25,10 +25,13 @@ public class MailService {
 
     final String VERIFY_TEMPLATE = "verify-template.ftl";
     final String ORDER_TEMPLATE = "order-template.ftl";
+    final String RESET_TEMPLATE ="reset-template.ftl";
     final String FROM_EMAIL = "electronicshop133@gmail.com";
     final String TYPE_EMAIL = "text/html";
     final String TITLE_EMAIL_VERIFY = "Mã xác minh Electric Shop Website";
     final String TITLE_EMAIL_ORDER = "Xác nhận đơn hàng ";
+
+    final String TITLE_EMAIL_RESET = "Mã xác minh lấy lại mật khẩu tại Electric Shop Website";
 
     public void sendEmail(String toEmail,
                           Map<String,Object> model,
@@ -45,6 +48,10 @@ public class MailService {
         else if (type.equals(MailType.ORDER)){
             template = configuration.getTemplate(ORDER_TEMPLATE);
             model.put("title", TITLE_EMAIL_ORDER);
+        }
+        else if (type.equals(MailType.Resetpassword)){
+            template = configuration.getTemplate(RESET_TEMPLATE);
+            model.put("title", TITLE_EMAIL_RESET);
         }
         model.put("email", toEmail);
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(Objects.requireNonNull(template),model);

@@ -109,6 +109,21 @@ public class AuthService {
         }
         throw new NotFoundException("Can not found user with email " + email + " is activated");
     }
+    public ResponseEntity<?> sendMailResetGetOTP(String email) {
+        Optional<User> user = userRepository.findUsersByEmail(email);
+        if (user.isPresent()) {
+            try {
+                sendVerifyMailReset(user.get());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("true", "Send otp email success", email));
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.getMessage());
+                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed to send reset email");
+            }
+        }
+        throw new NotFoundException("Can not found user with email " + email + " is activated");
+    }
 //    public ResponseEntity<?> resetpassword(String email) {
 //        Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_ACTIVE);
 //        if (user.isPresent()) {
@@ -136,6 +151,16 @@ public class AuthService {
         user.setToken(new Token(token, LocalDateTime.now().plusMinutes(30)));
         userRepository.save(user);
         mailService.sendEmail(user.getEmail(), model, MailType.VerifyShop);
+    }
+
+    @SneakyThrows
+    public void sendVerifyMailReset(User user) {
+        String token = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
+        Map<String, Object> model = new HashMap<>();
+        model.put("token", token);
+        user.setToken(new Token(token, LocalDateTime.now().plusMinutes(30)));
+        userRepository.save(user);
+        mailService.sendEmail(user.getEmail(), model, MailType.Resetpassword);
     }
 
 
@@ -168,8 +193,7 @@ public class AuthService {
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("false", "OTP with email: " + email + " is expired" , ""));
+                throw new NotFoundException("Can not found OTP with mail " + email );
             }
         }
         throw new NotFoundException("Can not found user with email " + email + " is activated");
@@ -189,8 +213,7 @@ public class AuthService {
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("false", "OTP with email: " + email + " is expired" , ""));
+                throw new NotFoundException("Can not found OTP with mail " + email );
             }
         }
         throw new NotFoundException("Can not found user with email " + email);

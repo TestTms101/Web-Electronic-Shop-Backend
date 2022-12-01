@@ -34,6 +34,9 @@ public class WebSecutity {
             "/api/oauth/**",
             "/oauth2/**",
             "/login/**",
+            //Paypal
+            "/api/checkout/*/success",
+            "/api/checkout/*/cancel"
 
     };
 
