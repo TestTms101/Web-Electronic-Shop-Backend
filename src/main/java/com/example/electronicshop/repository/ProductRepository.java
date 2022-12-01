@@ -1,20 +1,21 @@
 package com.example.electronicshop.repository;
 
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductOption;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Repository
-public interface ProductRepository extends MongoRepository<Product, String> {
+public interface ProductRepository extends MongoRepository<Product, String>{
     Optional<Product> findProductByIdAndState(String id, String state);
     Page<Product> findAllByState(String state, Pageable pageable);
     Page<Product> findAllByCategory_IdAndState(ObjectId catId, String state, Pageable pageable);
@@ -22,6 +23,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
             "    'state' : 'enable'}")
     Page<Product> findProductsByCategory(ObjectId id, List<ObjectId> subCat, Pageable pageable);
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
+    Page<Product> findByTags(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
     Optional<Product> findBy(String id, ObjectId option_id);

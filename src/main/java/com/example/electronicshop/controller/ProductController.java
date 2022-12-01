@@ -39,7 +39,13 @@ public class ProductController {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query, pageable);
     }
-
+    @GetMapping(path = "/byTags")
+    public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
+                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
+        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+        return productService.findbyTags(query, pageable);
+    }
     @GetMapping(path = "/byState")
     public ResponseEntity<?> findAllByState (@ParameterObject Pageable pageable){
         return productService.findAll(false, pageable);
