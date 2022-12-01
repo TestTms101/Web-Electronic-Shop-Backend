@@ -192,7 +192,7 @@
                 <!-- start copy -->
                 <tr>
                     <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                        <p style="margin: 0;">Xin vui lòng   <a href= localhost:3000/check-otp> vào đây </a>  để xác nhận  <b>không cung cấp mã này cho bất kỳ ai</b> để giữ an toàn cho tài khoản của bạn </p>
+                        <p style="margin: 0;">Xin vui lòng   <a href= localhost:3000/check-otp-register> vào đây </a>  để xác nhận  <b>không cung cấp mã này cho bất kỳ ai</b> để giữ an toàn cho tài khoản của bạn </p>
 
                     </td>
                 </tr>
