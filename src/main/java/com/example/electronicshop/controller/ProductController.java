@@ -58,9 +58,16 @@ public class ProductController {
 //    public ResponseEntity<?> deleteAnh(@PathVariable("id") String id,@PathVariable("id_image") String id_image){
 //        return productService.deleteImage(id,id_image);
 //    }
+
+    @DeleteMapping("/deleteimage/{id}/{id_image}")
+    public ResponseEntity<?> deleteAnh(@PathVariable("id") String id,
+                                       @PathVariable("id_image") String id_image){
+        return productService.deleteImageProduct(id,id_image);
+    }
+
     @PostMapping(path = "/uploadimage/{id}")
     public ResponseEntity<?> updateImage (@PathVariable("id") String id,@RequestParam (value = "url") List<MultipartFile> req){
-        return productService.updateImage(id, req);
+        return productService.addImagesToProduct(id, req);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") String id,

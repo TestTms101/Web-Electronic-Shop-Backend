@@ -22,9 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +30,7 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-//    private final PaymentUtils paymentUtils;
+    private final PaymentUtils paymentUtils;
 
     public ResponseEntity<?> findAll(String state, Pageable pageable) {
         Page<Order> orders;
@@ -40,50 +38,50 @@ public class OrderService {
         else orders = orderRepository.findAllByState(state, pageable);
         if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", orders.getTotalElements());
+        resp.put("totalPage", orders.getTotalPages());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Get orders success", resList));
+                new ResponseObject("true", "Get orders success", resp));
     }
 
-//    public ResponseEntity<?> findOrderById(String id) {
-//        Optional<Order> order = orderRepository.findById(id);
-//        if (order.isPresent()) {
-//            OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("true", "Get order success", orderRes));
-//        }
-//        throw new NotFoundException("Can not found order with id: " + id);
-//    }
-//
-//    public ResponseEntity<?> findOrderById(String id, String userId) {
-//        Optional<Order> order = orderRepository.findById(id);
-//        if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
-//            OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("true", "Get order success", orderRes));
-//        }
-//        throw new NotFoundException("Can not found order with id: " + id);
-//    }
+    public ResponseEntity<?> findOrderById(String id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent()) {
+            OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get order success", orderRes));
+        }
+        throw new NotFoundException("Can not found order with id: " + id);
+    }
 
-//    public ResponseEntity<?> cancelOrder(String id, String userId) {
-//        Optional<Order> order = orderRepository.findById(id);
-//        if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
-//            if (order.get().getState().equals(Constant.ORDER_STATE_PENDING) ||
-//                    order.get().getState().equals(Constant.ORDER_STATE_PROCESS) ||
-//                    order.get().getState().equals(Constant.ORDER_STATE_PAID)) {
-//                order.get().setState(Constant.ORDER_STATE_CANCEL);
-//                if (order.get().getState().equals(Constant.ORDER_STATE_PAID)) {
-//                    //refund
-//                    order.get().getPaymentDetail().getPaymentInfo().put("refund", true);
-//                }
-//                orderRepository.save(order.get());
-//                String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
-//                if (checkUpdateQuantityProduct == null) {
-//                    return ResponseEntity.status(HttpStatus.OK).body(
-//                            new ResponseObject("true", "Cancel order successfully", ""));
-//                }
-//            } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
-//                    "You cannot cancel or refund while the order is still processing!");
-//        }
-//        throw new NotFoundException("Can not found order with id: " + id);
-//    }
+    public ResponseEntity<?> findOrderById(String id, String userId) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
+            OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get order success", orderRes));
+        }
+        throw new NotFoundException("Can not found order with id: " + id);
+    }
+
+    public ResponseEntity<?> cancelOrder(String id, String userId) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
+            if (order.get().getState().equals(Constant.ORDER_STATE_PENDING) ||
+                    order.get().getState().equals(Constant.ORDER_STATE_ENABLE) ||
+                    order.get().getState().equals(Constant.ORDER_STATE_PROCESS)) {
+                String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
+                order.get().setState(Constant.ORDER_STATE_CANCEL);
+                orderRepository.save(order.get());
+                if (checkUpdateQuantityProduct == null) {
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject("true", "Cancel order successfully", ""));
+                }
+            } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
+                    "You cannot cancel while the order is still processing!");
+        }
+        throw new NotFoundException("Can not found order with id: " + id);
+    }
 }

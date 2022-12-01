@@ -19,8 +19,8 @@ public class CartMapper {
     public static CartItemRes toCartItemRes(OrderItem orderItem) {
         return new CartItemRes(orderItem.getId(),orderItem.getItem().getName(), orderItem.getItem().getId(),
                 orderItem.getItem().getSale(),orderItem.getItem().getImages(),orderItem.getItem().getPrice(),
-                orderItem.getItem().getOptions().get(0).getId(),orderItem.getValue(),orderItem.getQuantity(),
-                orderItem.getItem().getOptions().get(0).getStock(),orderItem.getSubPrice());
+                orderItem.getValue(),orderItem.getQuantity(), orderItem.getItem().getOptions().get(0).getStock(),
+                orderItem.getSubPrice());
 
     }
 }

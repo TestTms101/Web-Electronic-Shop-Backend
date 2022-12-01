@@ -18,7 +18,6 @@ public class CartItemRes {
     private double sale;
     private List<ProductImage> image;
     private BigDecimal price;
-    private String productOptionId;
     private String value;
     private long quantity;
     private long stock;

@@ -27,24 +27,24 @@ public class OrderController {
         return orderService.findAll(state, pageable);
     }
 
-//    @GetMapping(path = "/admin/manage/orders/{orderId}")
-//    public ResponseEntity<?> findOrderById (@PathVariable String orderId){
-//        return orderService.findOrderById(orderId);
-//    }
-//
-//    @GetMapping(path = "/orders/{orderId}")
-//    public ResponseEntity<?> userFindOrderById (@PathVariable String orderId,
-//                                                HttpServletRequest request){
-//        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-//        if (!user.getId().isBlank())
-//            return orderService.findOrderById(orderId, user.getId());
-//        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-//    }
+    @GetMapping(path = "/admin/manage/orders/{orderId}")
+    public ResponseEntity<?> findOrderById (@PathVariable String orderId){
+        return orderService.findOrderById(orderId);
+    }
 
-//    @PutMapping(path = "/orders/cancel/{orderId}")
-//    public ResponseEntity<?> cancelOrder (@PathVariable String orderId,
-//                                          HttpServletRequest request){
-//        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-//        return orderService.cancelOrder(orderId, user.getId());
-//    }
+    @GetMapping(path = "/orders/{orderId}")
+    public ResponseEntity<?> userFindOrderById (@PathVariable String orderId,
+                                                HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (!user.getId().isBlank())
+            return orderService.findOrderById(orderId, user.getId());
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+    }
+
+    @PutMapping(path = "/orders/cancel/{orderId}")
+    public ResponseEntity<?> cancelOrder (@PathVariable String orderId,
+                                          HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        return orderService.cancelOrder(orderId, user.getId());
+    }
 }

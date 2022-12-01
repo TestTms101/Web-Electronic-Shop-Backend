@@ -140,25 +140,67 @@ public class ProductService {
 //        return product.getImages();
 //    }
 
-    public ResponseEntity<?> updateImage(String id, List<MultipartFile> file) {
-        Optional<Product> product= productRepository.findById(id);
+//    public ResponseEntity<?> updateImage(String id, List<MultipartFile> file) {
+//        Optional<Product> product= productRepository.findById(id);
+//        if (product.isPresent()) {
+//            for (int i = 0; i < file.size(); i++) {
+//                try {
+//                    String url = cloudinary.uploadImage(file.get(i), null);
+//                    if (i == 0) product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+//                    else product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+//                } catch (IOException e) {
+//                    log.error(e.getMessage());
+//                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload images");
+//                }
+//        }
+//        productRepository.save(product.get());
+//            ProductRes res = productMapper.toProductRes(product.get());
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject("true", "Update user success", res));
+//        }
+//        throw new NotFoundException("Can not found user with id " + id );
+//    }
+    public ResponseEntity<?> addImagesToProduct(String id, List<MultipartFile> files) {
+        Optional<Product> product = productRepository.findById(id);
         if (product.isPresent()) {
-            for (int i = 0; i < file.size(); i++) {
-                try {
-                    String url = cloudinary.uploadImage(file.get(i), null);
-                    if (i == 0) product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
-                    else product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
-                } catch (IOException e) {
-                    log.error(e.getMessage());
-                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload images");
-                }
-        }
-        productRepository.save(product.get());
-            ProductRes res = productMapper.toProductRes(product.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update user success", res));
-        }
-        throw new NotFoundException("Can not found user with id " + id );
+            try {
+                files.forEach(f -> {
+                    try {
+                        String url = cloudinary.uploadImage(f, null);
+                        product.get().getImages().add(new ProductImage(UUID.randomUUID().toString(), url));
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
+                        throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload images");
+                    }
+                    productRepository.save(product.get());
+                });
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject("true", "Add image to product successfully", product.get().getImages())
+                );
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new NotFoundException("Error when save image: " + e.getMessage());
+            }
+        } throw new NotFoundException("Can not found product with id: " + id);
+    }
+    public ResponseEntity<?> deleteImageProduct(String idProduct, String imageId) {
+        Optional<Product> product = productRepository.findById(idProduct);
+        if (product.isPresent() && !product.get().getImages().isEmpty()) {
+            try {
+                Optional<ProductImage> checkDelete = product.get().getImages().stream().filter(i -> i.getId_image().equals(imageId)).findFirst();
+                if (checkDelete.isPresent()) {
+                    cloudinary.deleteImage(checkDelete.get().getUrl());
+                    product.get().getImages().remove(checkDelete.get());
+                    productRepository.save(product.get());
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject("true", "Delete image successfully", imageId)
+                    );
+                } else throw new NotFoundException("Can not found image in product with id: " + imageId);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new NotFoundException("Can not found product with id: " + idProduct);
+            }
+        } throw new NotFoundException("Can not found any image or product with id: " + idProduct);
     }
 //    public ResponseEntity<ResponseObject> deleteImage (String id_product, String id_image) {
 //        Optional<Product> productImage= productRepository.findByIdAndImagesId(id_product,id_image);
