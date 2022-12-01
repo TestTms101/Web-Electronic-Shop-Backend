@@ -209,7 +209,7 @@ public class AuthService {
                     userRepository.save(user.get());
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "OTP with email: " + email , ""));
+                        new ResponseObject("true", "OTP with email: " + email , user));
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());
