@@ -7,5 +7,5 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ChangePassword {
     public String newpass;
-    public String oldpasss;
+    public String oldpass;
 }
