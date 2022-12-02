@@ -223,8 +223,8 @@ public class UserService {
     public ResponseEntity<?> updatePassword(String id, ChangePassword req) {
         Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
         if (user.isPresent()) {
-            if (passwordEncoder.matches(req.getOldpasss(), user.get().getPassword())
-                    && !req.getNewpass().equals(req.getOldpasss())) {
+            if (passwordEncoder.matches(req.getOldpass(), user.get().getPassword())
+                    && !req.getNewpass().equals(req.getOldpass())) {
                 user.get().setPassword(passwordEncoder.encode(req.getNewpass()));
                 userRepository.save(user.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
