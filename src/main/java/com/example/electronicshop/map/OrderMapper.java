@@ -15,7 +15,8 @@ public class OrderMapper {
 
     public OrderRes toOrderDetailRes (Order order) {
         OrderRes orderRes =  new OrderRes(order.getId(), order.getUser().getId(), order.getUser().getName(),
-                order.getTotalProduct(), order.getTotalPrice(), order.getState());
+                order.getUser().getEmail(),order.getUser().getPhone(), order.getTotalProduct(),
+                order.getTotalPrice(), order.getState());
         orderRes.setItems(order.getItems().stream().map(CartMapper::toCartItemRes).collect(Collectors.toList()));
         orderRes.setPaymentType(order.getPaymentDetail().getPaymentType());
         orderRes.setDeliveryDetail(order.getDeliveryDetail());

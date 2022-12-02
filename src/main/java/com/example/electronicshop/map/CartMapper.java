@@ -4,8 +4,11 @@ import com.example.electronicshop.communication.response.CartItemRes;
 import com.example.electronicshop.communication.response.CartRes;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.models.enity.OrderItem;
+import com.example.electronicshop.models.product.ProductImage;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,10 +20,10 @@ public class CartMapper {
     }
 
     public static CartItemRes toCartItemRes(OrderItem orderItem) {
-        return new CartItemRes(orderItem.getId(),orderItem.getItem().getName(), orderItem.getItem().getId(),
-                orderItem.getItem().getSale(),orderItem.getItem().getImages(),orderItem.getItem().getPrice(),
-                orderItem.getValue(),orderItem.getQuantity(), orderItem.getItem().getOptions().get(0).getStock(),
-                orderItem.getSubPrice());
+        return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(),
+                orderItem.getItem().getName(), orderItem.getItem().getSale(),
+                orderItem.getItem().getImages(),orderItem.getItem().getPrice(),
+                orderItem.getValue(),orderItem.getSubPrice());
 
     }
 }

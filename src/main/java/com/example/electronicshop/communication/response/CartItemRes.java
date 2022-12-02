@@ -13,13 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 public class CartItemRes {
     private String itemId;
-    private String name;
     private String productid;
+    private String name;
     private double sale;
     private List<ProductImage> image;
     private BigDecimal price;
     private String value;
-    private long quantity;
-    private long stock;
+//    private long quantity;
+//    private long stock;
     private BigDecimal subPrice;
 }
