@@ -1,20 +1,16 @@
 package com.example.electronicshop.models.product;
 
 import com.example.electronicshop.models.enity.Category;
-import com.example.electronicshop.models.enity.Brand;
 import com.example.electronicshop.models.enity.Comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

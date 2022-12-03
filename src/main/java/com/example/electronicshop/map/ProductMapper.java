@@ -2,22 +2,17 @@ package com.example.electronicshop.map;
 
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.models.enity.Category;
-import com.example.electronicshop.models.enity.Brand;
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductImage;
 import com.example.electronicshop.models.product.ProductOption;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.ProductReq;
 import com.example.electronicshop.communication.response.ProductRes;
-import com.example.electronicshop.repository.BrandRepository;
 import com.example.electronicshop.repository.CategoryRepository;
 import com.example.electronicshop.repository.ProductOptionRepository;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 

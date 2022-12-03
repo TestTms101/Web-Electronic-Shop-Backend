@@ -13,21 +13,13 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DeliveryDetail {
-    private String receiveName;
-    private String receivePhone;
-    private String receiveProvince;
-    private String receiveDistrict;
-    private String receiveWard;
-    private String receiveAddress;
-    private Map<String, Object> deliveryInfo = new HashMap<>();
+    private String shipName;
+    private String shipPhone;
+    private String shipProvince;
+    private String shipDistrict;
+    private String shipWard;
+    private String shipAddress;
 
-    public DeliveryDetail(String receiveName, String receivePhone, String receiveProvince, String receiveDistrict, String receiveWard, String receiveAddress) {
-        this.receiveName = receiveName;
-        this.receivePhone = receivePhone;
-        this.receiveProvince = receiveProvince;
-        this.receiveDistrict = receiveDistrict;
-        this.receiveWard = receiveWard;
-        this.receiveAddress = receiveAddress;
-    }
+
 }
 
