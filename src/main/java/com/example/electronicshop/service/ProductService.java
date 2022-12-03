@@ -111,7 +111,7 @@ public class ProductService {
     public ResponseEntity<?> findbyTags(String key, Pageable pageable){
         Page<Product> products;
         try {
-            products = productRepository.findByTags(key,
+            products = productRepository.findByTagsOrderByCreatedDateDesc(key,
                     pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);

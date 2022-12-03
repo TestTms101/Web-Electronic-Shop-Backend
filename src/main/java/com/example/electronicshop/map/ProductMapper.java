@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class ProductMapper {
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
         return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.getSummary(),
-                req.getTags(),req.getDescription(),category.get(),Constant.ENABLE,req.getCreatedDate());
+                req.getTags(),req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
     }
 
 //    public ProductRes toProductListRes(Product req) {

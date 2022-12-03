@@ -23,7 +23,7 @@ public interface ProductRepository extends MongoRepository<Product, String>{
             "    'state' : 'enable'}")
     Page<Product> findProductsByCategory(ObjectId id, List<ObjectId> subCat, Pageable pageable);
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
-    Page<Product> findByTags(String tags, Pageable pageable);
+    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
     Optional<Product> findBy(String id, ObjectId option_id);
