@@ -81,12 +81,12 @@ public class ProductController {
         return productService.updateProduct(id, req);
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") String id) {
         return productService.deactivatedProduct(id);
     }
 
-    @DeleteMapping("/products/destroy/{id}")
+    @DeleteMapping("/destroy/{id}")
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);
     }
