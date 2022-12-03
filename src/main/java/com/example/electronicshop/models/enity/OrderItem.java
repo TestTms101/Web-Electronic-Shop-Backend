@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -25,7 +26,8 @@ import java.util.stream.Collectors;
 public class OrderItem {
     @Id
     private String id;
-    @DocumentReference(lazy = true)
+    @DocumentReference
+    @Indexed
     private Product item;
     @NotBlank
     private String value;
