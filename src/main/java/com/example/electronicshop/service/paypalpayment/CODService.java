@@ -26,14 +26,14 @@ public class CODService extends PaymentFactory{
     @Transactional
     public ResponseEntity<?> createPayment(HttpServletRequest request, Order order) {
         if (order != null && order.getState().equals(Constant.ORDER_STATE_PROCESS)) {
-            String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
-            if (checkUpdateQuantityProduct == null) {
+//            String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
+//            if (checkUpdateQuantityProduct == null) {
                 order.setState(Constant.ORDER_STATE_PENDING);
                 order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
                 orderRepository.save(order);
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", " Pay by COD successfully", ""));
-            }
+//            }
         } throw new NotFoundException("Can not found order with id: "+ Objects.requireNonNull(order).getId());
     }
 
@@ -55,7 +55,7 @@ public class CODService extends PaymentFactory{
         if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING)) {
             order.get().setState(Constant.ORDER_STATE_CANCEL);
             orderRepository.save(order.get());
-            String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
+           String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
             if (checkUpdateQuantityProduct == null) {
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", "Cancel order successfully", ""));

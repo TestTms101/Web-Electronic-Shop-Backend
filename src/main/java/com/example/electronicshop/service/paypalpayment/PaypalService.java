@@ -54,7 +54,7 @@ public class PaypalService extends  PaymentFactory{
             for (Links links : payment.getLinks()) {
                 if (links.getRel().equals("approval_url")) {
                     String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
-                    if (checkUpdateQuantityProduct == null) {
+                  if (checkUpdateQuantityProduct == null) {
                         Map<String, Object> params = new HashMap<>();
                         if (!payment.getTransactions().isEmpty())
                             params.put("amount", payment.getTransactions().get(0).getAmount());
@@ -67,7 +67,7 @@ public class PaypalService extends  PaymentFactory{
                                 new ResponseObject("true", "Payment init complete", links.getHref()));
                     }
                 }
-            }
+           }
         } catch (PayPalRESTException | IOException e) {
             throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
         }
@@ -118,7 +118,7 @@ public class PaypalService extends  PaymentFactory{
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", "Cancel payment with Paypal complete", "")
                 );
-            }
+           }
         }
         response.sendRedirect(PaymentService.CLIENT_REDIRECT + "false&cancel=true");
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(

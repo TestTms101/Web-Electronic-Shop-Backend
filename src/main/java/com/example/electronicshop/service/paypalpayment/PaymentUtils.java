@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class PaymentUtils {
-//    private final ProductOptionRepository productOptionRepository;
+   private final ProductOptionRepository productOptionRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
@@ -37,7 +37,7 @@ public class PaymentUtils {
             });
             try {
                 productRepository.save(item.getItem());
-//                productOptionRepository.save(item.getItem());
+//             productOptionRepository.save(item.getItem());
             } catch (MongoWriteException e) {
                 throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
             }
