@@ -4,19 +4,13 @@ import com.example.electronicshop.communication.response.CartItemRes;
 import com.example.electronicshop.communication.response.CartRes;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.models.enity.OrderItem;
-import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductImage;
 import com.example.electronicshop.models.product.ProductOption;
 import com.example.electronicshop.repository.ProductOptionRepository;
 import com.example.electronicshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,13 +37,20 @@ public class CartMapper {
 //                orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
 //                orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
 //                1, orderItem.getSubPrice());
-//    }
-        return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(),
-                orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
-                orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
-                orderItem.getItem().getQuantity(), orderItem.getSubPrice());
-    }
+        if(orderItem.getItem().getOptions().size()==0){
+            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(),
+                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
+                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
+                    orderItem.getItem().getQuantity(), orderItem.getSubPrice());
+        }else {
+            Optional<ProductOption> stockOption = productOptionRepository.findByProductAndValue(new ObjectId(orderItem.getItem().getId()), orderItem.getValue());
+            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(),
+                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
+                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
+                    stockOption.get().getStock(), orderItem.getSubPrice());
+        }
 
+    }
 //    public static CartItemRes toCartItemResOption(OrderItem orderItem) {
 //        Optional<ProductOption> stockOption = productOptionRepository.findByProductIdAndAndValue(new ObjectId(orderItem.getItem().getId()), orderItem.getValue());
 //        return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(),

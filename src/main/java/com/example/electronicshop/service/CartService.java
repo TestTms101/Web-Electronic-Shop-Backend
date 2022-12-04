@@ -54,9 +54,10 @@ public class CartService {
             if (order.isPresent()) {
                 //Check if order already has product option with color
                 Optional<OrderItem> item = order.get().getItems().stream().filter(
-                        p -> p.getItem().getId().equals(req.getProductOptionId())
-                                && p.getValue().equals(req.getValue())).findFirst();
-                if (item.get().getItem().getId()==req.getProducId()) return processUpdateProductInCart(item.get(), req);
+                        p -> p.getItem().getId().equals(req.getProducId())).findFirst();
+//                                && p.getValue().equals(req.getValue())).findFirst();
+                if (item.isPresent())
+                    return processUpdateProductInCart(item.get(), req);
                 else return processAddProductToExistOrder(order.get(), req);
             } else return processAddProductToOrder(user.get(), req);
         } throw new NotFoundException("Can not found user with id: "+userId);

@@ -29,7 +29,7 @@ public class OrderItem {
     @DocumentReference
     @Indexed
     private Product item;
-    @NotBlank
+//    @NotBlank
     private String value;
     @NotNull
     private long quantity;
