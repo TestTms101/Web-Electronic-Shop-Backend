@@ -56,7 +56,7 @@ public class CartService {
                 Optional<OrderItem> item = order.get().getItems().stream().filter(
                         p -> p.getItem().getId().equals(req.getProductOptionId())
                                 && p.getValue().equals(req.getValue())).findFirst();
-                if (item.isPresent()) return processUpdateProductInCart(item.get(), req);
+                if (item.get().getItem().getId()==req.getProducId()) return processUpdateProductInCart(item.get(), req);
                 else return processAddProductToExistOrder(order.get(), req);
             } else return processAddProductToOrder(user.get(), req);
         } throw new NotFoundException("Can not found user with id: "+userId);

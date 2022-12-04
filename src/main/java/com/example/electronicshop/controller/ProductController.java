@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping(path = "/category/{id}")
     public ResponseEntity<?> findByCategoryIdAndBrandId (@PathVariable("id") String id,
                                                          @ParameterObject Pageable pageable){
-        return productService.findByCategoryIdOrBrandId(id, pageable);
+        return productService.findByCategoryId(id, pageable);
     }
 
     @GetMapping(path = "/search")

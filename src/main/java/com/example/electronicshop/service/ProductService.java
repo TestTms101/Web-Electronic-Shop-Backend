@@ -46,7 +46,7 @@ public class ProductService {
         Page<Product> products;
         if (isAdmin)
             products = productRepository.findAll(pageable);
-        else products = productRepository.findAllByState(Constant.ENABLE, pageable);
+        else products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.ENABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
@@ -74,15 +74,15 @@ public class ProductService {
         throw new NotFoundException("Can not found any product with id: "+id);
     }
 
-    public ResponseEntity<?> findByCategoryIdOrBrandId(String id, Pageable pageable) {
+    public ResponseEntity<?> findByCategoryId(String id, Pageable pageable) {
         Page<Product> products;
         try {
             Optional<Category> category = categoryRepository.findCategoryByIdAndState(id, Constant.ENABLE);
             if (category.isPresent()) {
                 List<ObjectId> subCat = category.get().getSubCategories().stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
-                products = productRepository.findProductsByCategory(new ObjectId(id),
+                products = productRepository.findProductsByCategoryOrderByCreatedDateDesc(new ObjectId(id),
                         subCat, pageable);
-            } else products = productRepository.findAllByCategory_IdAndState(new ObjectId(id),
+            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(new ObjectId(id),
                     Constant.ENABLE, pageable);
         } catch (Exception e) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");

@@ -17,11 +17,11 @@ import java.util.function.Predicate;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String>{
     Optional<Product> findProductByIdAndState(String id, String state);
-    Page<Product> findAllByState(String state, Pageable pageable);
-    Page<Product> findAllByCategory_IdAndState(ObjectId catId, String state, Pageable pageable);
+    Page<Product> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
+    Page<Product> findAllByCategory_IdAndStateOrderByCreatedDateDesc(ObjectId catId, String state, Pageable pageable);
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "    'state' : 'enable'}")
-    Page<Product> findProductsByCategory(ObjectId id, List<ObjectId> subCat, Pageable pageable);
+    Page<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
     Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
