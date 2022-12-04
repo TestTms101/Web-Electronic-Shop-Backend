@@ -35,7 +35,7 @@ public class ProductOptionService {
 
     @Transactional
     public ResponseEntity<?> addOption(String productId , ProductOptionReq req) {
-        Optional<ProductOption> checkOption = productOptionRepository.findByNameAndVariantsColorAndProductId(
+        Optional<ProductOption> checkOption = productOptionRepository.findByValueAndId(
                 req.getValue(), new ObjectId(productId));
         if (checkOption.isPresent()) {
             throw new AppException(HttpStatus.CONFLICT.value(),
