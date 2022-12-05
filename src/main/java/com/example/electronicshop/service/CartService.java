@@ -111,15 +111,18 @@ public class CartService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Delete item "+orderItem.getId()+" in cart success", ""));
         }
-        orderItem.getItem().getOptions().forEach(v -> {
-            if (v.getValue().equals(req.getValue())) {
-                long quantity = orderItem.getQuantity() + req.getQuantity();
-                if (v.getStock() >= quantity && quantity > 0) {
-                    orderItem.setQuantity(quantity);
-                    orderItemRepository.save(orderItem);
-                } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductOptionId());
-            }
-        });
+//        orderItem.getItem().getOptions().forEach(v -> {
+//            if (v.getValue().equals(req.getValue())) {
+//                long quantity = orderItem.getQuantity() + req.getQuantity();
+//                if (v.getStock() >= quantity && quantity > 0) {
+//                    orderItem.setQuantity(quantity);
+//                    orderItemRepository.save(orderItem);
+//                } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductOptionId());
+//            }
+//        });
+        long quantity = orderItem.getQuantity() + req.getQuantity();
+        orderItem.setQuantity(quantity);
+        orderItemRepository.save(orderItem);
         CartItemRes res = CartMapper.toCartItemRes(orderItem);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("true", "Update product "+req.getProductOptionId()+" in cart success", res));
