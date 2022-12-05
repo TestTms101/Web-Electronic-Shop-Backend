@@ -24,7 +24,18 @@ public class PaymentUtils {
     @Transactional
     public String checkingUpdateQuantityProduct(Order order, boolean isPaid) {
         order.getItems().forEach(item -> {
-            item.getItem().getOptions().forEach(i -> {
+            //Check if the product has an option
+            if(item.getValue()==null){
+                if (isPaid) {
+                    if (item.getItem().getQuantity() < item.getQuantity()) {
+                        order.setState(Constant.ORDER_STATE_ENABLE);
+                        orderRepository.save(order);
+                        throw new AppException(HttpStatus.CONFLICT.value(),
+                                "Quantity exceeds the available stock on hand at Product:" +
+                                        item.getItem().getName());
+                    } else item.getItem().setQuantity((int) (item.getItem().getQuantity() - item.getQuantity()));
+                } else item.getItem().setQuantity((int) (item.getItem().getQuantity() + item.getQuantity()));
+            }else item.getItem().getOptions().forEach(i -> {
                 if (isPaid) {
                     if (i.getStock() < item.getQuantity()) {
                         order.setState(Constant.ORDER_STATE_ENABLE);
