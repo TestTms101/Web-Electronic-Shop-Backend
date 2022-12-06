@@ -28,7 +28,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CartService {
     private final UserRepository userRepository;
-//    private final ProductOptionRepository productOptionRepository;
+    private final ProductOptionRepository productOptionRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartMapper cartMapper;
@@ -68,11 +68,15 @@ public class CartService {
         if (req.getQuantity() <= 0) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid quantity");
 //        Optional<ProductOption> productOption = productOptionRepository.findByIdAndValue(req.getProductOptionId(),req.getValue());
         Optional<Product> product = productRepository.findById(req.getProducId());
+        OrderItem item;
         if (product.isPresent()) {
             checkProductQuantity(product.get(), req);
             Order order = new Order(user, Constant.ORDER_STATE_ENABLE);
             orderRepository.insert(order);
-            OrderItem item = new OrderItem(product.get(), req.getValue(), req.getQuantity(), order);
+            if(req.getProductOptionId()==null){
+                item = new OrderItem(product.get(), req.getQuantity(), order);
+            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
+                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
             orderItemRepository.insert(item);
             CartItemRes res = CartMapper.toCartItemRes(item);
             return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -84,9 +88,13 @@ public class CartService {
         if (req.getQuantity() <= 0) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid quantity");
 //        Optional<ProductOption> productOption = productOptionRepository.findByIdAndValue(req.getProductOptionId(),req.getValue());
         Optional<Product> product = productRepository.findById(req.getProducId());
+        OrderItem item;
         if (product.isPresent()) {
             checkProductQuantity(product.get(), req);
-            OrderItem item = new OrderItem(product.get(), req.getValue(), req.getQuantity(), order);
+            if(req.getProductOptionId()==null){
+                item = new OrderItem(product.get(), req.getQuantity(), order);
+            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
+                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
             orderItemRepository.insert(item);
             CartItemRes res = CartMapper.toCartItemRes(item);
             return ResponseEntity.status(HttpStatus.CREATED).body(

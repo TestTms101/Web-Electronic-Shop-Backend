@@ -18,6 +18,6 @@ public interface ProductOptionRepository extends MongoRepository<ProductOption, 
     void deleteByProduct_Id(String id);
 //    @Query(value = "{'value': ?0, 'product.id': ?1}")
     Optional<ProductOption> findByValueAndId(String value, ObjectId productId);
-    @Query(value = "{'product': ?0, 'value': ?1}")
-    Optional<ProductOption> findByProductAndValue(ObjectId id, String value);
+//    @Query(value = "{'product': ?0, 'value': ?1}")
+//    Optional<ProductOption> findByProductAndValue(ObjectId id, String value);
 }
