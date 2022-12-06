@@ -88,7 +88,7 @@ public class OrderService {
     }
     public ResponseEntity<?> setDeliveryOrderByAdmin(String id) {
         Optional<Order> order = orderRepository.findById(id);
-        if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING)) {
+        if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING) || order.get().getState().equals(Constant.ORDER_STATE_PENDINGPAY)) {
             order.get().setState(Constant.ORDER_STATE_DELIVERY);
             orderRepository.save(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -99,10 +99,7 @@ public class OrderService {
     public ResponseEntity<?> setCompleteOrderByAdmin(String id) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent() ) {
-            if (order.get().getState().equals(Constant.ORDER_STATE_PENDING) ||
-                    order.get().getState().equals(Constant.ORDER_STATE_ENABLE) ||
-                    order.get().getState().equals(Constant.ORDER_STATE_PROCESS) ||
-            order.get().getState().equals(Constant.ORDER_STATE_DELIVERY) ) {
+            if (order.get().getState().equals(Constant.ORDER_STATE_DELIVERY) ) {
                 order.get().setState(Constant.ORDER_STATE_COMPLETE);
                 order.get().setLastModifiedDate(LocalDateTime.now());
                 orderRepository.save(order.get());
@@ -112,6 +109,19 @@ public class OrderService {
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
                     "You cannot cancel while the order is still processing!");
+        }
+        throw new NotFoundException("Can not found order with id: " + id);
+    }
+
+    public ResponseEntity<?> setCancelOrderByAdmin(String id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent() ) {
+                order.get().setState(Constant.ORDER_STATE_CANCEL);
+                orderRepository.save(order.get());
+                {
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject("true", "Cancel order successfully", order));
+                }
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
