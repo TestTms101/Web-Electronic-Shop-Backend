@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -78,6 +80,35 @@ public class OrderService {
                 if (checkUpdateQuantityProduct == null) {
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject("true", "Cancel order successfully", ""));
+                }
+            } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
+                    "You cannot cancel while the order is still processing!");
+        }
+        throw new NotFoundException("Can not found order with id: " + id);
+    }
+    public ResponseEntity<?> setDeliveryOrderByAdmin(String id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING)) {
+            order.get().setState(Constant.ORDER_STATE_DELIVERY);
+            orderRepository.save(order.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Confirmed order successfully", order));
+        } else throw new NotFoundException("Can not found order with id: "+ id);
+    }
+
+    public ResponseEntity<?> setCompleteOrderByAdmin(String id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent() ) {
+            if (order.get().getState().equals(Constant.ORDER_STATE_PENDING) ||
+                    order.get().getState().equals(Constant.ORDER_STATE_ENABLE) ||
+                    order.get().getState().equals(Constant.ORDER_STATE_PROCESS) ||
+            order.get().getState().equals(Constant.ORDER_STATE_DELIVERY) ) {
+                order.get().setState(Constant.ORDER_STATE_COMPLETE);
+                order.get().setLastModifiedDate(LocalDateTime.now());
+                orderRepository.save(order.get());
+              {
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject("true", "Cancel order successfully", order));
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
                     "You cannot cancel while the order is still processing!");
