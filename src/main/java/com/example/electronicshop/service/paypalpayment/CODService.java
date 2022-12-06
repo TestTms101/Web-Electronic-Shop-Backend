@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class CODService extends PaymentFactory{
             String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
             if (checkUpdateQuantityProduct == null) {
                 order.setState(Constant.ORDER_STATE_PENDING);
+                order.setCreatedDate(LocalDateTime.now());
                 order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
                 orderRepository.save(order);
                 return ResponseEntity.status(HttpStatus.OK).body(

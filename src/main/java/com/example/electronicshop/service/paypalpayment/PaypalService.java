@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -62,6 +63,7 @@ public class PaypalService extends  PaymentFactory{
                         order.getPaymentDetail().setPaymentId(payment.getId());
                         order.getPaymentDetail().setPaymentToken((links.getHref().split(PATTERN)[1]));
                         order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
+                        order.setCreatedDate(LocalDateTime.now());
                         orderRepository.save(order);
                         return ResponseEntity.status(HttpStatus.OK).body(
                                 new ResponseObject("true", "Payment init complete", links.getHref()));

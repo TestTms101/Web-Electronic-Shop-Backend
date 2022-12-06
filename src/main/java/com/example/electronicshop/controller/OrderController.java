@@ -47,4 +47,12 @@ public class OrderController {
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         return orderService.cancelOrder(orderId, user.getId());
     }
+    @PutMapping(path = "/admin/manage/orders/setcomplete/{orderId}")
+    public ResponseEntity<?> setCompletelOrderAdmin (@PathVariable String orderId){;
+        return orderService.setCompleteOrderByAdmin(orderId);
+    }
+    @PutMapping(path = "/admin/manage/orders/setdelivery/{orderId}")
+    public ResponseEntity<?> setDeliverylOrderAdmin (@PathVariable String orderId){;
+        return orderService.setDeliveryOrderByAdmin(orderId);
+    }
 }
