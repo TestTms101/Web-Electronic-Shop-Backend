@@ -33,7 +33,7 @@ public class User {
     @JsonIgnore
     private String password;
     private String phone;
-//    private String address;
+
     private String role;
     private String avatar;
     private String state;
@@ -48,7 +48,6 @@ public class User {
         this.email = email;
         this.password = password;
       this.phone = phone;
-//        this.address = address;
         this.role = role;
         this.state = state;
         this.social = social;

@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryDetail {
+public class Delivery {
     private String shipName;
     private String shipPhone;
     private String shipProvince;

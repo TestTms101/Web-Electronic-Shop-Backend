@@ -3,7 +3,7 @@ package com.example.electronicshop.service.paypalpayment;
 import com.example.electronicshop.communication.request.CheckpayRequest;
 import com.example.electronicshop.communication.response.PaymentDetail;
 import com.example.electronicshop.config.Constant;
-import com.example.electronicshop.models.enity.DeliveryDetail;
+import com.example.electronicshop.models.enity.Delivery;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.notification.AppException;
@@ -12,7 +12,6 @@ import com.example.electronicshop.repository.OrderItemRepository;
 import com.example.electronicshop.repository.OrderRepository;
 import com.example.electronicshop.repository.UserRepository;
 import com.example.electronicshop.security.jwt.JwtUtils;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -60,9 +58,9 @@ private final OrderItemRepository orderItemRepository;
             }
             PaymentDetail paymentDetail = new PaymentDetail(null,paymentType.toUpperCase(),"", new HashMap<>());
             order.get().setPaymentDetail(paymentDetail);
-            DeliveryDetail deliveryDetail = new DeliveryDetail(req.getName(), req.getPhone(),
+            Delivery delivery = new Delivery(req.getName(), req.getPhone(),
                     req.getProvince(), req.getDistrict(), req.getWard(),req.getAddress());
-            order.get().setDeliveryDetail(deliveryDetail);
+            order.get().setDelivery(delivery);
             order.get().setState(Constant.ORDER_STATE_PROCESS);
 //            order.get().getItems().forEach(item -> item.getItem().setPrice(new BigDecimal((item.getItem().getPrice()
 //                    .multiply(BigDecimal.valueOf(item.getItem().getSale()))
