@@ -36,4 +36,8 @@ public class ProductOptionController {
     public ResponseEntity<?> getOptionById(@PathVariable("id") String id) {
         return productOptionService.findOptionById(id);
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteOptionProduct(@PathVariable("id") String id) {
+        return productOptionService.deleteOption(id);
+    }
 }

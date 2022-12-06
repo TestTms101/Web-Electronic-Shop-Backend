@@ -126,4 +126,24 @@ public class ProductOptionService {
 
         } throw new NotFoundException("Can not found product option with id: "+id);
     }
+    @Transactional
+    public ResponseEntity<?> deleteOption(String id) {
+        Optional<ProductOption> productOption = productOptionRepository.findById(id);
+        productOptionRepository.deleteById(productOption.get().getId());
+//        productOptionRepository.deleteByProduct_Id(productOption.get().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("true", "Delete Option successfully ", ""));
+//        if (productOption.isPresent()) {
+//            try {
+//                productRepository.deleteById(productOption.get().getId());
+//                productOptionRepository.deleteByProduct_Id(productOption.get().getId());
+//            } catch (Exception e) {
+//                log.error(e.getMessage());
+//                throw new NotFoundException("Error when delete option with id: "+id);
+//            }
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject("true", "Delete Option successfully ", "")
+//            );
+//        } throw new NotFoundException("Can not found product option with id: "+id);
+    }
 }
