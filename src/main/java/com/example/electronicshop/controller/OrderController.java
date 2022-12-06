@@ -55,4 +55,8 @@ public class OrderController {
     public ResponseEntity<?> setDeliverylOrderAdmin (@PathVariable String orderId){;
         return orderService.setDeliveryOrderByAdmin(orderId);
     }
+    @PutMapping(path = "/admin/manage/orders/setcancel/{orderId}")
+    public ResponseEntity<?> setCancelOrderAdmin (@PathVariable String orderId){;
+        return orderService.setCancelOrderByAdmin(orderId);
+    }
 }

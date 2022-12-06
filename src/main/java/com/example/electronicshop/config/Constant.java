@@ -16,6 +16,7 @@ public class Constant {
     //ORDER STATE
     public static final String ORDER_STATE_ENABLE = "enable";
     public static final String ORDER_STATE_CANCEL = "cancel";
+    public static final String ORDER_STATE_PENDINGPAY = "pendingpay";
     public static final String ORDER_STATE_PROCESS = "process"; // đang tiến hành
     public static final String ORDER_STATE_COMPLETE = "complete";
     public static final String ORDER_STATE_DELIVERY = "delivery";

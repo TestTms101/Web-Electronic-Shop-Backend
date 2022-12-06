@@ -62,10 +62,6 @@ private final OrderItemRepository orderItemRepository;
                     req.getProvince(), req.getDistrict(), req.getWard(),req.getAddress());
             order.get().setDelivery(delivery);
             order.get().setState(Constant.ORDER_STATE_PROCESS);
-//            order.get().getItems().forEach(item -> item.getItem().setPrice(new BigDecimal((item.getItem().getPrice()
-//                    .multiply(BigDecimal.valueOf(item.getItem().getSale()))
-//                    .stripTrailingZeros().toPlainString()))));
-
             orderItemRepository.saveAll(order.get().getItems());
             orderRepository.save(order.get());
         } catch (NotFoundException e) {
