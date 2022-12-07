@@ -83,7 +83,8 @@ public class CommentService {
 
     @Transactional
     public ResponseEntity<?> editCommentByUser(String id, String userid, CommentReq commentReq) {
-        Optional<Comment> comment = commentRepository.findCommentByIdAndState(id,Constant.COMMENT_ENABLE);
+//        Optional<Comment> comment = commentRepository.findCommentByIdAndState(id,Constant.COMMENT_ENABLE);
+        Optional<Comment> comment = commentRepository.findCommentByIdAndUser_IdAndState(new ObjectId(id),new ObjectId(userid),Constant.COMMENT_ENABLE);
         Optional<User> user = userRepository.findUserByIdAndState(userid,Constant.USER_ACTIVE);
         if(user.isPresent()) {
             if (comment.isPresent()) {
@@ -157,11 +158,11 @@ public class CommentService {
     public ResponseEntity<ResponseObject> deleteCommemtbyUser(String id,String userid) {
         Optional<User> user = userRepository.findUserByIdAndState(userid,Constant.USER_ACTIVE);
         if(user.isPresent()) {
-            Optional<Comment> comment = commentRepository.findById(id);
+//            Optional<Comment> comment = commentRepository.findById(id);
+            Optional<Comment> comment = commentRepository.findCommentByIdAndUser_IdAndState(new ObjectId(id),new ObjectId(userid),Constant.COMMENT_ENABLE);
             if (comment.isPresent()) {
                 try {
                     commentRepository.deleteById(comment.get().getId());
-
                 } catch (Exception e) {
                     log.error(e.getMessage());
                     throw new NotFoundException("Error when delete comment with id: " + id);

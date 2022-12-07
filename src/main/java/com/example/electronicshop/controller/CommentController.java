@@ -63,11 +63,18 @@ public class CommentController {
         return commentService.blockComment(CommentId);
     }
 
-    @DeleteMapping("/comment/delete/{CommentId}")
+    @DeleteMapping("/admin/manage/comment/delete/{CommentId}")
     public ResponseEntity<?> deleteComment(@PathVariable("CommentId") String CommentId, HttpServletRequest request) {
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
             return commentService.deleteCommemt(CommentId);
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+    }
+    @DeleteMapping("/comment/deletebyuser/{CommentId}")
+    public ResponseEntity<?> deleteCommentByUser(@PathVariable("CommentId") String CommentId, HttpServletRequest request) {
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (!user.getId().isBlank())
+            return commentService.deleteCommemtbyUser(CommentId, user.getId());
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 }
