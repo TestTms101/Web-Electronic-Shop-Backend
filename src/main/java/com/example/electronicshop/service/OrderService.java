@@ -10,6 +10,7 @@ import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
 import com.example.electronicshop.service.paypalpayment.PaymentUtils;
 import lombok.AllArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -124,5 +125,16 @@ public class OrderService {
                 }
         }
         throw new NotFoundException("Can not found order with id: " + id);
+    }
+    public ResponseEntity<?> findAllOrderByUserId(String userId) {
+        List<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId));
+        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        if(orders.size()>0){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get order success", resp));
+        }
+        throw new NotFoundException("Can not found any order" );
     }
 }

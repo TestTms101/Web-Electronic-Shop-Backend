@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends MongoRepository<Order, String> {
@@ -14,4 +15,5 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Page<Order> findAllByState(String state, Pageable pageable);
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
 //    Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    List<Order> findOrderByUser_Id(ObjectId userId);
 }

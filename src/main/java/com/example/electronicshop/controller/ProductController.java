@@ -6,7 +6,9 @@ import com.example.electronicshop.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +91,24 @@ public class ProductController {
     @DeleteMapping("/destroy/{id}")
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);
+    }
+    @GetMapping(path = "/filtername")
+    public ResponseEntity<?> filterByName (@PageableDefault(size = 10) @SortDefault(sort = "name",
+            direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
+
+        return productService.filterByName(pageable);
+    }
+    @GetMapping(path = "/filternamedesc")
+    public ResponseEntity<?> filterByNameDecs (@PageableDefault(size = 10 ) @SortDefault(sort = "name",
+            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
+
+        return productService.filterByName(pageable);
+    }
+    @GetMapping(path = "/filterprice")
+    public ResponseEntity<?> filterByPrice (@PageableDefault(size = 10) @SortDefault( sort = "price",
+            direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
+
+        return productService.filterByPrice(pageable);
     }
 
 }

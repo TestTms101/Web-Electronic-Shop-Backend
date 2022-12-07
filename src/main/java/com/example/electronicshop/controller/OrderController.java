@@ -59,4 +59,11 @@ public class OrderController {
     public ResponseEntity<?> setCancelOrderAdmin (@PathVariable String orderId){;
         return orderService.setCancelOrderByAdmin(orderId);
     }
+    @GetMapping(path = "/orders/getallorder")
+    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (!user.getId().isBlank())
+            return orderService.findAllOrderByUserId(user.getId());
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+    }
 }

@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Term;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
@@ -318,5 +319,24 @@ public class ProductService {
                     new ResponseObject("true", "Destroy product successfully ", "")
             );
         } throw new NotFoundException("Can not found product with id: "+id);
+    }
+
+    public ResponseEntity<?> filterByName( Pageable pageable)
+    {
+         Page<Product> products = productRepository.findAll(pageable);
+         if(products.getSize()>0)
+             return ResponseEntity.status(HttpStatus.OK).body(
+                     new ResponseObject("true", "Sort product successfully ", products));
+         else
+             throw new NotFoundException("Can not found any product  ");
+    }
+    public ResponseEntity<?> filterByPrice(Pageable pageable)
+    {
+        Page<Product> products = productRepository.findAll(pageable);
+        if(products.getSize()>0)
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Sort product successfully ", products));
+        else
+            throw new NotFoundException("Can not found any product  ");
     }
 }

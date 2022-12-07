@@ -41,13 +41,7 @@ public class CODService extends PaymentFactory{
 
     @Override
     public ResponseEntity<?> executePayment(String paymentId, String payerId, String responseCode, String id, HttpServletRequest request, HttpServletResponse response) {
-        Optional<Order> order = orderRepository.findById(paymentId);
-        if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING)) {
-            order.get().setState(Constant.ORDER_STATE_DELIVERY);
-            orderRepository.save(order.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Confirmed order successfully", ""));
-        } else throw new NotFoundException("Can not found order with id: "+ paymentId);
+       return null;
     }
 
     @Override
