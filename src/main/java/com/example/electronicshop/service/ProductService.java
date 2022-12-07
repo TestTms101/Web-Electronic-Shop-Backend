@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Term;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,12 +91,11 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with category or brand id: "+id);
     }
-
     public ResponseEntity<?> search(String key, Pageable pageable) {
         Page<Product> products;
         try {
             products = productRepository.findAllBy(TextCriteria
-                            .forDefaultLanguage().matching(key),
+                            .forDefaultLanguage().matchingAny(key),
                     pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
@@ -107,7 +105,6 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with: "+key);
     }
-
     public ResponseEntity<?> findbyTags(String key, Pageable pageable){
         Page<Product> products;
         try {
