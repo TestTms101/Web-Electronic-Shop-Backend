@@ -29,8 +29,9 @@ public class OrderItem {
     @DocumentReference
     @Indexed
     private Product item;
-//    @NotBlank
+    @NotBlank
     private String value;
+    private ProductOption option;
     @NotNull
     private long quantity;
     @DocumentReference(lazy = true)
@@ -44,7 +45,6 @@ public class OrderItem {
                 .filter(v -> v.getValue().equals(value)).collect(Collectors.toList()));
         return item;
     }
-
     public BigDecimal getSubPrice() {
         BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
         String discountString = originPrice.multiply(BigDecimal.valueOf((1-item.getSale())))
@@ -52,9 +52,16 @@ public class OrderItem {
         return new BigDecimal(discountString);
     }
 
-    public OrderItem(Product item, String value, long quantity, Order order) {
+    public OrderItem(Product item,ProductOption option, String value, long quantity, Order order) {
         this.item = item;
+        this.option=option;
         this.value = value;
+        this.quantity = quantity;
+        this.order = order;
+    }
+
+    public OrderItem(Product item, long quantity, Order order) {
+        this.item = item;
         this.quantity = quantity;
         this.order = order;
     }
