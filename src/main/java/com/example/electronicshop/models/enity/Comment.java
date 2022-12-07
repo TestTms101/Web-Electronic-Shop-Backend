@@ -34,7 +34,7 @@ public class Comment {
     LocalDateTime createdDate;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @LastModifiedDate
-    LocalDateTime lastModifiedDate;
+    LocalDateTime lastUpdateDate;
 
     public Comment(String content, double rate, Product product, User user, String state) {
         this.content = content;

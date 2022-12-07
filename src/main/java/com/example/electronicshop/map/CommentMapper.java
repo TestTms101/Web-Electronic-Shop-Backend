@@ -12,7 +12,7 @@ public class CommentMapper {
     }
     public CommentRes toAllCommentRes(Comment req){
         return new CommentRes(req.getId(), req.getContent(), req.getRate(),
-                req.getState(), req.getUser().getId(),req.getUser().getName(),req.getProduct().getId(),req.getProduct().getName() ,req.getCreatedDate());
+                req.getState(), req.getUser().getId(),req.getUser().getName(),req.getProduct().getId(),req.getProduct().getName() ,req.getCreatedDate(),req.getLastUpdateDate());
     }
 
 }
