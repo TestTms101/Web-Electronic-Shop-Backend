@@ -14,6 +14,7 @@ import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.CommentReq;
 import com.example.electronicshop.communication.response.CommentRes;
 import com.example.electronicshop.repository.CommentRepository;
+import com.example.electronicshop.repository.OrderRepository;
 import com.example.electronicshop.repository.ProductRepository;
 import com.example.electronicshop.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CommentMapper commentMap;
+    private final OrderRepository orderRepository;
 
 
     public ResponseEntity<?> findByProductId(String productId, Pageable pageable) {
@@ -65,18 +67,22 @@ public class CommentService {
                 new ObjectId(req.getProductId()), new ObjectId(userId));
         if (comment.isPresent()) throw new AppException(HttpStatus.CONFLICT.value(), "You already comment this product");
         Optional<User> user = userRepository.findUserByIdAndState(userId, Constant.USER_ACTIVE);
+        Optional<Order> order = orderRepository.findOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
         if (user.isPresent()) {
-            Optional<Product> product = productRepository.findProductByIdAndState(req.getProductId(), Constant.ENABLE);
-            if (product.isPresent()) {
+            if(order.isPresent()) {
+                Optional<Product> product = productRepository.findProductByIdAndState(req.getProductId(), Constant.ENABLE);
+                if (product.isPresent()) {
 
-                {
-                    Comment newComment = new Comment(req.getContent(), req.getRate(), product.get(), user.get(), Constant.COMMENT_ENABLE, LocalDateTime.now());
-                    commentRepository.save(newComment);
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Add comment success ", newComment));
+                    {
+                        Comment newComment = new Comment(req.getContent(), req.getRate(), product.get(), user.get(), Constant.COMMENT_ENABLE, LocalDateTime.now());
+                        commentRepository.save(newComment);
+                        return ResponseEntity.status(HttpStatus.OK).body(
+                                new ResponseObject("true", "Add comment success ", newComment));
+                    }
+
                 }
-
-            } throw new NotFoundException("Can not found product with id: " + req.getProductId());
+                throw new NotFoundException("Can not found product with id: " + req.getProductId());
+            }throw new NotFoundException("You must buy Product to comment this");
         } throw new NotFoundException("Can not found user with id: " + userId);
     }
 
