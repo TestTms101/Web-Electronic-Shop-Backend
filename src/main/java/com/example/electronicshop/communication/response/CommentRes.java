@@ -14,6 +14,7 @@ public class CommentRes {
     private double rate;
     private String state;
     private String userid;
+    private String userimage;
     private String reviewedBy;
     private String productid;
     private String productname;
