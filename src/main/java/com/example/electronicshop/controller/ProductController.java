@@ -92,23 +92,6 @@ public class ProductController {
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);
     }
-    @GetMapping(path = "/filtername")
-    public ResponseEntity<?> filterByName (@PageableDefault(size = 10) @SortDefault(sort = "name",
-            direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
 
-        return productService.filterByName(pageable);
-    }
-    @GetMapping(path = "/filternamedesc")
-    public ResponseEntity<?> filterByNameDecs (@PageableDefault(size = 10 ) @SortDefault(sort = "name",
-            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
-
-        return productService.filterByName(pageable);
-    }
-    @GetMapping(path = "/filterprice")
-    public ResponseEntity<?> filterByPrice (@PageableDefault(size = 10) @SortDefault( sort = "price",
-            direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
-
-        return productService.filterByPrice(pageable);
-    }
 
 }
