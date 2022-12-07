@@ -67,22 +67,17 @@ public class CommentService {
                 new ObjectId(req.getProductId()), new ObjectId(userId));
         if (comment.isPresent()) throw new AppException(HttpStatus.CONFLICT.value(), "You already comment this product");
         Optional<User> user = userRepository.findUserByIdAndState(userId, Constant.USER_ACTIVE);
-        Optional<Order> order = orderRepository.findOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
         if (user.isPresent()) {
-            if(order.isPresent()) {
                 Optional<Product> product = productRepository.findProductByIdAndState(req.getProductId(), Constant.ENABLE);
                 if (product.isPresent()) {
-
                     {
                         Comment newComment = new Comment(req.getContent(), req.getRate(), product.get(), user.get(), Constant.COMMENT_ENABLE, LocalDateTime.now());
                         commentRepository.save(newComment);
                         return ResponseEntity.status(HttpStatus.OK).body(
                                 new ResponseObject("true", "Add comment success ", newComment));
                     }
-
                 }
                 throw new NotFoundException("Can not found product with id: " + req.getProductId());
-            }throw new NotFoundException("You must buy Product to comment this");
         } throw new NotFoundException("Can not found user with id: " + userId);
     }
 
