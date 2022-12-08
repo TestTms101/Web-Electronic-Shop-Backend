@@ -23,10 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,9 +39,13 @@ public class UserService {
     public ResponseEntity<ResponseObject> findAll(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
         List<UserResponse> userResList = users.stream().map(userMapper::thisUserRespone).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", userResList);
+        resp.put("totalUsers", users.getTotalElements());
+        resp.put("totalPage", users.getTotalPages());
         if (userResList.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all user", userResList));
+                    new ResponseObject("true", "Get all user", resp));
         throw new NotFoundException("Can not found any user");
     }
 
