@@ -126,12 +126,12 @@ public class OrderService {
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
-    public ResponseEntity<?> findAllOrderByUserId(String userId) {
-        List<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId));
+    public ResponseEntity<?> findAllOrderByUserId(String userId,Pageable pageable) {
+        Page<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId),pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
-        if(orders.size()>0){
+        if(resList.size()>0){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Get order success", resp));
         }

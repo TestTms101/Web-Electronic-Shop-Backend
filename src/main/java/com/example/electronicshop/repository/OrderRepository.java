@@ -15,5 +15,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Page<Order> findAllByState(String state, Pageable pageable);
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
 //    Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    List<Order> findOrderByUser_Id(ObjectId userId);
+    Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
+
 }

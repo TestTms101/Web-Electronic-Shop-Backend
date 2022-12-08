@@ -7,7 +7,9 @@ import com.example.electronicshop.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,10 +62,11 @@ public class OrderController {
         return orderService.setCancelOrderByAdmin(orderId);
     }
     @GetMapping(path = "/orders/getallorder")
-    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request){
+    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
+            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
-            return orderService.findAllOrderByUserId(user.getId());
+            return orderService.findAllOrderByUserId(user.getId(),pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 }
