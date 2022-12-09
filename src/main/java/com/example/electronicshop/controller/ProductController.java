@@ -92,6 +92,21 @@ public class ProductController {
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);
     }
-
+//    @GetMapping(path = "/nameDesc")
+//    public ResponseEntity<?> findAllByStateOrderByNameDesc (@ParameterObject Pageable pageable){
+//        return productService.findAllOrderbyNameDesc(pageable);
+//    }
+//    @GetMapping(path = "/nameAsc")
+//    public ResponseEntity<?> findAllByStateOrderByNameAsc (@ParameterObject Pageable pageable){
+//        return productService.findAllOrderbyNameAsc(pageable);
+//    }
+//    @GetMapping(path = "/priceDesc")
+//    public ResponseEntity<?> findAllByStateOrderByPriceDesc (@ParameterObject Pageable pageable){
+//        return productService.findAllOrderbyPriceDesc(pageable);
+//    }
+//    @GetMapping(path = "/priceAsc")
+//    public ResponseEntity<?> findAllByStateOrderByPriceAsc (@ParameterObject Pageable pageable){
+//        return productService.findAllOrderbyPriceAsc(pageable);
+//    }
 
 }

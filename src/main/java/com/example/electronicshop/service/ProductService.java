@@ -63,6 +63,34 @@ public class ProductService {
         return null;
     }
 
+    public ResponseEntity<?> findAllOrderbyNameDesc(Pageable pageable) {
+        Page<Product> products = productRepository.findAllByStateOrderByNameDesc(Constant.ENABLE, pageable);
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product");
+    }
+    public ResponseEntity<?> findAllOrderbyNameAsc(Pageable pageable) {
+        Page<Product> products = productRepository.findAllByStateOrderByNameAsc(Constant.ENABLE, pageable);
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product");
+    }
+    public ResponseEntity<?> findAllOrderbyPriceDesc(Pageable pageable) {
+        Page<Product> products = productRepository.findAllByStateOrderByPriceDesc(Constant.ENABLE, pageable);
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product");
+    }
+    public ResponseEntity<?> findAllOrderbyPriceAsc(Pageable pageable) {
+        Page<Product> products = productRepository.findAllByStateOrderByPriceAsc(Constant.ENABLE, pageable);
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product");
+    }
     public ResponseEntity<?> findById(String id) {
         Optional<Product> product = productRepository.findProductByIdAndState(id, Constant.ENABLE);
         if (product.isPresent()) {
