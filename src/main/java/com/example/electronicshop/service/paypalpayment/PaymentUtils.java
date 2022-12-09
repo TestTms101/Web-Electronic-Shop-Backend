@@ -35,20 +35,20 @@ public class PaymentUtils {
                                         item.getItem().getName());
                     } else item.getItem().setQuantity((int) (item.getItem().getQuantity() - item.getQuantity()));
                 } else item.getItem().setQuantity((int) (item.getItem().getQuantity() + item.getQuantity()));
-            }else item.getItem().getOptions().forEach(i -> {
+            }else {
                 if (isPaid) {
-                    if (i.getStock() < item.getQuantity()) {
+                    if (item.getOption().getStock() < item.getQuantity()) {
                         order.setState(Constant.ORDER_STATE_ENABLE);
                         orderRepository.save(order);
                         throw new AppException(HttpStatus.CONFLICT.value(),
                                 "Quantity exceeds the available stock on hand at Product:" +
                                         item.getItem().getName());
-                    } else i.setStock(i.getStock() - item.getQuantity());
-                } else i.setStock(i.getStock() + item.getQuantity());
-            });
+                    } else {item.getOption().setStock(item.getOption().getStock() - item.getQuantity()); productOptionRepository.save(item.getOption());}
+                } else {item.getOption().setStock(item.getOption().getStock() + item.getQuantity());productOptionRepository.save(item.getOption());}
+            }
             try {
                 productRepository.save(item.getItem());
-//             productOptionRepository.save(item.getItem());
+//                productOptionRepository.save(item.getItem());
             } catch (MongoWriteException e) {
                 throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
             }
