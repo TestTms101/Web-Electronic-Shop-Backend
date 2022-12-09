@@ -93,8 +93,8 @@ public class OrderService {
             order.get().setState(Constant.ORDER_STATE_DELIVERY);
             orderRepository.save(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Confirmed order successfully", order));
-        } else throw new NotFoundException("Can not found order with id: "+ id);
+                    new ResponseObject("true", "Delivery order successfully", order));
+        } else throw new NotFoundException("Can not found or delivery order with id: "+ id);
     }
 
     public ResponseEntity<?> setCompleteOrderByAdmin(String id) {
@@ -106,10 +106,10 @@ public class OrderService {
                 orderRepository.save(order.get());
               {
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Cancel order successfully", order));
+                            new ResponseObject("true", "Complete order successfully", order));
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
-                    "You cannot cancel while the order is still processing!");
+                    "You cannot complete this order");
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
