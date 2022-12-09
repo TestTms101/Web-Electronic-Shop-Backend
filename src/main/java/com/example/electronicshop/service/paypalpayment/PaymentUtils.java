@@ -43,12 +43,13 @@ public class PaymentUtils {
                         throw new AppException(HttpStatus.CONFLICT.value(),
                                 "Quantity exceeds the available stock on hand at Product:" +
                                         item.getItem().getName());
-                    } else {item.getOption().setStock(item.getOption().getStock() - item.getQuantity()); productOptionRepository.save(item.getOption());}
-                } else {item.getOption().setStock(item.getOption().getStock() + item.getQuantity());productOptionRepository.save(item.getOption());}
+                    } else {item.getOption().setStock(item.getOption().getStock() - item.getQuantity());
+                        productOptionRepository.save(item.getOption());}
+                } else {item.getOption().setStock(item.getOption().getStock() + item.getQuantity());
+                    productOptionRepository.save(item.getOption());}
             }
             try {
                 productRepository.save(item.getItem());
-//                productOptionRepository.save(item.getItem());
             } catch (MongoWriteException e) {
                 throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
             }

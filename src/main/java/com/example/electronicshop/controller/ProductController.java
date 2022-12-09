@@ -49,12 +49,12 @@ public class ProductController {
         return productService.findbyTags(query, pageable);
     }
     @GetMapping(path = "/byState")
-    public ResponseEntity<?> findAllByState (@ParameterObject Pageable pageable){
+    public ResponseEntity<?> findAllByState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)@ParameterObject Pageable pageable){
         return productService.findAll(false, pageable);
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<?> findAll (@ParameterObject Pageable pageable){
+    public ResponseEntity<?> findAll (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)@ParameterObject Pageable pageable){
         return productService.findAll(true,pageable);
     }
 
