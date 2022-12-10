@@ -98,7 +98,7 @@ public class CategoryService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Update user success", res));
         }
-        throw new NotFoundException("Can not found user with id " + id );
+        throw new NotFoundException("Can not found category with id " + id );
     }
     public ResponseEntity<ResponseObject>updateCategory (String id, CategoryRequest categoryRequest) {
         Optional<Category> category = categoryRepository.findById(id);
