@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MoneyUtils {
-    public static final String ACCESS_KEY = "6b95dj4Tt0stNy4YKZYFRu2nLqzy2LHE";
+    public static final String ACCESS_KEY = "M015oc2QmgAzRmg0D8uAMlCzDvbnvc05"; //6b95dj4Tt0stNy4YKZYFRu2nLqzy2LHE
     public static final String BASE_URL = "https://api.apilayer.com/currency_data/convert";
 
     public static double exchange(BigDecimal amount) throws IOException {
