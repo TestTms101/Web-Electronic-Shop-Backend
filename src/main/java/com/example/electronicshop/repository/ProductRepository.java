@@ -1,5 +1,6 @@
 package com.example.electronicshop.repository;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.models.product.Product;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -36,5 +37,6 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findAllByStateOrderByPriceAsc(String state, Pageable pageable);
     Page<Product> findAllByStateOrderByNameDesc(String state, Pageable pageable);
     Page<Product> findAllByStateOrderByNameAsc(String state, Pageable pageable);
-
+    @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
+    List<StateCountAggregate> countAllByState();
 }
