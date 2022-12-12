@@ -110,28 +110,6 @@ public class UserService {
 
 
     @Transactional
-    public ResponseEntity<?> addUser(Register req) {
-        if (userRepository.existsByEmail(req.getEmail()))
-            throw new AppException(HttpStatus.CONFLICT.value(), "Email already exists");
-        req.setPassword(passwordEncoder.encode(req.getPassword()));
-        User user = userMapper.toUser(req);
-        if (user != null) {
-            if (req.getRole().toUpperCase(Locale.ROOT).equals(Constant.ROLE_ADMIN) ||
-                    req.getRole().toUpperCase(Locale.ROOT).equals(Constant.ROLE_USER))
-                user.setRole(req.getRole().toUpperCase());
-            else throw new NotFoundException("Can not found role: " + req.getRole());
-            try {
-                userRepository.insert(user);
-            } catch (Exception e) {
-                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
-            }
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("true", "Add user successfully ", "")
-        );
-    }
-
-    @Transactional
     public ResponseEntity<?> updateUser(String id, UserRequest userReq) {
         Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);
         if (user.isPresent()) {

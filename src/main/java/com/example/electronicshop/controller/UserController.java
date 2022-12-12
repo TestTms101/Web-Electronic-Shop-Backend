@@ -31,12 +31,6 @@ public class UserController {
         return userService.findAll(pageable);
     }
 
-    @PostMapping(path = "/admin/manage/users")
-    public ResponseEntity<?> addUser (@RequestBody Register req){
-        return userService.addUser(req);
-    }
-
-
 
     @DeleteMapping(path = "/admin/manage/users/{userId}")
     public ResponseEntity<?> deactivatedUser (@PathVariable("userId") String userId){
