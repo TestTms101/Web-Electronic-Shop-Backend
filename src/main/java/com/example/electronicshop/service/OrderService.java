@@ -83,7 +83,7 @@ public class OrderService {
                             new ResponseObject("true", "Cancel order successfully", ""));
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
-                    "You cannot cancel while the order is still processing!");
+                    "You cannot cancel");
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
