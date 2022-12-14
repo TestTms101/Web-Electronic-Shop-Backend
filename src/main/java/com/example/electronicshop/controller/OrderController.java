@@ -69,4 +69,11 @@ public class OrderController {
             return orderService.findAllOrderByUserId(user.getId(),pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
+    @GetMapping(path = "/orders/getallordercomplete")
+    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request){
+        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+        if (!user.getId().isBlank())
+            return orderService.findAllOrderCompleteByUserId(user.getId());
+        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+    }
 }

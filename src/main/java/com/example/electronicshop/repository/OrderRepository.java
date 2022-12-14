@@ -21,4 +21,5 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
     Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
 }
