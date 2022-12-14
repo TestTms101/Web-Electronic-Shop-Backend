@@ -70,7 +70,7 @@ public class OrderController {
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
     @GetMapping(path = "/orders/getallordercomplete")
-    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request){
+    public ResponseEntity<?> userFindAllOrderComplete (HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
             return orderService.findAllOrderCompleteByUserId(user.getId());
