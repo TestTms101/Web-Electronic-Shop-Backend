@@ -40,7 +40,7 @@ public class OrderService {
         if (state.isBlank()) orders = orderRepository.findAll(pageable);
         else orders = orderRepository.findAllByState(state, pageable);
         if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
-        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes).collect(Collectors.toList());
+        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes2).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalQuantity", orders.getTotalElements());
