@@ -139,4 +139,16 @@ public class OrderService {
         }
         throw new NotFoundException("Can not found any order" );
     }
+    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId)
+    {
+        List<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
+        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        if(resList.size()>0){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Get order success", resp));
+        }
+        throw new NotFoundException("Can not found any order" );
+    }
 }
