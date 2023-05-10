@@ -22,6 +22,4 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<StateCountAggregate> countAllByState();
     Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
     List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
-    Page<Order> countAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-
 }

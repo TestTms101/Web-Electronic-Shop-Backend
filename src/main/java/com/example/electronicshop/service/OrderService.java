@@ -48,6 +48,18 @@ public class OrderService {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("true", "Get orders success", resp));
     }
+    public ResponseEntity<?> findAllNoEnable( Pageable pageable) {
+        Page<Order> orders;
+         orders = orderRepository.findAllByStateNoEnable( pageable);
+        if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
+        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes2).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", orders.getTotalElements());
+        resp.put("totalPage", orders.getTotalPages());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("true", "Get orders success", resp));
+    }
 
     public ResponseEntity<?> findOrderById(String id) {
         Optional<Order> order = orderRepository.findById(id);
