@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,8 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<StateCountAggregate> countAllByState();
     Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
     List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
-//    Page<Order> 1findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    @Query(value=" {state: {'$nin': ['enable']}}")
+    Page<Order> findAllByStateNoEnable( Pageable pageable);
+    Page<Order> countAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
 
 }
