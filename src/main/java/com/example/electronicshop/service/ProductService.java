@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -129,6 +130,8 @@ public class ProductService {
             throw new NotFoundException("Can not found any product with: "+key);
         }
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+//        resList.sort(Comparator.comparing(ProductRes::getPrice));
+        resList.sort(Comparator.comparing(ProductRes::getPrice).reversed());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with: "+key);
