@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -32,6 +33,7 @@ public class VNPayService extends PaymentFactory {
     public ResponseEntity<?> createPayment(HttpServletRequest request, Order order) {
         order.setState(Constant.ORDER_STATE_PROCESS);
         order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
+        order.setCreatedDate(LocalDateTime.now());
         orderRepository.save(order);
         Map<String, Object> vnp_Params = mapVnPayParam(order, request);
 
@@ -80,7 +82,7 @@ public class VNPayService extends PaymentFactory {
             order.get().getPaymentDetail().getPaymentInfo().put("bankCode", request.getParameter("vnp_BankCode"));
             order.get().getPaymentDetail().getPaymentInfo().put("transactionNo", request.getParameter("vnp_TransactionNo"));
             order.get().getPaymentDetail().getPaymentInfo().put("isPaid", true);
-            order.get().setState(Constant.ORDER_STATE_DELIVERY);
+            order.get().setState(Constant.ORDER_STATE_PENDINGPAY);
             orderRepository.save(order.get());
             response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
             return ResponseEntity.status(HttpStatus.OK).body(
