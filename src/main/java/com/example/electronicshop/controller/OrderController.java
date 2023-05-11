@@ -29,6 +29,12 @@ public class OrderController {
         return orderService.findAll(state, pageable);
     }
 
+//    @GetMapping(path = "/admin/manage/orders")
+//    public ResponseEntity<?> findAll (@RequestParam(defaultValue = "") String state,
+//                                      @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC)){
+//        return orderService.findAll(state);
+//    }
+
     @GetMapping(path = "/admin/manage/ordersEnable")
     public ResponseEntity<?> findAllNoEnable (@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
         return orderService.findAllNoEnable( pageable);
@@ -67,12 +73,20 @@ public class OrderController {
     public ResponseEntity<?> setCancelOrderAdmin (@PathVariable String orderId){;
         return orderService.setCancelOrderByAdmin(orderId);
     }
+//    @GetMapping(path = "/orders/getallorder")
+//    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
+//            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
+//        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
+//        if (!user.getId().isBlank())
+//            return orderService.findAllOrderByUserId(user.getId(),pageable);
+//        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
+//    }
     @GetMapping(path = "/orders/getallorder")
     public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
             direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
-            return orderService.findAllOrderByUserId(user.getId(),pageable);
+            return orderService.findAllOrderByUserId(user.getId());
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
     @GetMapping(path = "/orders/getallordercomplete")
