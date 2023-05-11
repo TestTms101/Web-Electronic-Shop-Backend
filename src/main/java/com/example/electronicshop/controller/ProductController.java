@@ -88,6 +88,8 @@ public class ProductController {
         return productService.deactivatedProduct(id);
     }
 
+    @PutMapping("/setstateenable/{id}")
+    public ResponseEntity<?> setStateProduct(@PathVariable("id") String id) {return productService.updateStateProduct(id);}
     @DeleteMapping("/destroy/{id}")
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);

@@ -268,6 +268,18 @@ public class ProductService {
 //            );
 //        }
 //    }
+
+    @Transactional
+    public ResponseEntity<?> updateStateProduct(String id) {
+        Optional<Product> product = productRepository.findProductByIdAndState(id, Constant.DISABLE);
+        if (product.isPresent()) {
+            product.get().setState(Constant.ENABLE);
+            productRepository.save(product.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("true", "Update State product successfully ", "")
+            );
+        } throw new NotFoundException("Can not found product with id: "+id);
+    }
     @Transactional
     public ResponseEntity<?> updateProduct(String id, ProductReq req) {
         Optional<Product> product = productRepository.findById(id);
