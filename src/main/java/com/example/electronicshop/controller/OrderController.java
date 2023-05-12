@@ -25,7 +25,7 @@ public class OrderController {
 
     @GetMapping(path = "/admin/manage/orders")
     public ResponseEntity<?> findAll (@RequestParam(defaultValue = "") String state,
-                                      @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
+                                      @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
         return orderService.findAll(state, pageable);
     }
 
@@ -36,7 +36,7 @@ public class OrderController {
 //    }
 
     @GetMapping(path = "/admin/manage/ordersEnable")
-    public ResponseEntity<?> findAllNoEnable (@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.ASC) @ParameterObject Pageable pageable){
+    public ResponseEntity<?> findAllNoEnable (@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
         return orderService.findAllNoEnable( pageable);
     }
 
@@ -83,7 +83,7 @@ public class OrderController {
 //    }
     @GetMapping(path = "/orders/getallorder")
     public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
-            direction = Sort.Direction.ASC) @ParameterObject Pageable pageable ){
+            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
             return orderService.findAllOrderByUserId(user.getId());
@@ -91,7 +91,7 @@ public class OrderController {
     }
     @GetMapping(path = "/orders/getallordercomplete")
     public ResponseEntity<?> userFindAllOrderComplete (HttpServletRequest request,
-                                                       @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.ASC)
+                                                       @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC)
                                                        @ParameterObject Pageable pageable){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
