@@ -129,6 +129,10 @@ public class CommentService {
     public ResponseEntity<ResponseObject> findAllComment(Pageable pageable){
         Page<Comment> comment = commentRepository.findAll(pageable);
         List<CommentRes> resList = comment.stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalComment", comment.getTotalElements());
+        resp.put("totalPage", comment.getTotalPages());
         if(resList.size()>0)
         {
             return ResponseEntity.status(HttpStatus.OK).body(
