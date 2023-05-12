@@ -82,20 +82,19 @@ public class OrderController {
 //        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
 //    }
     @GetMapping(path = "/orders/getallorder")
-    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
+    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@SortDefault(sort = "createdDate",
             direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
-            return orderService.findAllOrderByUserId(user.getId());
+            return orderService.findAllOrderByUserId(user.getId(),pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
     @GetMapping(path = "/orders/getallordercomplete")
-    public ResponseEntity<?> userFindAllOrderComplete (HttpServletRequest request,
-                                                       @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC)
-                                                       @ParameterObject Pageable pageable){
+    public ResponseEntity<?> userFindAllOrderComplete (HttpServletRequest request,@SortDefault(sort = "createdDate",
+            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
-            return orderService.findAllOrderCompleteByUserId(user.getId());
+            return orderService.findAllOrderCompleteByUserId(user.getId(), pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 }

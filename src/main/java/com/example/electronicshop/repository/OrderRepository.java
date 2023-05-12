@@ -20,12 +20,15 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
 //    Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
 //    Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
-    List<Order> findOrderByUser_Id(ObjectId userId);
+    Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
+
 
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
     Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
+//    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
+    Page<Order> getOrderByUser_IdAndState(ObjectId userId, String state, Pageable pageable);
+
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);

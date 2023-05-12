@@ -164,21 +164,33 @@ public class OrderService {
 //        }
 //        throw new NotFoundException("Can not found any order" );
 //    }
-    public ResponseEntity<?> findAllOrderByUserId(String userId) {
-        List<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId));
+    public ResponseEntity<?> findAllOrderByUserId(String userId, Pageable pageable) {
+        Page<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId), pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
-        resp.put("totalOrder", (long) orders.size());
+        resp.put("totalOrder", orders.getTotalElements());
         if(resList.size()>0){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Get order success", resp));
         }
         throw new NotFoundException("Can not found any order" );
     }
-    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId)
+//    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
+//    {
+//        List<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
+//        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("list", resList);
+//        if(resList.size()>0){
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject("true", "Get order success", resp));
+//        }
+//        throw new NotFoundException("Can not found any order" );
+//    }
+    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
     {
-        List<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
+        Page<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE, pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
