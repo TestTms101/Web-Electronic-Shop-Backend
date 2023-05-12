@@ -1,6 +1,7 @@
 package com.example.electronicshop.repository;
 
 import com.example.electronicshop.models.enity.Comment;
+import com.example.electronicshop.models.enity.Order;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,4 +18,5 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 //    Optional<Comment> findCommentByIdAndState(String Id, String userId);
     Optional<Comment> findCommentByIdAndUser_IdAndState(ObjectId commentId, ObjectId userId,String State);
 
+    Page<Comment> findAll(Pageable pageable);
 }

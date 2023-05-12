@@ -126,8 +126,8 @@ public class CommentService {
             );
         } throw new NotFoundException("Can not found comment with id: "+id);
     }
-    public ResponseEntity<ResponseObject> findAllComment(){
-        List<Comment> comment = commentRepository.findAll();
+    public ResponseEntity<ResponseObject> findAllComment(Pageable pageable){
+        Page<Comment> comment = commentRepository.findAll(pageable);
         List<CommentRes> resList = comment.stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
         if(resList.size()>0)
         {

@@ -99,5 +99,11 @@ public class UserController {
             return userService.updateUserAvatar(userId, file);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
-
+   /* @GetMapping(path = "/users/search")
+    public ResponseEntity<?> search (@RequestParam("q") String query,
+                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
+        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+        return userService.search(query, pageable);
+    }*/
 }
