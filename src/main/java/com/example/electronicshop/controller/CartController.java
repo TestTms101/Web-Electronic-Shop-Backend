@@ -37,7 +37,7 @@ public class CartController {
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
-    @DeleteMapping(path = "/{orderItemId}")
+    @DeleteMapping(path = "/delete/{orderItemId}")
     public ResponseEntity<?> deleteProductInCart (@PathVariable("orderItemId") String orderItemId,
                                                   HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
