@@ -48,14 +48,21 @@ public class ProductController {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.findbyTags(query, pageable);
     }
-    @GetMapping(path = "/byState")
-    public ResponseEntity<?> findAllByState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)@ParameterObject Pageable pageable){
-        return productService.findAll(false, pageable);
+    @GetMapping(path = "/byStateEnable")
+    public ResponseEntity<?> findAllByState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
+                                                 @ParameterObject Pageable pageable){
+        return productService.findAll("enable", pageable);
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<?> findAll (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)@ParameterObject Pageable pageable){
-        return productService.findAll(true,pageable);
+    public ResponseEntity<?> findAllState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
+                                               @ParameterObject Pageable pageable){
+        return productService.findAll("all",pageable);
+    }
+    @GetMapping(path = "/byStateDisable")
+    public ResponseEntity<?> findAll (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
+                                          @ParameterObject Pageable pageable){
+        return productService.findAll("disable",pageable);
     }
 
     @PostMapping("/add")

@@ -42,11 +42,12 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CloudinaryConfig cloudinary;
 
-    public ResponseEntity<?> findAll(boolean isAdmin, Pageable pageable) {
+    public ResponseEntity<?> findAll(String state, Pageable pageable) {
         Page<Product> products;
-        if (isAdmin)
+        if (state=="all")
             products = productRepository.findAll(pageable);
-        else products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.ENABLE, pageable);
+        else if(state=="enable") products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.ENABLE, pageable);
+        else products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.DISABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
