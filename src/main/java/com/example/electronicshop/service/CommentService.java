@@ -136,7 +136,7 @@ public class CommentService {
         if(resList.size()>0)
         {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "find all comment successfully ", resList));
+                    new ResponseObject("true", "find all comment successfully ", resp));
         }
         else
             return ResponseEntity.status(HttpStatus.OK).body(
