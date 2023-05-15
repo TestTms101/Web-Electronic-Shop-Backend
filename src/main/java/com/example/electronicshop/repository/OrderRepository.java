@@ -25,11 +25,13 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
+    Page<Order> findAllByLastModifiedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
     Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-//    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
+
+    //    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
     Page<Order> getOrderByUser_IdAndState(ObjectId userId, String state, Pageable pageable);
 
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
-    Page<Order> countAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    Page<Order> countAllByLastModifiedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
 }
