@@ -15,6 +15,7 @@ public class CartItemRes {
     private String itemId;
     private String productid;
     private String productOptionid;
+    private String categoryId;
     private String name;
     private double sale;
     private long quantity;

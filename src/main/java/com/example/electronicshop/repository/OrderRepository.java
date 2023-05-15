@@ -32,5 +32,4 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-
 }

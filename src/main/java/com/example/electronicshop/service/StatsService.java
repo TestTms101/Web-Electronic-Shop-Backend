@@ -77,19 +77,16 @@ public class StatsService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-        Page<Order> orderList = orderRepository.countAllByCreatedDateBetweenAndState(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
-//        Page<Order> orderList = orderRepository.findAllByCreatedDateBetweenAndState(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
+//        Page<Order> orderList = orderRepository.countAllByCreatedDateBetweenAndState(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
+        Page<Order> orderList = orderRepository.findAllByCreatedDateBetweenAndState(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
         switch (type) {
-            case "all":
-                orderList = orderRepository.findAllByState(Constant.ORDER_STATE_COMPLETE, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("lastModifiedDate").ascending()));
+            case "all" -> {
+                orderList = orderRepository.findAllByState(Constant.ORDER_STATE_COMPLETE,
+                        PageRequest.of(0, Integer.MAX_VALUE, Sort.by("lastModifiedDate").ascending()));
                 pattern = "";
-                break;
-            case "month":
-                pattern = "MM-yyyy";
-                break;
-            case "year":
-                pattern = "yyyy";
-                break;
+            }
+            case "month" -> pattern = "MM-yyyy";
+            case "year" -> pattern = "yyyy";
         }
         List<OrdersSaleRes> ordersSaleResList = getSaleAmount(orderList, pattern);
         return ordersSaleResList.size() > 0 ? ResponseEntity.status(HttpStatus.OK).body(
@@ -104,12 +101,9 @@ public class StatsService {
         DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
         if (orderList.getSize() > 0) {
             OrdersSaleRes ordersSaleRes = new OrdersSaleRes();
-            ordersSaleRes.setAmount(BigDecimal.valueOf(0));
             int quantity = 1;
             for (int i = 0; i <= orderList.getSize() - 1; i++) {
                 String dateFormat = df.format(orderList.getContent().get(i).getLastModifiedDate());
-//                if (i > 0) ordersSaleResList.add(ordersSaleRes);
-//                if (dateFormat.isBlank()) dateFormat = "all";
                 if (i == 0 || !ordersSaleRes.getDate().equals(dateFormat)) {
                     if (i > 0) ordersSaleResList.add(ordersSaleRes);
                     if (dateFormat.isBlank()) dateFormat = "all";
