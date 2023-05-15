@@ -77,7 +77,7 @@ public class StatsService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-        Page<Order> orderList = orderRepository.countAllByLastModifiedDateBetweenAndState(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
+        Page<Order> orderList = orderRepository.countAllByLastModifiedDateBetweenAndStateOrderByLastModifiedDateAsc(fromDate, toDate, Constant.ORDER_STATE_COMPLETE, Pageable.unpaged());
         switch (type) {
             case "all" -> {
                 orderList = orderRepository.findAllByState(Constant.ORDER_STATE_COMPLETE, PageRequest.of(0, Integer.MAX_VALUE, Sort.by("lastModifiedDate").ascending()));
