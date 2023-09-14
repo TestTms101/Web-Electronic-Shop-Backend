@@ -53,7 +53,7 @@ public class CartService {
             Optional<Order> order = orderRepository.findOrderByUser_IdAndState(new ObjectId(userId), Constant.ORDER_STATE_ENABLE);
             if (order.isPresent()) {
                 Optional<OrderItem> item = order.get().getItems().stream().filter(
-                        p -> p.getItem().getId().equals(req.getProducId())).findFirst();
+                        p -> p.getItem().getId().equals(req.getProductId())).findFirst();
 //                                && p.getValue().equals(req.getValue())).findFirst();
                 if (item.isPresent())
                     return processUpdateProductInCart(item.get(), req);
@@ -67,7 +67,7 @@ public class CartService {
     ResponseEntity<?> processAddProductToOrder(User user, CartReq req) {
         if (req.getQuantity() <= 0) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid quantity");
 //        Optional<ProductOption> productOption = productOptionRepository.findByIdAndValue(req.getProductOptionId(),req.getValue());
-        Optional<Product> product = productRepository.findById(req.getProducId());
+        Optional<Product> product = productRepository.findById(req.getProductId());
         OrderItem item;
         if (product.isPresent()) {
             checkProductQuantity(product.get(), req);
@@ -87,7 +87,7 @@ public class CartService {
     private ResponseEntity<?> processAddProductToExistOrder(Order order, CartReq req) {
         if (req.getQuantity() <= 0) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid quantity");
 //        Optional<ProductOption> productOption = productOptionRepository.findByIdAndValue(req.getProductOptionId(),req.getValue());
-        Optional<Product> product = productRepository.findById(req.getProducId());
+        Optional<Product> product = productRepository.findById(req.getProductId());
         OrderItem item;
         if (product.isPresent()) {
             checkProductQuantity(product.get(), req);
@@ -123,13 +123,13 @@ public class CartService {
             if(orderItem.getItem().getQuantity() >= quantity && quantity > 0){
                 orderItem.setQuantity(quantity);
                 orderItemRepository.save(orderItem);
-            } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProducId());
+            } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductId());
         }else {
             if (orderItem.getOption().getStock() >= quantity && quantity > 0) {
                 orderItem.setQuantity(quantity);
                 orderItemRepository.save(orderItem);
             } else throw new AppException(HttpStatus.CONFLICT.value(),
-                    "Quantity invalid or exceeds stock on product: "+req.getProducId()
+                    "Quantity invalid or exceeds stock on product: "+req.getProductId()
                     +" with option: "+req.getProductOptionId());
         }
 //        orderItem.getItem().getOptions().forEach(v -> {

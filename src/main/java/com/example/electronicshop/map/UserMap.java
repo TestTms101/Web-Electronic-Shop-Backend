@@ -1,6 +1,7 @@
 package com.example.electronicshop.map;
 
 import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.RegisterSocial;
 import com.example.electronicshop.communication.response.LoginResponese;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.Constant;
@@ -44,6 +45,12 @@ public class UserMap {
         if (req != null) {
             return new User(req.getName(), req.getEmail(), req.getPassword(), req.getPhone(),
                     Constant.ROLE_USER, Constant.USER_ACTIVE, ESocial.LOCAL);
+        }
+        return null;
+    }
+    public User toSocial(RegisterSocial req) {
+        if (req != null) {
+            return new User(req.getName(), req.getEmail(), Constant.ROLE_USER, req.getAvatar(),Constant.USER_ACTIVE, ESocial.GOOGLE);
         }
         return null;
     }

@@ -53,6 +53,15 @@ public class User {
         this.social = social;
     }
 
+    public User(String name, String email, String role, String avatar, String state, ESocial social) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.avatar = avatar;
+        this.state = state;
+        this.social = social;
+    }
+
     public User(String name, String email, String password, String phone, String role, String avatar, String state, ESocial social) {
         this.name = name;
         this.email = email;

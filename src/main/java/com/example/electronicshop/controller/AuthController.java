@@ -4,6 +4,7 @@ package com.example.electronicshop.controller;
 import com.example.electronicshop.communication.request.GetOTPRequest;
 import com.example.electronicshop.communication.request.LoginRequest;
 import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.RegisterSocial;
 import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.service.AuthService;
@@ -28,6 +29,11 @@ public class AuthController {
     public ResponseEntity<ResponseObject> register( @RequestBody Register registerReq) {
         return authService.register(registerReq);
     }
+    @PostMapping("/register/social")
+    public ResponseEntity<ResponseObject> registerSocial(@RequestBody RegisterSocial registerReq) {
+        return authService.registerSocial(registerReq);
+    }
+
     @PostMapping("/registersendmail")
     public ResponseEntity<?> registerWithMail( @RequestBody Register registerReq) {
         return authService.registerwithmail(registerReq);

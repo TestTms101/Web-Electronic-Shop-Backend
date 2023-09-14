@@ -3,6 +3,7 @@ package com.example.electronicshop.service;
 import com.example.electronicshop.communication.request.GetOTPRequest;
 import com.example.electronicshop.communication.request.LoginRequest;
 import com.example.electronicshop.communication.request.Register;
+import com.example.electronicshop.communication.request.RegisterSocial;
 import com.example.electronicshop.communication.response.LoginResponese;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.UserMap;
@@ -93,7 +94,26 @@ public class AuthService {
         );
     }
 
+    public ResponseEntity<ResponseObject> registerSocial(RegisterSocial req) {
+        if (userRepository.existsByEmail(req.getEmail()))
+            throw new AppException(HttpStatus.CONFLICT.value(), "Email already exists");
+        User user = userMapper.toSocial(req);
+        if (user != null) {
+            try {
+                userRepository.save(user);
+            } catch (Exception e) {
+                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+            }
+        }
+        Optional<User> user1 = userRepository.findUsersByEmail(user.getEmail());
+        String accesstoken = jwtUtils.generateTokenFromUserId(user1.get());
+        LoginResponese res = userMapper.toLoginRes(user1.get());
+        res.setAccessToken(accesstoken);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ResponseObject("true", "Successfully ", res)
+        );
 
+    }
     public ResponseEntity<?> sendMailGetOTP(String email) {
         Optional<User> user = userRepository.findUsersByEmail(email);
         if (user.isPresent()) {
