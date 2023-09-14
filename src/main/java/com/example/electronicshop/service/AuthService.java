@@ -95,16 +95,20 @@ public class AuthService {
     }
 
     public ResponseEntity<ResponseObject> registerSocial(RegisterSocial req) {
-        if (userRepository.existsByEmail(req.getEmail()))
-            throw new AppException(HttpStatus.CONFLICT.value(), "Email already exists");
+//        if (userRepository.existsByEmail(req.getEmail()))
+//            throw new AppException(HttpStatus.CONFLICT.value(), "Email already exists");
         User user = userMapper.toSocial(req);
-        if (user != null) {
-            try {
-                userRepository.save(user);
-            } catch (Exception e) {
-                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+        if (!userRepository.existsByEmail(req.getEmail()))
+        {
+            if (user != null) {
+                try {
+                    userRepository.save(user);
+                } catch (Exception e) {
+                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+                }
             }
         }
+
         Optional<User> user1 = userRepository.findUsersByEmail(user.getEmail());
         String accesstoken = jwtUtils.generateTokenFromUserId(user1.get());
         LoginResponese res = userMapper.toLoginRes(user1.get());
