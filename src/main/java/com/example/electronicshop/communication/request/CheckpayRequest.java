@@ -14,4 +14,7 @@ public class CheckpayRequest {
     private String district;
     private String ward;
     private String address;
+    private Long shippingFee;
+    private Integer serviceType;
+    private Long expectedDeliveryTime = 0L;
 }

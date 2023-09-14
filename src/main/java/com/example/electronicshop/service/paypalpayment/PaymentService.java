@@ -62,6 +62,10 @@ private final OrderItemRepository orderItemRepository;
             Delivery delivery = new Delivery(req.getName(), req.getPhone(),
                     req.getProvince(), req.getDistrict(), req.getWard(),req.getAddress());
             order.get().setDelivery(delivery);
+            order.get().getDelivery().getDeliveryInfo().put("fee", req.getShippingFee());
+            order.get().getDelivery().getDeliveryInfo().put("serviceType", req.getServiceType());
+            order.get().getDelivery().getDeliveryInfo().put("expectedDeliveryTime", req.getExpectedDeliveryTime());
+            order.get().getDelivery().getDeliveryInfo().put("fullAddress", req.getAddress());
             order.get().setState(Constant.ORDER_STATE_PROCESS);
             orderItemRepository.saveAll(order.get().getItems());
             orderRepository.save(order.get());

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -131,7 +132,8 @@ public class PaypalService extends  PaymentFactory{
     public Payment createPayPalPayment(Order order, String currency, PaypalMethod method,
                                        PaypalIntent intent, String description, String cancelUrl,
                                        String successUrl) throws PayPalRESTException, IOException {
-        double total = MoneyUtils.exchange(order.getTotalPrice());
+//        double total = MoneyUtils.exchange(order.getTotalPrice());
+        double total = MoneyUtils.exchange(order.getTotalPrice().add(new BigDecimal(order.getDelivery().getDeliveryInfo().get("fee").toString())));
         Amount amount = new Amount(currency, String.format("%.2f", total));
 
         Transaction transaction = new Transaction();

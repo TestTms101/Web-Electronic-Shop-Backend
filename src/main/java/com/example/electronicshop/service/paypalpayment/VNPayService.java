@@ -109,8 +109,9 @@ public class VNPayService extends PaymentFactory {
     public Map<String, Object> mapVnPayParam(Order order, HttpServletRequest request) {
         String vnp_IpAddr = VNPayUtils.getIpAddress(request);
         String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
-        String total = String.valueOf(order.getTotalPrice().multiply(BigDecimal.valueOf(100)));
-
+//        String total = String.valueOf(order.getTotalPrice().multiply(BigDecimal.valueOf(100)));
+        String total = String.valueOf((order.getTotalPrice().add(new BigDecimal(order.getDelivery().getDeliveryInfo().get("fee").toString())))
+                .multiply(BigDecimal.valueOf(100)));
         Map<String, Object> vnp_Params = new HashMap<>();
         vnp_Params.put(VNPayUtils.vnp_Version_k, VNPayUtils.vnp_Version);
         vnp_Params.put(VNPayUtils.vnp_Command_k, VNPayUtils.vnp_Command);
