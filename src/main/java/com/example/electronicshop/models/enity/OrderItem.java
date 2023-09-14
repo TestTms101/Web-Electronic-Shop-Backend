@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.stream.Collectors;
 
 @Document(collection = "order_items")
@@ -47,8 +48,8 @@ public class OrderItem {
     }
     public BigDecimal getSubPrice() {
         BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
-        String discountString = originPrice.multiply(BigDecimal.valueOf((1-item.getSale())))
-                .stripTrailingZeros().toPlainString();
+        String discountString = originPrice.multiply(BigDecimal.valueOf((1-0.08))).divide(BigDecimal.valueOf(1000))
+                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         return new BigDecimal(discountString);
     }
 
