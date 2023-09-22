@@ -34,9 +34,9 @@ public class Category {
         return subCategories;
     }
 
-    public Category(String name, String categoryimage, String state) {
-        this.name = name;
-        this.categoryimage = categoryimage;
-        this.state = state;
-    }
+//    public Category(String name, String categoryimage, String state) {
+//        this.name = name;
+//        this.categoryimage = categoryimage;
+//        this.state = state;
+//    }
 }

@@ -24,8 +24,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-    private final CloudinaryConfig cloudinary;
-    private final CategoryMap categoryMap;
+//    private final CloudinaryConfig cloudinary;
+//    private final CategoryMap categoryMap;
 
     public ResponseEntity<ResponseObject> findAll() {
         List<Category> list = categoryRepository.findAll();
@@ -82,24 +82,24 @@ public class CategoryService {
         }
     }
 
-    public ResponseEntity<?> updateCateogryImage(String id, MultipartFile file) {
-        Optional<Category> category= categoryRepository.findById(id);
-        if (category.isPresent()) {
-            if (file != null && !file.isEmpty()) {
-                try {
-                    String imgUrl = cloudinary.uploadImage(file, category.get().getCategoryimage());
-                    category.get().setCategoryimage(imgUrl);
-                    categoryRepository.save(category.get());
-                } catch (IOException e) {
-                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload image");
-                }
-            }
-            CategoryResponse res = categoryMap.thisCategoryRespone(category.get());
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update user success", res));
-        }
-        throw new NotFoundException("Can not found category with id " + id );
-    }
+//    public ResponseEntity<?> updateCateogryImage(String id, MultipartFile file) {
+//        Optional<Category> category= categoryRepository.findById(id);
+//        if (category.isPresent()) {
+//            if (file != null && !file.isEmpty()) {
+//                try {
+//                    String imgUrl = cloudinary.uploadImage(file, category.get().getCategoryimage());
+//                    category.get().setCategoryimage(imgUrl);
+//                    categoryRepository.save(category.get());
+//                } catch (IOException e) {
+//                    throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Error when upload image");
+//                }
+//            }
+//            CategoryResponse res = categoryMap.thisCategoryRespone(category.get());
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject("true", "Update user success", res));
+//        }
+//        throw new NotFoundException("Can not found category with id " + id );
+//    }
     public ResponseEntity<ResponseObject>updateCategory (String id, CategoryRequest categoryRequest) {
         Optional<Category> category = categoryRepository.findById(id);
         if (category.isPresent()) {
