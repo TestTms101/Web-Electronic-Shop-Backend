@@ -95,12 +95,12 @@ public class  Product {
         this.state = state;
         this.createdDate = createdDate;
     }
-    public BigDecimal subdiscount() {
-//        BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
-        String discountString = price.multiply(BigDecimal.valueOf((1-getSale()))).divide(BigDecimal.valueOf(1000))
-                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
-        return new BigDecimal(discountString);
-    }
+//    public BigDecimal subdiscount() {
+////        BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
+//        String discountString = price.multiply(BigDecimal.valueOf((1-getSale()))).divide(BigDecimal.valueOf(1000))
+//                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
+//        return new BigDecimal(discountString);
+//    }
     @Transient
     public int getRateCount() {
         try {

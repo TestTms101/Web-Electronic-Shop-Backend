@@ -27,11 +27,11 @@ public class ProductMapper {
 
     public Product toProduct(ProductReq req) {
         Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);
-        String discountString = req.getPrice().multiply(BigDecimal.valueOf((1- req.getSale()))).divide(BigDecimal.valueOf(1000))
-                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
+//        String discountString = req.getPrice().multiply(BigDecimal.valueOf((1- req.getSale()))).divide(BigDecimal.valueOf(1000))
+//                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
-        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),(new BigDecimal(discountString)) ,req.getSummary(),
+        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.subdiscount() ,req.getSummary(),
                 req.getTags(),req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
     }
 

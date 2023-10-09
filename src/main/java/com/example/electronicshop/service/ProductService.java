@@ -319,7 +319,7 @@ public class ProductService {
         if (!req.getSummary().equals(product.getSummary()))
             product.setSummary(req.getSummary());
         product.setSale(req.getSale());
-        product.setDiscount(product.subdiscount());
+        product.setDiscount(req.subdiscount());
         product.setQuantity(req.getQuantity());
         if (!req.getCategory().equals(product.getCategory().getId())) {
             Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,4 +37,10 @@ public class ProductReq {
     @CreatedDate
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
+    public BigDecimal subdiscount() {
+//        BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
+        String discountString = price.multiply(BigDecimal.valueOf((1-getSale()))).divide(BigDecimal.valueOf(1000))
+                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
+        return new BigDecimal(discountString);
+    }
 }
