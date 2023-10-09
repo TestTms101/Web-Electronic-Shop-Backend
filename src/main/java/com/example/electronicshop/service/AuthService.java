@@ -202,8 +202,8 @@ public class AuthService {
     private ResponseEntity<?> verifyReset(String email, String otp) {
         Optional<User> user = userRepository.findUserByEmailAndState(email, Constant.USER_ACTIVE);
         if (user.isPresent()) {
-            if (!user.get().getSocial().equals(ESocial.LOCAL)) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Your account is " +
-                    user.get().getSocial() + " account");
+            if (!user.get().getFlag().equals(ESocial.LOCAL)) throw new AppException(HttpStatus.BAD_REQUEST.value(), "Your account is " +
+                    user.get().getFlag() + " account");
             Map<String, Object> res = new HashMap<>();
             if (LocalDateTime.now().isBefore(user.get().getToken().getStore())) {
                 if (user.get().getToken().getOtp().equals(otp)) {

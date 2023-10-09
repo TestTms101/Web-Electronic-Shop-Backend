@@ -41,28 +41,28 @@ public class User {
     private Token token;
 
 
-    private ESocial social;
+    private ESocial flag;
 
-    public User(String name, String email, String password, String phone/*, String address*/, String role, String state, ESocial social) {
+    public User(String name, String email, String password, String phone/*, String address*/, String role, String state, ESocial flag) {
         this.name = name;
         this.email = email;
         this.password = password;
       this.phone = phone;
         this.role = role;
         this.state = state;
-        this.social = social;
+        this.flag = flag;
     }
 
-    public User(String name, String email, String role, String avatar, String state, ESocial social) {
+    public User(String name, String email, String role, String avatar, String state, ESocial flag) {
         this.name = name;
         this.email = email;
         this.role = role;
         this.avatar = avatar;
         this.state = state;
-        this.social = social;
+        this.flag = flag;
     }
 
-    public User(String name, String email, String password, String phone, String role, String avatar, String state, ESocial social) {
+    public User(String name, String email, String password, String phone, String role, String avatar, String state, ESocial flag) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -70,6 +70,6 @@ public class User {
         this.role = role;
         this.avatar = avatar;
         this.state = state;
-        this.social = social;
+        this.flag = flag;
     }
 }
