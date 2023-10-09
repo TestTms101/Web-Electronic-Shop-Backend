@@ -26,6 +26,8 @@ public class ProductRes {
     private BigDecimal price;
     private int quantity;
     private double sale;
+    private double sold;
+    private BigDecimal discount;
     private double rate;
     private String summary;
     private List<ProductOption> options;

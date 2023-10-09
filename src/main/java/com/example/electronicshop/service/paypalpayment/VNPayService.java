@@ -65,7 +65,8 @@ public class VNPayService extends PaymentFactory {
         queryUrl += VNPayUtils.vnp_SecureHash + vnp_SecureHash;
         String paymentUrl = VNPayUtils.vnp_PayUrl + "?" + queryUrl;
         String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
-       if (checkUpdateQuantityProduct == null)
+        String checkUpdateSold =paymentUtils.setSoldProduct(order,true);
+        if (checkUpdateQuantityProduct == null && checkUpdateSold==null)
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("true", "Payment Complete", paymentUrl));
        else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds the available stock!");
@@ -92,7 +93,8 @@ public class VNPayService extends PaymentFactory {
             order.get().setState(Constant.ORDER_STATE_CANCEL);
             orderRepository.save(order.get());
            String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
-           if (responseCode.equals(VNPayUtils.responseCancelCode) && checkUpdateQuantityProduct == null) {
+            String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
+            if (responseCode.equals(VNPayUtils.responseCancelCode) && checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=true");
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", "Payment cancel complete", ""));

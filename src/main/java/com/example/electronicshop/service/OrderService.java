@@ -101,9 +101,10 @@ public class OrderService {
                     order.get().getState().equals(Constant.ORDER_STATE_ENABLE) ||
                     order.get().getState().equals(Constant.ORDER_STATE_PROCESS)) {
                 String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
+                String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
                 order.get().setState(Constant.ORDER_STATE_CANCEL);
                 orderRepository.save(order.get());
-                if (checkUpdateQuantityProduct == null) {
+                if (checkUpdateQuantityProduct == null&& checkUpdateSold==null) {
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject("true", "Cancel order successfully", ""));
                 }

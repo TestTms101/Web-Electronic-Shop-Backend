@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class  Product {
 //    @NotNull(message = "Quantity is required")
     private int quantity;
     private double sale;
+    private double sold;
+    private BigDecimal discount;
     private double rate = 0;
     @NotBlank(message = "summary is required")
     private String summary;
@@ -76,6 +79,27 @@ public class  Product {
         this.category = category;
         this.state = state;
         this.createdDate = createdDate;
+    }
+
+    public Product(String name, String slugify, BigDecimal price, int quantity, double sale, BigDecimal discount, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
+        this.name = name;
+        this.slugify = slugify;
+        this.price = price;
+        this.quantity = quantity;
+        this.sale = sale;
+        this.discount = discount;
+        this.summary = summary;
+        this.tags = tags;
+        this.description = description;
+        this.category = category;
+        this.state = state;
+        this.createdDate = createdDate;
+    }
+    public BigDecimal subdiscount() {
+//        BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
+        String discountString = price.multiply(BigDecimal.valueOf((1-getSale()))).divide(BigDecimal.valueOf(1000))
+                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
+        return new BigDecimal(discountString);
     }
     @Transient
     public int getRateCount() {

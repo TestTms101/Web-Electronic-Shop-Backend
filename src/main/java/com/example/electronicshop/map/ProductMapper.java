@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +27,11 @@ public class ProductMapper {
 
     public Product toProduct(ProductReq req) {
         Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);
+        String discountString = req.getPrice().multiply(BigDecimal.valueOf((1- req.getSale()))).divide(BigDecimal.valueOf(1000))
+                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
-        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.getSummary(),
+        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),(new BigDecimal(discountString)) ,req.getSummary(),
                 req.getTags(),req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
     }
 
@@ -51,7 +55,7 @@ public class ProductMapper {
 //        BigDecimal discountPrice = new BigDecimal(discountString);
         List<ProductOption> option = productOptionRepository.findAllByProduct_Id(new ObjectId(req.getId()));
         return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(),
-                req.getQuantity(), req.getSale(), req.getRate(), req.getSummary(), option,
+                req.getQuantity(), req.getSale(), req.getSold(), req.getDiscount(),req.getRate(), req.getSummary(), option,
                 req.getTags(),req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
                 req.getState(),req.getCreatedDate());
 

@@ -56,7 +56,8 @@ public class PaypalService extends  PaymentFactory{
             for (Links links : payment.getLinks()) {
                 if (links.getRel().equals("approval_url")) {
                     String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
-                  if (checkUpdateQuantityProduct == null) {
+                    String checkUpdateSold =paymentUtils.setSoldProduct(order,true);
+                    if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                         Map<String, Object> params = new HashMap<>();
                         if (!payment.getTransactions().isEmpty())
                             params.put("amount", payment.getTransactions().get(0).getAmount());
@@ -116,7 +117,8 @@ public class PaypalService extends  PaymentFactory{
             order.get().setState(Constant.ORDER_STATE_CANCEL);
             orderRepository.save(order.get());
             String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
-            if (checkUpdateQuantityProduct == null) {
+            String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
+            if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=true");
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", "Cancel payment with Paypal complete", "")

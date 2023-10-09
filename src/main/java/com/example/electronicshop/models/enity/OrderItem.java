@@ -48,7 +48,7 @@ public class OrderItem {
     }
     public BigDecimal getSubPrice() {
         BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
-        String discountString = originPrice.multiply(BigDecimal.valueOf((1-0.08))).divide(BigDecimal.valueOf(1000))
+        String discountString = originPrice.multiply(BigDecimal.valueOf((1-item.getSale()))).divide(BigDecimal.valueOf(1000))
                 .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         return new BigDecimal(discountString);
     }

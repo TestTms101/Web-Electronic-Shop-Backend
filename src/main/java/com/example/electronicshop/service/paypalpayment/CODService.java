@@ -28,7 +28,8 @@ public class CODService extends PaymentFactory{
     public ResponseEntity<?> createPayment(HttpServletRequest request, Order order) {
         if (order != null && order.getState().equals(Constant.ORDER_STATE_PROCESS)) {
             String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
-            if (checkUpdateQuantityProduct == null) {
+            String checkUpdateSold =paymentUtils.setSoldProduct(order,true);
+            if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 order.setState(Constant.ORDER_STATE_PENDING);
                 order.setCreatedDate(LocalDateTime.now());
                 order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
@@ -52,7 +53,8 @@ public class CODService extends PaymentFactory{
             order.get().setState(Constant.ORDER_STATE_CANCEL);
             orderRepository.save(order.get());
            String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
-            if (checkUpdateQuantityProduct == null) {
+            String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
+            if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject("true", "Cancel order successfully", ""));
             }
