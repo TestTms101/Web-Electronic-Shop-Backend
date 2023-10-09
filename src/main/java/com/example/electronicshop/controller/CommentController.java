@@ -27,7 +27,7 @@ public class CommentController {
 
     @GetMapping(path = "/comment/{productId}")
     public ResponseEntity<?> findByProductId(@PathVariable("productId") String productId,
-                                             @PageableDefault(size = 5, sort = "createdDate, DESC") @ParameterObject Pageable pageable) {
+                                             @SortDefault(sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         return commentService.findByProductId(productId, pageable);
     }
 
@@ -37,7 +37,18 @@ public class CommentController {
         return commentService.findAllComment(pageable);
     }
 
-
+    @GetMapping(path = "/comment/datedesc/{productId}")
+    public ResponseEntity<?> findByProductIdOrderByDateDESC (@PathVariable("productId") String productId,
+                                            @SortDefault(sort = "createdDate", direction = Sort.Direction.DESC)
+                                            @ParameterObject Pageable pageable){
+        return commentService.findByProductId(productId,pageable);
+    }
+    @GetMapping(path = "/comment/dateasc/{productId}")
+    public ResponseEntity<?> findByProductIdOrderByDateASC (@PathVariable("productId") String productId,
+                                            @SortDefault(sort = "createdDate", direction = Sort.Direction.ASC)
+                                            @ParameterObject Pageable pageable){
+        return commentService.findByProductId(productId,pageable);
+    }
     @PostMapping(path = "/comment")
     public ResponseEntity<?> addComment(@Valid @RequestBody CommentReq req,
                                         HttpServletRequest request) {
