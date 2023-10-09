@@ -29,7 +29,7 @@ public class AuthController {
     public ResponseEntity<ResponseObject> register( @RequestBody Register registerReq) {
         return authService.register(registerReq);
     }
-    @PostMapping("/register/social")
+    @PostMapping("/scocial")
     public ResponseEntity<ResponseObject> registerSocial(@RequestBody RegisterSocial registerReq) {
         return authService.registerSocial(registerReq);
     }
