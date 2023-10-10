@@ -4,7 +4,6 @@ import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.repository.OrderRepository;
-import com.example.electronicshop.repository.ProductOptionRepository;
 import com.example.electronicshop.repository.ProductRepository;
 import com.mongodb.MongoWriteException;
 import lombok.AllArgsConstructor;
@@ -16,46 +15,65 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 public class PaymentUtils {
-   private final ProductOptionRepository productOptionRepository;
+//   private final ProductOptionRepository productOptionRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
 
     @Synchronized
     @Transactional
-    public String checkingUpdateQuantityProduct(Order order, boolean isPaid) {
-        order.getItems().forEach(item -> {
-            //Check if the product has an option
-            if(item.getValue()==null){
-                if (isPaid) {
-                    if (item.getItem().getQuantity() < item.getQuantity()) {
-                        order.setState(Constant.ORDER_STATE_ENABLE);
-                        orderRepository.save(order);
-                        throw new AppException(HttpStatus.CONFLICT.value(),
-                                "Quantity exceeds the available stock on hand at Product:" +
-                                        item.getItem().getName());
-                    } else item.getItem().setQuantity((int) (item.getItem().getQuantity() - item.getQuantity()));
-                } else item.getItem().setQuantity((int) (item.getItem().getQuantity() + item.getQuantity()));
-            }else {
-                if (isPaid) {
-                    if (item.getOption().getStock() < item.getQuantity()) {
-                        order.setState(Constant.ORDER_STATE_ENABLE);
-                        orderRepository.save(order);
-                        throw new AppException(HttpStatus.CONFLICT.value(),
-                                "Quantity exceeds the available stock on hand at Product:" +
-                                        item.getItem().getName());
-                    } else {item.getOption().setStock(item.getOption().getStock() - item.getQuantity());
-                        productOptionRepository.save(item.getOption());}
-                } else {item.getOption().setStock(item.getOption().getStock() + item.getQuantity());
-                    productOptionRepository.save(item.getOption());}
-            }
+    public String checkingUpdateQuantityProduct(Order order, boolean isPaid){
+        order.getItems().forEach(orderItem -> {
+            if (isPaid) {
+                if ( orderItem.getItem().getQuantity() < orderItem.getQuantity()) {
+                    order.setState(Constant.ORDER_STATE_ENABLE);
+                    orderRepository.save(order);
+                    throw new AppException(HttpStatus.CONFLICT.value(),
+                            "Quantity exceeds available stock this Product:" +
+                                    orderItem.getItem().getName());
+                } else orderItem.getItem().setQuantity((int) (orderItem.getItem().getQuantity() - orderItem.getQuantity()));
+            } else orderItem.getItem().setQuantity((int) (orderItem.getItem().getQuantity() + orderItem.getQuantity()));
             try {
-                productRepository.save(item.getItem());
+                productRepository.save(orderItem.getItem());
             } catch (MongoWriteException e) {
                 throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
             }
         });
         return null;
     }
+//    public String checkingUpdateQuantityProduct(Order order, boolean isPaid) {
+//        order.getItems().forEach(item -> {
+//            //Check if the product has an option
+//            if(item.getValue()==null){
+//                if (isPaid) {
+//                    if (item.getItem().getQuantity() < item.getQuantity()) {
+//                        order.setState(Constant.ORDER_STATE_ENABLE);
+//                        orderRepository.save(order);
+//                        throw new AppException(HttpStatus.CONFLICT.value(),
+//                                "Quantity exceeds the available stock on hand at Product:" +
+//                                        item.getItem().getName());
+//                    } else item.getItem().setQuantity((int) (item.getItem().getQuantity() - item.getQuantity()));
+//                } else item.getItem().setQuantity((int) (item.getItem().getQuantity() + item.getQuantity()));
+//            }else {
+//                if (isPaid) {
+//                    if (item.getOption().getStock() < item.getQuantity()) {
+//                        order.setState(Constant.ORDER_STATE_ENABLE);
+//                        orderRepository.save(order);
+//                        throw new AppException(HttpStatus.CONFLICT.value(),
+//                                "Quantity exceeds the available stock on hand at Product:" +
+//                                        item.getItem().getName());
+//                    } else {item.getOption().setStock(item.getOption().getStock() - item.getQuantity());
+//                        productOptionRepository.save(item.getOption());}
+//                } else {item.getOption().setStock(item.getOption().getStock() + item.getQuantity());
+//                    productOptionRepository.save(item.getOption());}
+//            }
+//            try {
+//                productRepository.save(item.getItem());
+//            } catch (MongoWriteException e) {
+//                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
+//            }
+//        });
+//        return null;
+//    }
     @Synchronized
     @Transactional
     public String setSoldProduct(Order order, boolean isPaid) {
@@ -71,26 +89,5 @@ public class PaymentUtils {
         });
         return null;
     }
-//    @Synchronized
-//    @Transactional
-//    public String checkStockAndQuantityToUpdateProduct(Order order, boolean isPaid) {
-//        order.getOrderedProducts().forEach(item -> {
-//            if (isPaid) {
-//                if ( item.getOrderProduct().getStock() < item.getQuantity()) {
-//                    order.setState(Constant.ORDER_CART);
-//                    orderRepository.save(order);
-//                    throw new AppException(HttpStatus.CONFLICT.value(),
-//                            "Quantity exceeds available stock this Product:" + item.getOrderProduct().getName()+":"+item.getOrderProduct().getId()
-//                                    + ":" + item.getOrderProduct().getStock());
-//                } else item.getOrderProduct().setStock(item.getOrderProduct().getStock() - item.getQuantity());
-//            } else item.getOrderProduct().setStock(item.getOrderProduct().getStock() + item.getQuantity());
-//            try {
-//                productRepository.save(item.getOrderProduct());
-//            } catch (MongoWriteException e) {
-//                throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when update quantity");
-//            }
-//        });
-//        return null;
-//    }
 
 }

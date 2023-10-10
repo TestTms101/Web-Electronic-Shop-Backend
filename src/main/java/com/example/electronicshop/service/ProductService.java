@@ -12,7 +12,6 @@ import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.ProductReq;
 import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.repository.CategoryRepository;
-import com.example.electronicshop.repository.ProductOptionRepository;
 import com.example.electronicshop.repository.ProductRepository;
 import com.mongodb.MongoWriteException;
 import lombok.AllArgsConstructor;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ProductOptionRepository productOptionRepository;
+//    private final ProductOptionRepository productOptionRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
     private final CloudinaryConfig cloudinary;
@@ -351,7 +350,7 @@ public class ProductService {
         if (product.isPresent()) {
             try {
                 productRepository.deleteById(product.get().getId());
-                productOptionRepository.deleteByProduct_Id(product.get().getId());
+//                productOptionRepository.deleteByProduct_Id(product.get().getId());
             } catch (Exception e) {
                 log.error(e.getMessage());
                 throw new NotFoundException("Error when destroy product with id: "+id);

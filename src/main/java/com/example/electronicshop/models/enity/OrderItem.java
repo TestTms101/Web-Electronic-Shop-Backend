@@ -1,7 +1,6 @@
 package com.example.electronicshop.models.enity;
 
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductOption;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +31,7 @@ public class OrderItem {
     private Product item;
     @NotBlank
     private String value;
-    private ProductOption option;
+//    private ProductOption option;
     @NotNull
     private long quantity;
     @DocumentReference(lazy = true)
@@ -41,11 +40,11 @@ public class OrderItem {
     @Transient
     private BigDecimal subPrice = BigDecimal.ZERO;
 
-    public Product getItem() {
-        item.setOptions(item.getOptions().stream()
-                .filter(v -> v.getValue().equals(value)).collect(Collectors.toList()));
-        return item;
-    }
+//    public Product getItem() {
+//        item.setOptions(item.getOptions().stream()
+//                .filter(v -> v.getValue().equals(value)).collect(Collectors.toList()));
+//        return item;
+//    }
     public BigDecimal getSubPrice() {
         BigDecimal originPrice = (item.getPrice().multiply(BigDecimal.valueOf(quantity)));
         String discountString = originPrice.multiply(BigDecimal.valueOf((1-item.getSale()))).divide(BigDecimal.valueOf(1000))
@@ -53,9 +52,16 @@ public class OrderItem {
         return new BigDecimal(discountString);
     }
 
-    public OrderItem(Product item,ProductOption option, String value, long quantity, Order order) {
+//    public OrderItem(Product item,ProductOption option, String value, long quantity, Order order) {
+//        this.item = item;
+//        this.option=option;
+//        this.value = value;
+//        this.quantity = quantity;
+//        this.order = order;
+//    }
+
+    public OrderItem(Product item, String value, long quantity, Order order) {
         this.item = item;
-        this.option=option;
         this.value = value;
         this.quantity = quantity;
         this.order = order;

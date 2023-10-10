@@ -10,7 +10,6 @@ import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.models.enity.OrderItem;
 import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductOption;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.*;
@@ -28,7 +27,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CartService {
     private final UserRepository userRepository;
-    private final ProductOptionRepository productOptionRepository;
+//    private final ProductOptionRepository productOptionRepository;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartMapper cartMapper;
@@ -73,15 +72,16 @@ public class CartService {
             checkProductQuantity(product.get(), req);
             Order order = new Order(user, Constant.ORDER_STATE_ENABLE);
             orderRepository.insert(order);
-            if(req.getProductOptionId()==null){
-                item = new OrderItem(product.get(), req.getQuantity(), order);
-            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
-                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
+//            if(req.getProductOptionId()==null){
+//                item = new OrderItem(product.get(), req.getQuantity(), order);
+//            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
+//                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
+            item = new OrderItem(product.get(), req.getQuantity(), order);
             orderItemRepository.insert(item);
             CartItemRes res = CartMapper.toCartItemRes(item);
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product to cart first time success", res));
-        } else throw new NotFoundException("Can not found product option with id: "+req.getProductOptionId());
+        } else throw new NotFoundException("Can not found product with id: "+req.getProductId());
     }
 
     private ResponseEntity<?> processAddProductToExistOrder(Order order, CartReq req) {
@@ -91,25 +91,29 @@ public class CartService {
         OrderItem item;
         if (product.isPresent()) {
             checkProductQuantity(product.get(), req);
-            if(req.getProductOptionId()==null){
-                item = new OrderItem(product.get(), req.getQuantity(), order);
-            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
-                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
+//            if(req.getProductOptionId()==null){
+//                item = new OrderItem(product.get(), req.getQuantity(), order);
+//            }else {Optional<ProductOption> productOption = productOptionRepository.findById(req.getProductOptionId());
+//                item = new OrderItem(product.get(), productOption.get(),req.getValue(), req.getQuantity(), order);}
+            item = new OrderItem(product.get(), req.getQuantity(), order);
             orderItemRepository.insert(item);
             CartItemRes res = CartMapper.toCartItemRes(item);
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ResponseObject("true", "Add product to cart success", res));
-        } else throw new NotFoundException("Can not found product option with id: "+req.getProductOptionId());
+        } else throw new NotFoundException("Can not found product option with id: "+req.getProductId());
     }
 
     private void checkProductQuantity(Product product, CartReq req) {
-        product.getOptions().forEach(v -> {
-            if (v.getValue().equals(req.getValue())) {
-                if (v.getStock() < req.getQuantity() ) {
-                    throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds stock on product: "+req.getProductOptionId());
-                }
-            }
-        });
+//        product.getOptions().forEach(v -> {
+//            if (v.getValue().equals(req.getValue())) {
+//                if (v.getStock() < req.getQuantity() ) {
+//                    throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds stock on product: "+req.getProductOptionId());
+//                }
+//            }
+//        });
+        if (product.getQuantity() < req.getQuantity()) {
+            throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds stock on product: "+req.getProductId());
+        }
     }
 
     private ResponseEntity<?> processUpdateProductInCart(OrderItem orderItem, CartReq req) {
@@ -119,28 +123,32 @@ public class CartService {
                     new ResponseObject("true", "Delete item "+orderItem.getId()+" in cart success", ""));
         }
         long quantity = orderItem.getQuantity() + req.getQuantity();
-        if(req.getProductOptionId()==null){
-            if(orderItem.getItem().getQuantity() >= quantity && quantity > 0){
-                orderItem.setQuantity(quantity);
-                orderItemRepository.save(orderItem);
-            } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductId());
-        }else {
-            if (orderItem.getOption().getStock() >= quantity && quantity > 0) {
-                orderItem.setQuantity(quantity);
-                orderItemRepository.save(orderItem);
-            } else throw new AppException(HttpStatus.CONFLICT.value(),
-                    "Quantity invalid or exceeds stock on product: "+req.getProductId()
-                    +" with option: "+req.getProductOptionId());
-        }
+//        if(req.getProductOptionId()==null){
+//            if(orderItem.getItem().getQuantity() >= quantity && quantity > 0){
+//                orderItem.setQuantity(quantity);
+//                orderItemRepository.save(orderItem);
+//            } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductId());
+//        }else {
+//            if (orderItem.getItem().getQuantity() >= quantity && quantity > 0) {
+//                orderItem.setQuantity(quantity);
+//                orderItemRepository.save(orderItem);
+//            } else throw new AppException(HttpStatus.CONFLICT.value(),
+//                    "Quantity invalid or exceeds stock on product: "+req.getProductId()
+//                    +" with option: "+req.productOptionId());
+//        }
 //        orderItem.getItem().getOptions().forEach(v -> {
 //            if (v.getStock() >= quantity && quantity > 0) {
 //                orderItem.setQuantity(quantity);
 //                orderItemRepository.save(orderItem);
 //            } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductOptionId());
 //        });
+        if(orderItem.getItem().getQuantity() >= quantity && quantity > 0){
+            orderItem.setQuantity(quantity);
+            orderItemRepository.save(orderItem);
+        } else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity invalid or exceeds stock on product: "+req.getProductId());
         CartItemRes res = CartMapper.toCartItemRes(orderItem);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Update product "+req.getProductOptionId()+" in cart success", res));
+                new ResponseObject("true", "Update product "+req.getProductId()+" in cart success", res));
     }
 
     public ResponseEntity<?> deleteProductFromCart(String userId, String orderItemId) {

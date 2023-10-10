@@ -4,9 +4,6 @@ import com.example.electronicshop.communication.response.CartItemRes;
 import com.example.electronicshop.communication.response.CartRes;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.models.enity.OrderItem;
-import com.example.electronicshop.models.product.ProductOption;
-import com.example.electronicshop.repository.ProductOptionRepository;
-import com.example.electronicshop.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -25,16 +22,20 @@ public class CartMapper {
     }
 
     public static CartItemRes toCartItemRes(OrderItem orderItem) {
-        if(orderItem.getValue()==null){
-            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(), "", orderItem.getItem().getCategory().getId(),
-                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
-                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
-                    orderItem.getItem().getQuantity(), orderItem.getSubPrice());
-        }else {
-            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(), orderItem.getOption().getId(), orderItem.getItem().getCategory().getId(),
-                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
-                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
-                    orderItem.getOption().getStock(), orderItem.getSubPrice());
-        }
+//        if(orderItem.getValue()==null){
+//            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(), "", orderItem.getItem().getCategory().getId(),
+//                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
+//                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
+//                    orderItem.getItem().getQuantity(), orderItem.getSubPrice());
+//        }else {
+//            return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(), orderItem.getOption().getId(), orderItem.getItem().getCategory().getId(),
+//                    orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
+//                    orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
+//                    orderItem.getOption().getStock(), orderItem.getSubPrice());
+//        }
+        return new CartItemRes(orderItem.getId(), orderItem.getItem().getId(), "",
+                orderItem.getItem().getName(), orderItem.getItem().getSale(), orderItem.getQuantity(),
+                orderItem.getItem().getImages(), orderItem.getItem().getPrice(), orderItem.getValue(),
+                orderItem.getItem().getQuantity(), orderItem.getSubPrice());
     }
 }

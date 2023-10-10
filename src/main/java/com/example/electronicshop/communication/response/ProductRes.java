@@ -1,7 +1,6 @@
 package com.example.electronicshop.communication.response;
 
 import com.example.electronicshop.models.product.ProductImage;
-import com.example.electronicshop.models.product.ProductOption;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,7 @@ public class ProductRes {
     private BigDecimal discount;
     private double rate;
     private String summary;
-    private List<ProductOption> options;
+//    private List<ProductOption> options;
     private List<String> tags;
     private String description;
     private String category;

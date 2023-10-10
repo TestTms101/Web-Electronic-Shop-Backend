@@ -53,7 +53,7 @@ public class  Product {
     @NotBlank(message = "summary is required")
     private String summary;
 
-    private List<ProductOption> options = new ArrayList<>();
+//    private List<ProductOption> options = new ArrayList<>();
     @NotBlank(message = "tags is required")
     private List<String> tags;
     @NotBlank(message = "Description is required")

@@ -3,12 +3,10 @@ package com.example.electronicshop.map;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.models.enity.Category;
 import com.example.electronicshop.models.product.Product;
-import com.example.electronicshop.models.product.ProductOption;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.communication.request.ProductReq;
 import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.repository.CategoryRepository;
-import com.example.electronicshop.repository.ProductOptionRepository;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductMapper {
     private final CategoryRepository categoryRepository;
-    private final ProductOptionRepository productOptionRepository;
+//    private final ProductOptionRepository productOptionRepository;
 
     public Product toProduct(ProductReq req) {
         Optional<Category> category = categoryRepository.findCategoryByIdAndState(req.getCategory(), Constant.ENABLE);
@@ -53,9 +51,9 @@ public class ProductMapper {
 //        String discountString = req.getPrice().multiply(BigDecimal.valueOf((double) (100- req.getDiscount())/100))
 //                .stripTrailingZeros().toPlainString();
 //        BigDecimal discountPrice = new BigDecimal(discountString);
-        List<ProductOption> option = productOptionRepository.findAllByProduct_Id(new ObjectId(req.getId()));
+//        List<ProductOption> option = productOptionRepository.findAllByProduct_Id(new ObjectId(req.getId()));
         return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(),
-                req.getQuantity(), req.getSale(), req.getSold(), req.getDiscount(),req.getRate(), req.getSummary(), option,
+                req.getQuantity(), req.getSale(), req.getSold(), req.getDiscount(),req.getRate(), req.getSummary(),
                 req.getTags(),req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
                 req.getState(),req.getCreatedDate());
 
