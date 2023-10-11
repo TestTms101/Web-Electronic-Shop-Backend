@@ -45,7 +45,7 @@ public class UserService {
         resp.put("totalPage", users.getTotalPages());
         if (userResList.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all user", resp));
+                    new ResponseObject(true, "Get all user", resp));
         throw new NotFoundException("Can not found any user");
     }
 
@@ -54,7 +54,7 @@ public class UserService {
         List<UserResponse> userResList = users.stream().map(userMapper::thisUserRespone).collect(Collectors.toList());
         if (userResList.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all user", userResList));
+                    new ResponseObject(true, "Get all user", userResList));
         throw new NotFoundException("Can not found any user");
     }
 
@@ -67,11 +67,11 @@ public class UserService {
             userRepository.save(user.get());
             UserResponse res = userMapper.thisUserRespone(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get user success", res));
+                    new ResponseObject(true, "Get user success", res));
         }
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Can't not find user ", ""));
+                    new ResponseObject(false, "Can't not find user ", ""));
     }
 
 
@@ -80,11 +80,11 @@ public class UserService {
         if (user.isPresent()) {
             UserResponse res = userMapper.thisUserRespone(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get user success", res));
+                    new ResponseObject(true, "Get user success", res));
         } else {
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Can't not find user ", ""));
+                    new ResponseObject(true, "Can't not find user ", ""));
         }
     }
 
@@ -102,7 +102,7 @@ public class UserService {
             }
             UserResponse res = userMapper.thisUserRespone(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update user success", res));
+                    new ResponseObject(true, "Update user success", res));
         }
         throw new NotFoundException("Can not found user with id " + id );
     }
@@ -119,13 +119,13 @@ public class UserService {
                 userRepository.save(user.get());
             UserResponse userRes = userMapper.thisUserRespone(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Update info user successfully", userRes)
+                    new ResponseObject(true, "Update info user successfully", userRes)
             );
 
         }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("failed", "Cannot update info user ", ""));
+                new ResponseObject(false, "Cannot update info user ", ""));
     }
     public ResponseEntity<ResponseObject> updateEmailUser(String id, String email){
 
@@ -138,17 +138,17 @@ public class UserService {
                 }
                 catch (Exception e){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                            new ResponseObject("failed", "Email  already exist", "")
+                            new ResponseObject(false, "Email  already exist", "")
                     );
                 }
                 UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("ok", "Update email user successfully", userRes)
+                        new ResponseObject(true, "Update email user successfully", userRes)
                 );
             }
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("failed", "Cannot update email user ", "")
+                new ResponseObject(false, "Cannot update email user ", "")
         );
     }
     public ResponseEntity<ResponseObject> updateResetPassUser(String id, ResetPassRequest resetPassRequest){
@@ -161,17 +161,17 @@ public class UserService {
                 }
                 catch (Exception e){
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                            new ResponseObject("failed", "Email or Phone already exist", "")
+                            new ResponseObject(false, "Email or Phone already exist", "")
                     );
                 }
                 UserResponse userRes = userMapper.thisUserRespone(foundUser.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("ok", "Update pass user successfully", userRes)
+                        new ResponseObject(true, "Update pass user successfully", userRes)
                 );
 
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("failed", "Cannot update pass user ", "")
+                new ResponseObject(false, "Cannot update pass user ", "")
         );
     }
 
@@ -182,7 +182,7 @@ public class UserService {
             user.get().setState(Constant.USER_ACTIVE);
             userRepository.save(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Unblock user success", user));
+                    new ResponseObject(true, "Unblock user success", user));
         }
         throw new NotFoundException("Can not find use");
     }
@@ -194,7 +194,7 @@ public class UserService {
             user.get().setState(Constant.USER_NOT_ACTIVE);
             userRepository.save(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delete user success", ""));
+                    new ResponseObject(true, "Delete user success", ""));
         }
         throw new NotFoundException("Can not find use");
     }
@@ -207,7 +207,7 @@ public class UserService {
                 user.get().setPassword(passwordEncoder.encode(req.getNewpass()));
                 userRepository.save(user.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Change password success", ""));
+                        new ResponseObject(true, "Change password success", ""));
             } else throw new AppException(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Your old password is wrong" +
                     " or same with new password");
         }

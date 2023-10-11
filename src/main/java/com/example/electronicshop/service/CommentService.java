@@ -56,7 +56,7 @@ public class CommentService {
         resp.put("totalPage", comment.getTotalPages());
         if (comment.isEmpty()) throw new NotFoundException("Can not found any comment");
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Get comment by product success ", resp));
+                new ResponseObject(true, "Get comment by product success ", resp));
     }
 
 
@@ -74,7 +74,7 @@ public class CommentService {
                         Comment newComment = new Comment(req.getContent(), req.getRate(), product.get(), user.get(), Constant.COMMENT_ENABLE, LocalDateTime.now());
                         commentRepository.save(newComment);
                         return ResponseEntity.status(HttpStatus.OK).body(
-                                new ResponseObject("true", "Add comment success ", newComment));
+                                new ResponseObject(true, "Add comment success ", newComment));
                     }
                 }
                 throw new NotFoundException("Can not found product with id: " + req.getProductId());
@@ -94,12 +94,12 @@ public class CommentService {
                 comment.get().setLastUpdateDate(LocalDateTime.now());
                 commentRepository.save(comment.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("ok", "Update comment successfully", comment)
+                        new ResponseObject(true, "Update comment successfully", comment)
                 );
 
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Cannot edit comment ", ""));
+                    new ResponseObject(false, "Cannot edit comment ", ""));
         }throw new NotFoundException("Can not found user with id: " + userid);
 
 
@@ -111,7 +111,7 @@ public class CommentService {
             comment.get().setState(Constant.COMMENT_BLOCK);
             commentRepository.save(comment.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Block comment successfully ", comment)
+                    new ResponseObject(true, "Block comment successfully ", comment)
             );
         } throw new NotFoundException("Can not found comment with id: "+id);
     }
@@ -122,7 +122,7 @@ public class CommentService {
             comment.get().setState(Constant.COMMENT_ENABLE);
             commentRepository.save(comment.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", " Comment successfully ", comment)
+                    new ResponseObject(true, " Comment successfully ", comment)
             );
         } throw new NotFoundException("Can not found comment with id: "+id);
     }
@@ -136,11 +136,11 @@ public class CommentService {
         if(resList.size()>0)
         {
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "find all comment successfully ", resp));
+                    new ResponseObject(true, "find all comment successfully ", resp));
         }
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "can't find all comment ", ""));
+                    new ResponseObject(false, "can't find all comment ", ""));
     }
     @Transactional
     public ResponseEntity<ResponseObject> deleteCommemt(String id) {
@@ -154,7 +154,7 @@ public class CommentService {
                 throw new NotFoundException("Error when delete comment with id: "+id);
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delete comment successfully ", "")
+                    new ResponseObject(true, "Delete comment successfully ", "")
             );
         } throw new NotFoundException("Can not found comment with id: "+id);
     }
@@ -173,7 +173,7 @@ public class CommentService {
                     throw new NotFoundException("Error when delete comment with id: " + id);
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Delete comment successfully ", "")
+                        new ResponseObject(true, "Delete comment successfully ", "")
                 );
             }
         }

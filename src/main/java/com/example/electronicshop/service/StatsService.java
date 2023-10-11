@@ -51,7 +51,7 @@ public class StatsService {
             Map<String, Object> category = processResponse(categoryRepository.countAllByState());
             resp.put("category", category);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get count by state success", resp));
+                    new ResponseObject(true, "Get count by state success", resp));
         } catch (Exception e) {
             throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
         }
@@ -88,9 +88,9 @@ public class StatsService {
         }
         List<OrdersSaleRes> ordersSaleResList = getSaleAmount(orderList, pattern);
         return ordersSaleResList.size() > 0 ? ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Get orders sale successful", ordersSaleResList)) :
+                new ResponseObject(true, "Get orders sale successful", ordersSaleResList)) :
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                        new ResponseObject("false", "Can not found any order", "")
+                        new ResponseObject(false, "Can not found any order", "")
                 );
     }
 

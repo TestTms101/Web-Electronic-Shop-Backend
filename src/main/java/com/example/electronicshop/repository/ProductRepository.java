@@ -22,7 +22,12 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "    'state' : 'enable'}")
     Page<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
-    Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
+//    Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
+    @Query("{$and: [{$text: { $search: ?0  }}]}")
+    Page<Product> findAllByAndOrderByCreatedDateDesc(String textCriteria, Pageable pageable);
+//    Page<Product> findAllByAndOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
+//    Page<Product> findAllByAndOrderBySaleAsc(TextCriteria textCriteria, Pageable pageable);
+
     Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //

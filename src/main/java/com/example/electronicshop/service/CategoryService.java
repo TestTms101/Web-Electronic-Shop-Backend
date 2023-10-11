@@ -31,10 +31,10 @@ public class CategoryService {
         List<Category> list = categoryRepository.findAll();
         if (list.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all category success", list));
+                    new ResponseObject(true, "Get all category success", list));
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Cannot find category ", ""));
+                    new ResponseObject(false, "Cannot find category ", ""));
 
     }
     public ResponseEntity<ResponseObject> findCategoryById(String id)
@@ -42,19 +42,19 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get category success", category));
+                    new ResponseObject(true, "Get category success", category));
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Cannot find category ", ""));
+                    new ResponseObject(false, "Cannot find category ", ""));
     }
     public ResponseEntity<ResponseObject> findAllCategory() {
         List<Category> categoryList = categoryRepository.findCategoryByState(Constant.ENABLE);
         if (categoryList.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all category success", categoryList));
+                    new ResponseObject(true, "Get all category success", categoryList));
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Cannot find category ", ""));
+                    new ResponseObject(false, "Cannot find category ", ""));
     }
 
     public ResponseEntity<ResponseObject> createCategory(CategoryRequest categoryRequest) {
@@ -62,7 +62,7 @@ public class CategoryService {
             Optional<Category> foundCategory = categoryRepository.findCategoryByNameAndState(categoryRequest.getName(), categoryRequest.getState());
             if (foundCategory.isPresent()) {
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                        new ResponseObject("Fail", "Insert Category Fail Because Category Name exist", "")
+                        new ResponseObject(false, "Insert Category Fail Because Category Name exist", "")
                 );
             }
 
@@ -71,13 +71,13 @@ public class CategoryService {
             CategoryResponse categoryResponse = new CategoryResponse(newcategory.getId(), newcategory.getName(), categoryRequest.getState());
             if (categoryResponse != null)
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Get category success", categoryResponse));
+                        new ResponseObject(true, "Get category success", categoryResponse));
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "Cannot create category ", ""));
+                    new ResponseObject(false, "Cannot create category ", ""));
         } else {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                    new ResponseObject("ok", "Insert Category Fail", "")
+                    new ResponseObject(true, "Insert Category Fail", "")
             );
         }
     }
@@ -109,11 +109,11 @@ public class CategoryService {
                 categoryRepository.save(category.get());
             CategoryResponse categoryResponse = new CategoryResponse(category.get().getId(), category.get().getName(), category.get().getState());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "update category success ", categoryResponse));
+                    new ResponseObject(true, "update category success ", categoryResponse));
 
         } else {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                    new ResponseObject("ok", "update Category Fail", "")
+                    new ResponseObject(true, "update Category Fail", "")
             );
         }
     }
@@ -124,7 +124,7 @@ public class CategoryService {
             category.get().setState(Constant.DISABLE);
             categoryRepository.save(category.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delete category success", ""));
+                    new ResponseObject(true, "Delete category success", ""));
         }
         throw new NotFoundException("Can not find category");
     }

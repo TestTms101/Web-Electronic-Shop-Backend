@@ -35,7 +35,7 @@ public class CODService extends PaymentFactory{
                 order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
                 orderRepository.save(order);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", " Pay by COD successfully", ""));
+                        new ResponseObject(true, " Pay by COD successfully", ""));
             }
         } throw new NotFoundException("Can not found order with id: "+ Objects.requireNonNull(order).getId());
     }
@@ -56,7 +56,7 @@ public class CODService extends PaymentFactory{
             String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
             if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Cancel order successfully", ""));
+                        new ResponseObject(true, "Cancel order successfully", ""));
             }
         } throw new NotFoundException("Can not found order with id: "+ id);
     }

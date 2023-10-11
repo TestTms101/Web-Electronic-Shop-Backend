@@ -34,13 +34,23 @@ public class ProductController {
         return productService.findByCategoryId(id, pageable);
     }
 
+//    @GetMapping(path = "/search")
+//    public ResponseEntity<?> search (@RequestParam("q") String query,
+//                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
+//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+//        return productService.search(query, pageable);
+//    }
+
     @GetMapping(path = "/search")
-    public ResponseEntity<?> search (@RequestParam("q") String query,
+    public ResponseEntity<?> search (@RequestParam("query") String query,@RequestParam("sortBy") String sortBy,
+                                     @RequestParam("order") String order,
                                      @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.search(query, pageable);
+        return productService.search(query,sortBy,order, pageable);
     }
+
     @GetMapping(path = "/byTags")
     public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
                                      @PageableDefault(sort = "score") @ParameterObject Pageable pageable){

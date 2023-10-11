@@ -58,7 +58,7 @@ public class AuthService {
             res.setAccessToken(accesstoken);
 
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Log in successfully ", res)
+                    new ResponseObject(true, "Log in successfully ", res)
             );
 
 
@@ -73,7 +73,7 @@ public class AuthService {
         user.setToken(null);
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("true", "Register ", user)
+                new ResponseObject(true, "Register ", user)
         );
     }
 
@@ -90,7 +90,7 @@ public class AuthService {
             }
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("true", "Register successfully ", "")
+                new ResponseObject(true, "Register successfully ", "")
         );
     }
 
@@ -114,7 +114,7 @@ public class AuthService {
         LoginResponese res = userMapper.toLoginRes(user1.get());
         res.setAccessToken(accesstoken);
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject("true", "Successfully ", res)
+                new ResponseObject(true, "Successfully ", res)
         );
 
     }
@@ -124,7 +124,7 @@ public class AuthService {
                 try {
                     sendVerifyMail(user.get());
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Send otp email success", email));
+                            new ResponseObject(true, "Send otp email success", email));
                 } catch (Exception e) {
                     e.printStackTrace();
                     log.error(e.getMessage());
@@ -139,7 +139,7 @@ public class AuthService {
             try {
                 sendVerifyMailReset(user.get());
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Send otp email success", email));
+                        new ResponseObject(true, "Send otp email success", email));
             } catch (Exception e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
@@ -213,7 +213,7 @@ public class AuthService {
                     userRepository.save(user.get());
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "OTP with email: " + email , res));
+                        new ResponseObject(true, "OTP with email: " + email , res));
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());
@@ -233,7 +233,7 @@ public class AuthService {
                     userRepository.save(user.get());
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "OTP with email: " + email , user));
+                        new ResponseObject(true, "OTP with email: " + email , user));
             } else {
                 user.get().setToken(null);
                 userRepository.save(user.get());

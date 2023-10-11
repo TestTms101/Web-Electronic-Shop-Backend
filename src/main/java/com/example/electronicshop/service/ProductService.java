@@ -60,7 +60,7 @@ public class ProductService {
         resp.put("totalPage", products.getTotalPages());
         if (resList.size() >0 )
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get all product success", resp));
+                    new ResponseObject(true, "Get all product success", resp));
         return null;
     }
 
@@ -97,7 +97,7 @@ public class ProductService {
         if (product.isPresent()) {
             ProductRes res = productMapper.toProductRes(product.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get product success", res));
+                    new ResponseObject(true, "Get product success", res));
         }
         throw new NotFoundException("Can not found any product with id: "+id);
     }
@@ -120,12 +120,29 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with category or brand id: "+id);
     }
-    public ResponseEntity<?> search(String key, Pageable pageable) {
+//    public ResponseEntity<?> search(String key, Pageable pageable) {
+//        Page<Product> products;
+//        try {
+//            products = productRepository.findAllBy(TextCriteria
+//                            .forDefaultLanguage().matchingAny(key),
+//                    pageable);
+//        } catch (Exception e) {
+//            throw new NotFoundException("Can not found any product with: "+key);
+//        }
+//        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+////        resList.sort(Comparator.comparing(ProductRes::getPrice));
+//        resList.sort(Comparator.comparing(ProductRes::getPrice).reversed());
+//        ResponseEntity<?> resp = addPageableToRes(products, resList);
+//        if (resp != null) return resp;
+//        throw new NotFoundException("Can not found any product with: "+key);
+//    }
+    public ResponseEntity<?> search(String key,String sortBy,String order, Pageable pageable) {
         Page<Product> products;
         try {
-            products = productRepository.findAllBy(TextCriteria
-                            .forDefaultLanguage().matchingAny(key),
-                    pageable);
+//            products = productRepository.findAllByAndOrderByCreatedDateDesc(TextCriteria
+//                            .forDefaultLanguage().matchingAny(key),
+//                    pageable);
+            products=productRepository.findAllByAndOrderByCreatedDateDesc(key,pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
@@ -161,11 +178,11 @@ public class ProductService {
             }
             ProductRes res = productMapper.toProductRes(product);
             return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseObject("true", "Add product successfully ", res)
+                    new ResponseObject(true, "Add product successfully ", res)
             );
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ResponseObject("false", "Request is null", "")
+                new ResponseObject(false, "Request is null", "")
         );
     }
 //    public List<ProductImage> processUploadImage (List<MultipartFile> images, Product product) {
@@ -219,7 +236,7 @@ public class ProductService {
                     productRepository.save(product.get());
                 });
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Add image to product successfully", product.get().getImages())
+                        new ResponseObject(true, "Add image to product successfully", product.get().getImages())
                 );
             } catch (Exception e) {
                 log.error(e.getMessage());
@@ -237,7 +254,7 @@ public class ProductService {
                     product.get().getImages().remove(checkDelete.get());
                     productRepository.save(product.get());
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Delete image successfully", imageId)
+                            new ResponseObject(true, "Delete image successfully", imageId)
                     );
                 } else throw new NotFoundException("Can not found image in product with id: " + imageId);
             } catch (Exception e) {
@@ -276,7 +293,7 @@ public class ProductService {
             product.get().setState(Constant.ENABLE);
             productRepository.save(product.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update State product successfully ", "")
+                    new ResponseObject(true, "Update State product successfully ", "")
             );
         } throw new NotFoundException("Can not found product with id: "+id);
     }
@@ -294,7 +311,7 @@ public class ProductService {
             }
             ProductRes res = productMapper.toProductRes(product.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Update product successfully ", res)
+                    new ResponseObject(true, "Update product successfully ", res)
             );
         }
         throw new NotFoundException("Can not found product with id: "+id);
@@ -339,7 +356,7 @@ public class ProductService {
             product.get().setState(Constant.DISABLE);
             productRepository.save(product.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delete product successfully ", "")
+                    new ResponseObject(true, "Delete product successfully ", "")
             );
         } throw new NotFoundException("Can not found product with id: "+id);
     }
@@ -356,7 +373,7 @@ public class ProductService {
                 throw new NotFoundException("Error when destroy product with id: "+id);
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Destroy product successfully ", "")
+                    new ResponseObject(true, "Destroy product successfully ", "")
             );
         } throw new NotFoundException("Can not found product with id: "+id);
     }

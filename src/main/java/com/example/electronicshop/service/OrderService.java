@@ -46,7 +46,7 @@ public class OrderService {
         resp.put("totalQuantity", orders.getTotalElements());
         resp.put("totalPage", orders.getTotalPages());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Get orders success", resp));
+                new ResponseObject(true, "Get orders success", resp));
     }
 //    public ResponseEntity<?> findAll(String state) {
 //        List<Order> orders;
@@ -71,7 +71,7 @@ public class OrderService {
         resp.put("totalQuantity", orders.getTotalElements());
         resp.put("totalPage", orders.getTotalPages());
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("true", "Get orders success", resp));
+                new ResponseObject(true, "Get orders success", resp));
     }
 
     public ResponseEntity<?> findOrderById(String id) {
@@ -79,7 +79,7 @@ public class OrderService {
         if (order.isPresent()) {
             OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get order success", orderRes));
+                    new ResponseObject(true, "Get order success", orderRes));
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
@@ -89,7 +89,7 @@ public class OrderService {
         if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
             OrderRes orderRes = orderMapper.toOrderDetailRes(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get order success", orderRes));
+                    new ResponseObject(true, "Get order success", orderRes));
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
@@ -106,7 +106,7 @@ public class OrderService {
                 orderRepository.save(order.get());
                 if (checkUpdateQuantityProduct == null&& checkUpdateSold==null) {
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Cancel order successfully", ""));
+                            new ResponseObject(true, "Cancel order successfully", ""));
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
                     "You cannot cancel");
@@ -119,7 +119,7 @@ public class OrderService {
             order.get().setState(Constant.ORDER_STATE_DELIVERY);
             orderRepository.save(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Delivery order successfully", order));
+                    new ResponseObject(true, "Delivery order successfully", order));
         } else throw new NotFoundException("Can not found or delivery order with id: "+ id);
     }
 
@@ -132,7 +132,7 @@ public class OrderService {
                 orderRepository.save(order.get());
               {
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Complete order successfully", order));
+                            new ResponseObject(true, "Complete order successfully", order));
                 }
             } else throw new AppException(HttpStatus.BAD_REQUEST.value(),
                     "You cannot complete this order");
@@ -147,7 +147,7 @@ public class OrderService {
                 orderRepository.save(order.get());
                 {
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("true", "Cancel order successfully", order));
+                            new ResponseObject(true, "Cancel order successfully", order));
                 }
         }
         throw new NotFoundException("Can not found order with id: " + id);
@@ -173,7 +173,7 @@ public class OrderService {
         resp.put("totalOrder", orders.getTotalElements());
         if(resList.size()>0){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get order success", resp));
+                    new ResponseObject(true, "Get order success", resp));
         }
         throw new NotFoundException("Can not found any order" );
     }
@@ -197,7 +197,7 @@ public class OrderService {
         resp.put("list", resList);
         if(resList.size()>0){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Get order success", resp));
+                    new ResponseObject(true, "Get order success", resp));
         }
         throw new NotFoundException("Can not found any order" );
     }

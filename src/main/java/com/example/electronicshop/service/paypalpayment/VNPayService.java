@@ -68,7 +68,7 @@ public class VNPayService extends PaymentFactory {
         String checkUpdateSold =paymentUtils.setSoldProduct(order,true);
         if (checkUpdateQuantityProduct == null && checkUpdateSold==null)
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Payment Complete", paymentUrl));
+                    new ResponseObject(true, "Payment Complete", paymentUrl));
        else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds the available stock!");
     }
 
@@ -87,7 +87,7 @@ public class VNPayService extends PaymentFactory {
             orderRepository.save(order.get());
             response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("true", "Payment Completed", "")
+                    new ResponseObject(true, "Payment Completed", "")
             );
         } else {
             order.get().setState(Constant.ORDER_STATE_CANCEL);
@@ -97,7 +97,7 @@ public class VNPayService extends PaymentFactory {
             if (responseCode.equals(VNPayUtils.responseCancelCode) && checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=true");
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Payment cancel complete", ""));
+                        new ResponseObject(true, "Payment cancel complete", ""));
             } else response.sendRedirect(PaymentService.CLIENT_REDIRECT + "false&cancel=false");
             throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), "Failed when payment");
         }

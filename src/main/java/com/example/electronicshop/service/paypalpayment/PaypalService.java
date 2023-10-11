@@ -68,7 +68,7 @@ public class PaypalService extends  PaymentFactory{
                         order.setCreatedDate(LocalDateTime.now());
                         orderRepository.save(order);
                         return ResponseEntity.status(HttpStatus.OK).body(
-                                new ResponseObject("true", "Payment init complete", links.getHref()));
+                                new ResponseObject(true, "Payment init complete", links.getHref()));
                     }
                 }
            }
@@ -96,7 +96,7 @@ public class PaypalService extends  PaymentFactory{
                 }
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Payment with Paypal complete", "")
+                        new ResponseObject(true, "Payment with Paypal complete", "")
                 );
             }
         } catch (PayPalRESTException e) {
@@ -104,7 +104,7 @@ public class PaypalService extends  PaymentFactory{
         }
         response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                new ResponseObject("false", "Payment with Paypal failed", "")
+                new ResponseObject(false, "Payment with Paypal failed", "")
         );
     }
 
@@ -121,13 +121,13 @@ public class PaypalService extends  PaymentFactory{
             if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=true");
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("true", "Cancel payment with Paypal complete", "")
+                        new ResponseObject(true, "Cancel payment with Paypal complete", "")
                 );
            }
         }
         response.sendRedirect(PaymentService.CLIENT_REDIRECT + "false&cancel=true");
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                new ResponseObject("false", "Cancel payment with Paypal failed", "")
+                new ResponseObject(false, "Cancel payment with Paypal failed", "")
         );
     }
 
