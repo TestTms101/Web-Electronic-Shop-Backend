@@ -131,19 +131,22 @@ public class ProductService {
                 products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
                                 .forDefaultLanguage().matchingAny(key), pageable);
 
-            } else if (Objects.equals(sortBy, "sales")) {products= productRepository.findByOrderBySaleDesc(TextCriteria
+            } else if (Objects.equals(sortBy, "sales")) {
+                products= productRepository.findByOrderBySaleDesc(TextCriteria
                             .forDefaultLanguage().matchingAny(key), pageable);
 
-            } else if (Objects.equals(sortBy, "priceDesc")) {products= productRepository.findByOrderByDiscountDesc(TextCriteria
+            } else if (Objects.equals(sortBy, "priceDesc")) {
+                products= productRepository.findAllBy(TextCriteria
                             .forDefaultLanguage().matchingAny(key), pageable);
 
-            }else products= productRepository.findByOrderByDiscountAsc(TextCriteria
+
+            }else products= productRepository.findAllBy(TextCriteria
                             .forDefaultLanguage().matchingAny(key), pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        if(Objects.equals(order, "priceDesc")){
+        if(Objects.equals(order, "priceDesc") || Objects.equals(sortBy, "priceDesc")){
             resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
         }
         if(Objects.equals(order, "priceAsc")) resList.sort(Comparator.comparing(ProductRes::getDiscount));
