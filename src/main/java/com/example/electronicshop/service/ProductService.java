@@ -120,39 +120,38 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with category or brand id: "+id);
     }
-//    public ResponseEntity<?> search(String key, Pageable pageable) {
-//        Page<Product> products;
-//        try {
-//            products = productRepository.findAllBy(TextCriteria
-//                            .forDefaultLanguage().matchingAny(key),
-//                    pageable);
-//        } catch (Exception e) {
-//            throw new NotFoundException("Can not found any product with: "+key);
-//        }
-//        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-////        resList.sort(Comparator.comparing(ProductRes::getPrice));
-//        resList.sort(Comparator.comparing(ProductRes::getPrice).reversed());
-//        ResponseEntity<?> resp = addPageableToRes(products, resList);
-//        if (resp != null) return resp;
-//        throw new NotFoundException("Can not found any product with: "+key);
-//    }
+
     public ResponseEntity<?> search(String key,String sortBy,String order, Pageable pageable) {
         Page<Product> products;
         try {
-//            products = productRepository.findAllByAndOrderByCreatedDateDesc(TextCriteria
+//            products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
 //                            .forDefaultLanguage().matchingAny(key),
 //                    pageable);
-            products=productRepository.findAllByAndOrderByCreatedDateDesc(key,pageable);
+            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
+                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
+                                .forDefaultLanguage().matchingAny(key), pageable);
+
+            } else if (Objects.equals(sortBy, "sales")) {products= productRepository.findByOrderBySaleDesc(TextCriteria
+                            .forDefaultLanguage().matchingAny(key), pageable);
+
+            } else if (Objects.equals(sortBy, "priceDesc")) {products= productRepository.findByOrderByDiscountDesc(TextCriteria
+                            .forDefaultLanguage().matchingAny(key), pageable);
+
+            }else products= productRepository.findByOrderByDiscountAsc(TextCriteria
+                            .forDefaultLanguage().matchingAny(key), pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-//        resList.sort(Comparator.comparing(ProductRes::getPrice));
-        resList.sort(Comparator.comparing(ProductRes::getPrice).reversed());
+        if(Objects.equals(order, "priceDesc")){
+            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
+        }
+        if(Objects.equals(order, "priceAsc")) resList.sort(Comparator.comparing(ProductRes::getDiscount));
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with: "+key);
     }
+
     public ResponseEntity<?> findbyTags(String key, Pageable pageable){
         Page<Product> products;
         try {

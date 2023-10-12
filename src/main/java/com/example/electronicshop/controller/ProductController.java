@@ -43,9 +43,10 @@ public class ProductController {
 //    }
 
     @GetMapping(path = "/search")
-    public ResponseEntity<?> search (@RequestParam("query") String query,@RequestParam("sortBy") String sortBy,
-                                     @RequestParam("order") String order,
-                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
+    public ResponseEntity<?> search (@RequestParam("query") String query,
+                                     @RequestParam(value = "sortBy", defaultValue = "")  String sortBy,
+                                     @RequestParam(value = "order", defaultValue = "") String order,
+                                     @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query,sortBy,order, pageable);

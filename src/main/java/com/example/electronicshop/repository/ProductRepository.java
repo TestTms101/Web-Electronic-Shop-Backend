@@ -5,10 +5,12 @@ import com.example.electronicshop.models.product.Product;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,11 +24,14 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "    'state' : 'enable'}")
     Page<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
-//    Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
-    @Query("{$and: [{$text: { $search: ?0  }}]}")
-    Page<Product> findAllByAndOrderByCreatedDateDesc(String textCriteria, Pageable pageable);
-//    Page<Product> findAllByAndOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
-//    Page<Product> findAllByAndOrderBySaleAsc(TextCriteria textCriteria, Pageable pageable);
+    Page<Product> findByOrderByCreatedDateDesc(TextCriteria textCriteria, Pageable pageable);
+    Page<Product> findByOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
+    Page<Product> findByOrderByDiscountDesc(TextCriteria textCriteria, Pageable pageable);
+    Page<Product> findByOrderByDiscountAsc(TextCriteria textCriteria, Pageable pageable);
+
+//    @Query(sort = "{ 'createDate' : -1 }")
+//    Page<Product> findAllBy(TextCriteria textCriteria,String a, Pageable pageable);
+    //    Page<Product> findAllByAndOrderBySaleAsc(TextCriteria textCriteria, Pageable pageable);
 
     Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
