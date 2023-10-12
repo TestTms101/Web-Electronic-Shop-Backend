@@ -135,11 +135,6 @@ public class ProductService {
                 products= productRepository.findByOrderBySaleDesc(TextCriteria
                             .forDefaultLanguage().matchingAny(key), pageable);
 
-            } else if (Objects.equals(sortBy, "priceDesc")) {
-                products= productRepository.findAllBy(TextCriteria
-                            .forDefaultLanguage().matchingAny(key), pageable);
-
-
             }else products= productRepository.findAllBy(TextCriteria
                             .forDefaultLanguage().matchingAny(key), pageable);
         } catch (Exception e) {
@@ -149,7 +144,10 @@ public class ProductService {
         if(Objects.equals(order, "priceDesc") || Objects.equals(sortBy, "priceDesc")){
             resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
         }
-        if(Objects.equals(order, "priceAsc")) resList.sort(Comparator.comparing(ProductRes::getDiscount));
+        if(Objects.equals(order, "priceAsc")|| !Objects.equals(sortBy, "priceDesc")
+                ||!Objects.equals(sortBy, "")||!Objects.equals(sortBy, "sales")
+                ||!Objects.equals(sortBy, "latest"))
+            resList.sort(Comparator.comparing(ProductRes::getDiscount));
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product with: "+key);
