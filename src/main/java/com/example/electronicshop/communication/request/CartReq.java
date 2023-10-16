@@ -18,7 +18,7 @@ public class CartReq {
 //    @NotBlank(message = "Product option id is required")
 //    private String productOptionId;
 //    @NotBlank(message = "Value is required")
-    private String value;
+//    private String value;
     @NotNull(message = "Quantity is required")
     private long quantity;
 }
