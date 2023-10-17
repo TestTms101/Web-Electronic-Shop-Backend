@@ -123,23 +123,23 @@ public class ProductService {
 
     public ResponseEntity<?> search(String key,String sortBy,String order, Pageable pageable) {
         Page<Product> products;
-        try {
-//            products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
-//                            .forDefaultLanguage().matchingAny(key),
-//                    pageable);
-            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
-                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
-                                .forDefaultLanguage().matchingAny(key), pageable);
-
-            } else if (Objects.equals(sortBy, "sales")) {
-                products= productRepository.findByOrderBySaleDesc(TextCriteria
-                            .forDefaultLanguage().matchingAny(key), pageable);
-
-            }else products= productRepository.findAllBy(TextCriteria
-                            .forDefaultLanguage().matchingAny(key), pageable);
-        } catch (Exception e) {
-            throw new NotFoundException("Can not found any product with: "+key);
-        }
+//        try {
+////            products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
+////                            .forDefaultLanguage().matchingAny(key),
+////                    pageable);
+//            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
+//                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
+//                                .forDefaultLanguage().matchingAny(key), pageable);
+//
+//            } else if (Objects.equals(sortBy, "sales")) {
+//                products= productRepository.findByOrderBySaleDesc(TextCriteria
+//                            .forDefaultLanguage().matchingAny(key), pageable);
+//
+//            }else products= productRepository.findAllBy(key, pageable);
+//        } catch (Exception e) {
+//            throw new NotFoundException("Can not found any product with: "+key);
+//        }
+        products= productRepository.findAll(pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
         if(Objects.equals(order, "priceDesc") || Objects.equals(sortBy, "priceDesc")){
             resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
