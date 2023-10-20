@@ -28,11 +28,13 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findByOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
 
 //    @Query(sort = "{ 'createDate' : -1 }")
-    @Query("{$text: { $search: ?0,$language: \"en\" }}")
-    Page<Product> findAllBy(String textCriteria, Pageable pageable);
+//    @Query("{$text: { $search: ?0,$language: \"en\" }}")
+    @Query("{name: { $regex: ?0 }}")
+
+    Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
     //    Page<Product> findAllByAndOrderBySaleAsc(TextCriteria textCriteria, Pageable pageable);
 
-    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
+//    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
 //    Optional<Product> findBy(String id, ObjectId option_id);

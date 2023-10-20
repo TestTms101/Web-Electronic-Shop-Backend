@@ -29,8 +29,8 @@ public class ProductMapper {
 //                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
-        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.subdiscount() ,req.getSummary(),
-                req.getTags(),req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
+        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.subdiscount() ,
+                req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
     }
 
 //    public ProductRes toProductListRes(Product req) {
@@ -53,8 +53,8 @@ public class ProductMapper {
 //        BigDecimal discountPrice = new BigDecimal(discountString);
 //        List<ProductOption> option = productOptionRepository.findAllByProduct_Id(new ObjectId(req.getId()));
         return new ProductRes(req.getId(), req.getName(), req.getSlugify(), req.getImages(),req.getPrice(),
-                req.getQuantity(), req.getSale(), req.getSold(), req.getDiscount(),req.getRate(), req.getSummary(),
-                req.getTags(),req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
+                req.getQuantity(), req.getSale(), req.getSold(), req.getDiscount(),req.getRate(),
+                req.getDescription(),req.getCategory().getName(), req.getCategory().getId(),
                 req.getState(),req.getCreatedDate());
 
     }

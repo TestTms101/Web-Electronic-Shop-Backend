@@ -26,9 +26,9 @@ public class ProductReq {
     @NotNull(message = "Price is required")
     private BigDecimal price;
     private double sale;
-    @NotBlank(message = "summary is required")
-    private String summary;
-    private List<String> tags;
+//    @NotBlank(message = "summary is required")
+//    private String summary;
+//    private List<String> tags;
     @NotBlank(message = "Description is required")
     private String description;
     @NotBlank(message = "Category is required")

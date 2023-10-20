@@ -52,13 +52,13 @@ public class ProductController {
         return productService.search(query,sortBy,order, pageable);
     }
 
-    @GetMapping(path = "/byTags")
-    public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
-                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
-        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.findbyTags(query, pageable);
-    }
+//    @GetMapping(path = "/byTags")
+//    public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
+//                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
+//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+//        return productService.findbyTags(query, pageable);
+//    }
     @GetMapping(path = "/byStateEnable")
     public ResponseEntity<?> findAllByState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
                                                  @ParameterObject Pageable pageable){

@@ -50,12 +50,12 @@ public class  Product {
     private double sold;
     private BigDecimal discount;
     private double rate = 0;
-    @NotBlank(message = "summary is required")
-    private String summary;
+//    @NotBlank(message = "summary is required")
+//    private String summary;
 
 //    private List<ProductOption> options = new ArrayList<>();
-    @NotBlank(message = "tags is required")
-    private List<String> tags;
+//    @NotBlank(message = "tags is required")
+//    private List<String> tags;
     @NotBlank(message = "Description is required")
     private String description;
     @NotBlank(message = "Category is required")
@@ -67,29 +67,29 @@ public class  Product {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
 
-    public Product(String name, String slugify, BigDecimal price,int quantity, double sale, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
+    public Product(String name, String slugify, BigDecimal price,int quantity, double sale, String description, Category category, String state, LocalDateTime createdDate) {
         this.name = name;
         this.slugify = slugify;
         this.price = price;
         this.quantity = quantity;
         this.sale = sale;
-        this.summary = summary;
-        this.tags = tags;
+//        this.summary = summary;
+//        this.tags = tags;
         this.description = description;
         this.category = category;
         this.state = state;
         this.createdDate = createdDate;
     }
 
-    public Product(String name, String slugify, BigDecimal price, int quantity, double sale, BigDecimal discount, String summary, List<String> tags, String description, Category category, String state, LocalDateTime createdDate) {
+    public Product(String name, String slugify, BigDecimal price, int quantity, double sale, BigDecimal discount, String description, Category category, String state, LocalDateTime createdDate) {
         this.name = name;
         this.slugify = slugify;
         this.price = price;
         this.quantity = quantity;
         this.sale = sale;
         this.discount = discount;
-        this.summary = summary;
-        this.tags = tags;
+//        this.summary = summary;
+//        this.tags = tags;
         this.description = description;
         this.category = category;
         this.state = state;
