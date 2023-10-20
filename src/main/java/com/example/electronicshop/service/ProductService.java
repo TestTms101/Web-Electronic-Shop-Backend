@@ -99,7 +99,9 @@ public class ProductService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get product success", res));
         }
-        throw new NotFoundException("Can not found any product with id: "+id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any product with id: " + id, ""));
+//        throw new ("Can not found any product with id: "+id);
     }
 
     public ResponseEntity<?> findByCategoryId(String id, Pageable pageable) {
@@ -118,7 +120,9 @@ public class ProductService {
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
-        throw new NotFoundException("Can not found any product with category or brand id: "+id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any product with category id: "+id, ""));
+//        throw new NotFoundException("Can not found any product with category id: "+id);
     }
 
     public ResponseEntity<?> search(String key,String sortBy,String order, Pageable pageable) {
@@ -150,7 +154,9 @@ public class ProductService {
             resList.sort(Comparator.comparing(ProductRes::getDiscount));
         ResponseEntity<?> resp = addPageableToRes(products, resList);
         if (resp != null) return resp;
-        throw new NotFoundException("Can not found any product with: "+key);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any product with: "+key, ""));
+//        throw new NotFoundException("Can not found any product with: "+key);
     }
 
 //    public ResponseEntity<?> findbyTags(String key, Pageable pageable){

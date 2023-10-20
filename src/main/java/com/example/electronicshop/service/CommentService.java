@@ -77,8 +77,12 @@ public class CommentService {
                                 new ResponseObject(true, "Add comment success ", newComment));
                     }
                 }
-                throw new NotFoundException("Can not found product with id: " + req.getProductId());
-        } throw new NotFoundException("Can not found user with id: " + userId);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(false, "Can not found product with id: " + req.getProductId(), ""));
+//                throw new NotFoundException("Can not found product with id: " + req.getProductId());
+        } return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found user with id: " + userId, ""));
+//        throw new NotFoundException("Can not found user with id: " + userId);
     }
 
 
@@ -100,7 +104,9 @@ public class CommentService {
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(false, "Cannot edit comment ", ""));
-        }throw new NotFoundException("Can not found user with id: " + userid);
+        }return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found user with id: " + userid, ""));
+//        throw new NotFoundException("Can not found user with id: " + userid);
 
 
     }

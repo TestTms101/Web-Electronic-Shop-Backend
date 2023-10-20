@@ -81,7 +81,9 @@ public class OrderService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", orderRes));
         }
-        throw new NotFoundException("Can not found order with id: " + id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found order with id: " + id, ""));
+//        throw new NotFoundException("Can not found order with id: " + id);
     }
 
     public ResponseEntity<?> findOrderById(String id, String userId) {
@@ -91,7 +93,9 @@ public class OrderService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", orderRes));
         }
-        throw new NotFoundException("Can not found order with id: " + id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found order with id: " + id, ""));
+//        throw new NotFoundException("Can not found order with id: " + id);
     }
 
     public ResponseEntity<?> cancelOrder(String id, String userId) {
@@ -175,7 +179,9 @@ public class OrderService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", resp));
         }
-        throw new NotFoundException("Can not found any order" );
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any order", ""));
+//        throw new NotFoundException("Can not found any order" );
     }
 //    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
 //    {
@@ -199,6 +205,8 @@ public class OrderService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", resp));
         }
-        throw new NotFoundException("Can not found any order" );
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any order", ""));
+//        throw new NotFoundException("Can not found any order" );
     }
 }
