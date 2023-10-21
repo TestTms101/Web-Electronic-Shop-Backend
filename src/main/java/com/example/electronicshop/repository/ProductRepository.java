@@ -5,12 +5,10 @@ import com.example.electronicshop.models.product.Product;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,13 +24,12 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
     Page<Product> findByOrderByCreatedDateDesc(TextCriteria textCriteria, Pageable pageable);
     Page<Product> findByOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
-
+//    @Query("{'discount': {$gte: ?0}}")
+//    Page<Product> findByDiscountBetween(Long min, Long max, Pageable pageable);
 //    @Query(sort = "{ 'createDate' : -1 }")
 //    @Query("{$text: { $search: ?0,$language: \"en\" }}")
     @Query("{name: { $regex: ?0 }}")
-
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
-    //    Page<Product> findAllByAndOrderBySaleAsc(TextCriteria textCriteria, Pageable pageable);
 
 //    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
