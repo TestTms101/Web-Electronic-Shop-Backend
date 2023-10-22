@@ -152,8 +152,8 @@ public class ProductService {
 ////        throw new NotFoundException("Can not found any product with category id: "+id);
 //    }
 //    public Page<Product> between (Page)
-    public ResponseEntity<?> search(String key, Pageable pageable) {
-        Page<Product> products;
+    public List<?> search(String key) {
+        List<Product> products;
         try {
 //            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
 //                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
@@ -166,11 +166,11 @@ public class ProductService {
 //            }else products= productRepository.findAllBy(TextCriteria
 //                    .forDefaultLanguage().matchingAny(key), pageable);
             products= productRepository.findAllBy(TextCriteria
-                    .forDefaultLanguage().matchingAny(key), pageable);
+                    .forDefaultLanguage().matchingAny(key));
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
-        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+//        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
 //        Iterator<ProductRes> iterator = resList.iterator();
 //        while (iterator.hasNext()) {
 //            ProductRes product = iterator.next();
@@ -185,23 +185,23 @@ public class ProductService {
 //        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
 //                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
 //            resList.sort(Comparator.comparing(ProductRes::getDiscount));
-        ResponseEntity<?> resp = addPageableToRes(products,resList);
-        if (resp != null) return resp;
-        return ResponseEntity.status(HttpStatus.OK).body(
+        ResponseEntity<?> resp = PageableToRes(products);
+        if (resp != null) return products;
+        return (List<?>) ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, ""));
 //        throw new NotFoundException("Can not found any product with: "+key);
     }
-//    private ResponseEntity<?> PageableToRes(List<ProductRes> resList) {
-//        Page<ProductRes> page = new PageImpl<>(resList);
-//        Map<String, Object> resp = new HashMap<>();
-//        resp.put("list", resList);
-//        resp.put("totalQuantity", page.getTotalElements());
-//        resp.put("totalPage", page.getTotalPages());
-//        if (resList.size() >0 )
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject(true, "Get all product success", resp));
-//        return null;
-//    }
+    private ResponseEntity<?> PageableToRes(List<Product> resList) {
+        Page<Product> page = new PageImpl<>(resList);
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", page.getTotalElements());
+        resp.put("totalPage", page.getTotalPages());
+        if (resList.size() >0 )
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get all product success", resp));
+        return null;
+    }
 //    public ResponseEntity<?> findbyTags(String key, Pageable pageable){
 //        Page<Product> products;
 //        try {
