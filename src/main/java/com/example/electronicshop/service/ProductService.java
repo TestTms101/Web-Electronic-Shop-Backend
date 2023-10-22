@@ -118,7 +118,7 @@ public class ProductService {
         }
 
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        ResponseEntity<?> resp = PageableToRes(resList);
+        ResponseEntity<?> resp = addPageableToRes(products,resList);
         if (resp != null) return resp;
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with category id: "+id, ""));
@@ -179,23 +179,23 @@ public class ProductService {
 //        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
 //                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
 //            resList.sort(Comparator.comparing(ProductRes::getDiscount));
-        ResponseEntity<?> resp = PageableToRes(resList);
+        ResponseEntity<?> resp = addPageableToRes(products,resList);
         if (resp != null) return resp;
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, ""));
 //        throw new NotFoundException("Can not found any product with: "+key);
     }
-    private ResponseEntity<?> PageableToRes(List<ProductRes> resList) {
-        Page<ProductRes> page = new PageImpl<>(resList);
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("list", resList);
-        resp.put("totalQuantity", page.getTotalElements());
-        resp.put("totalPage", page.getTotalPages());
-        if (resList.size() >0 )
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(true, "Get all product success", resp));
-        return null;
-    }
+//    private ResponseEntity<?> PageableToRes(List<ProductRes> resList) {
+//        Page<ProductRes> page = new PageImpl<>(resList);
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("list", resList);
+//        resp.put("totalQuantity", page.getTotalElements());
+//        resp.put("totalPage", page.getTotalPages());
+//        if (resList.size() >0 )
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(true, "Get all product success", resp));
+//        return null;
+//    }
 //    public ResponseEntity<?> findbyTags(String key, Pageable pageable){
 //        Page<Product> products;
 //        try {
