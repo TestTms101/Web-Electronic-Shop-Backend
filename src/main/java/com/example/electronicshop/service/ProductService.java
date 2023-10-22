@@ -51,7 +51,13 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product");
     }
-
+    public ResponseEntity<?> findAllOrderbySoldDesc(Pageable pageable) {
+        Page<Product> products = productRepository.findAllByStateOrderBySoldDesc(Constant.ENABLE, pageable);
+        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        if (resp != null) return resp;
+        throw new NotFoundException("Can not found any product");
+    }
     private ResponseEntity<?> addPageableToRes(Page<Product> products, List<ProductRes> resList) {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);

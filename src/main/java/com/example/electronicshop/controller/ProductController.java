@@ -50,7 +50,10 @@ public class ProductController {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query,pageable);
     }
-
+    @GetMapping(path = "/soldDesc")
+    public ResponseEntity<?> findAllByStateOrderBySoldDesc (@ParameterObject Pageable pageable){
+        return productService.findAllOrderbySoldDesc(pageable);
+    }
 //    @GetMapping(path = "/byTags")
 //    public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
 //                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){

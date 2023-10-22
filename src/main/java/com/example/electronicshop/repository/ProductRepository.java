@@ -45,7 +45,7 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    Optional<Product> findByIdAndOptionsValue(String id, String value);
 //    @Query(value = "{'id': ?0, 'images.id_image': ?1}")
 //    Optional<Product> findByIdAndImagesId(String id, String image_id);
-
+    Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);
     Page<Product> findAllByStateOrderByPriceDesc(String state, Pageable pageable);
     Page<Product> findAllByStateOrderByPriceAsc(String state, Pageable pageable);
     Page<Product> findAllByStateOrderByNameDesc(String state, Pageable pageable);
