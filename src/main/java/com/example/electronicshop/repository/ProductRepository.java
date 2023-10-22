@@ -18,17 +18,23 @@ import java.util.Optional;
 public interface ProductRepository extends MongoRepository<Product, String>{
     Optional<Product> findProductByIdAndState(String id, String state);
     Page<Product> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
-    Page<Product> findAllByCategory_IdAndStateOrderByCreatedDateDesc(ObjectId catId, String state, Pageable pageable);
+    @Query(sort = "{ 'createdDate' : -1 }")
+    Page<Product> findAllByCategory_IdAndStateOrderByCreatedDateDesc(String catId, String state, Pageable pageable);
+    Page<Product> findAllByCategory_IdAndStateOrderBySaleDesc(String catId, String state, Pageable pageable);
+
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "    'state' : 'enable'}")
     Page<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
+    @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
+            "    'state' : 'enable'}")
+    Page<Product> findProductsByCategoryOrderBySaleDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
     Page<Product> findByOrderByCreatedDateDesc(TextCriteria textCriteria, Pageable pageable);
     Page<Product> findByOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
 //    @Query("{'discount': {$gte: ?0}}")
 //    Page<Product> findByDiscountBetween(Long min, Long max, Pageable pageable);
 //    @Query(sort = "{ 'createDate' : -1 }")
 //    @Query("{$text: { $search: ?0,$language: \"en\" }}")
-    @Query("{name: { $regex: ?0 }}")
+//    @Query("{name: { $regex: ?0 }}")
     Page<Product> findAllBy(TextCriteria textCriteria, Pageable pageable);
 
 //    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);

@@ -31,7 +31,7 @@ public class ProductController {
 
     @GetMapping(path = "/category/{id}")
     public ResponseEntity<?> findByCategoryId (@PathVariable("id") String id,
-                                                         @ParameterObject Pageable pageable){
+                                               @ParameterObject Pageable pageable){
         return productService.findByCategoryId(id, pageable);
     }
 
@@ -45,13 +45,10 @@ public class ProductController {
 
     @GetMapping(path = "/search")
     public ResponseEntity<?> search (@RequestParam("query") String query,
-                                     @RequestParam(value = "sortBy", defaultValue = "")  String sortBy,
-                                     @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
-                                     @RequestParam(value = "maxPrice", defaultValue = "")  BigDecimal maxPrice,
                                      @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.search(query,sortBy,minPrice,maxPrice,pageable);
+        return productService.search(query,pageable);
     }
 
 //    @GetMapping(path = "/byTags")

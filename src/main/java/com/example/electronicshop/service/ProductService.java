@@ -21,7 +21,6 @@ import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,7 +102,7 @@ public class ProductService {
                 new ResponseObject(false, "Can not found any product with id: " + id, ""));
 //        throw new ("Can not found any product with id: "+id);
     }
-    public ResponseEntity<?> findByCategoryId(String id, Pageable pageable) {
+    public ResponseEntity<?> findByCategoryId(String id,Pageable pageable) {
         Page<Product> products;
         try {
             Optional<Category> category = categoryRepository.findCategoryByIdAndState(id, Constant.ENABLE);
@@ -112,13 +111,14 @@ public class ProductService {
                         .stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
                 products = productRepository.findProductsByCategoryOrderByCreatedDateDesc(new ObjectId(id),
                         subCat, pageable);
-            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(new ObjectId(id),
+            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(id,
                     Constant.ENABLE, pageable);
         } catch (Exception e) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");
         }
+
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        ResponseEntity<?> resp = addPageableToRes(products, resList);
+        ResponseEntity<?> resp = PageableToRes(resList);
         if (resp != null) return resp;
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with category id: "+id, ""));
@@ -146,37 +146,39 @@ public class ProductService {
 ////        throw new NotFoundException("Can not found any product with category id: "+id);
 //    }
 //    public Page<Product> between (Page)
-    public ResponseEntity<?> search(String key, String sortBy, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+    public ResponseEntity<?> search(String key, Pageable pageable) {
         Page<Product> products;
         try {
-            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
-                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
-                                .forDefaultLanguage().matchingAny(key),pageable);
-
-            } else if (Objects.equals(sortBy, "sales")) {
-                products= productRepository.findByOrderBySaleDesc(TextCriteria
-                            .forDefaultLanguage().matchingAny(key), pageable);
-
-            }else products= productRepository.findAllBy(TextCriteria
+//            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
+//                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
+//                                .forDefaultLanguage().matchingAny(key),pageable);
+//
+//            } else if (Objects.equals(sortBy, "sales")) {
+//                products= productRepository.findByOrderBySaleDesc(TextCriteria
+//                            .forDefaultLanguage().matchingAny(key), pageable);
+//
+//            }else products= productRepository.findAllBy(TextCriteria
+//                    .forDefaultLanguage().matchingAny(key), pageable);
+            products= productRepository.findAllBy(TextCriteria
                     .forDefaultLanguage().matchingAny(key), pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        Iterator<ProductRes> iterator = resList.iterator();
-        while (iterator.hasNext()) {
-            ProductRes product = iterator.next();
-            BigDecimal productPrice = product.getPrice();
-            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
-                iterator.remove();
-            }
-        }
-        if(Objects.equals(sortBy, "priceDesc")){
-            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-        }
-        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
-                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
-            resList.sort(Comparator.comparing(ProductRes::getDiscount));
+//        Iterator<ProductRes> iterator = resList.iterator();
+//        while (iterator.hasNext()) {
+//            ProductRes product = iterator.next();
+//            BigDecimal productPrice = product.getPrice();
+//            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
+//                iterator.remove();
+//            }
+//        }
+//        if(Objects.equals(sortBy, "priceDesc")){
+//            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
+//        }
+//        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
+//                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
+//            resList.sort(Comparator.comparing(ProductRes::getDiscount));
         ResponseEntity<?> resp = PageableToRes(resList);
         if (resp != null) return resp;
         return ResponseEntity.status(HttpStatus.OK).body(

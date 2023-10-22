@@ -40,6 +40,7 @@ public class CategoryService {
     public ResponseEntity<ResponseObject> findCategoryById(String id)
     {
         Optional<Category> category = categoryRepository.findById(id);
+
         if(category.isPresent())
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get category success", category));
