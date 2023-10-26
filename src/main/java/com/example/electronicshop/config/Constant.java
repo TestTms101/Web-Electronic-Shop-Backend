@@ -28,5 +28,5 @@ public class Constant {
     public static final String PAY_COD = "cod";
     public static final String PAY_PAYPAL = "paypal";
     public static final String PAY_VNPAY = "vnpay";
-
+    public static final int PAYMENT_TIMEOUT = 10 * 60 * 100;// 1p
 }

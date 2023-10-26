@@ -6,11 +6,13 @@ import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
+import com.example.electronicshop.utils.TimeCancel;
 import com.example.electronicshop.utils.VNPayUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,9 @@ import java.util.*;
 public class VNPayService extends PaymentFactory {
     private final OrderRepository orderRepository;
     private final PaymentUtils paymentUtils;
+    private final TimeCancel timeCancel;
+    private final TaskScheduler taskScheduler;
+
 
     @SneakyThrows
     @Override
@@ -66,10 +71,14 @@ public class VNPayService extends PaymentFactory {
         String paymentUrl = VNPayUtils.vnp_PayUrl + "?" + queryUrl;
         String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order, true);
         String checkUpdateSold =paymentUtils.setSoldProduct(order,true);
-        if (checkUpdateQuantityProduct == null && checkUpdateSold==null)
+        if (checkUpdateQuantityProduct == null && checkUpdateSold==null) {
+            timeCancel.setOrderId(order.getId());
+            timeCancel.setOrderRepository(orderRepository);
+            timeCancel.setPaymentUtils(paymentUtils);
+            taskScheduler.schedule(timeCancel, new Date(System.currentTimeMillis() + Constant.PAYMENT_TIMEOUT));
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Payment Complete", paymentUrl));
-       else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds the available stock!");
+        }else throw new AppException(HttpStatus.CONFLICT.value(), "Quantity exceeds the available stock!");
     }
 
     @SneakyThrows

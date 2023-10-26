@@ -9,6 +9,7 @@ import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.repository.OrderRepository;
 import com.example.electronicshop.utils.MoneyUtils;
 import com.example.electronicshop.utils.StringUtils;
+import com.example.electronicshop.utils.TimeCancel;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -17,6 +18,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -38,6 +41,8 @@ public class PaypalService extends  PaymentFactory{
     private APIContext apiContext;
     private PaymentUtils paymentUtils;
     private final OrderRepository orderRepository;
+    private final TimeCancel timeCancel;
+    private final TaskScheduler taskScheduler;
 
     @Override
     @Transactional
@@ -65,8 +70,13 @@ public class PaypalService extends  PaymentFactory{
                         order.getPaymentDetail().setPaymentId(payment.getId());
                         order.getPaymentDetail().setPaymentToken((links.getHref().split(PATTERN)[1]));
                         order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
+                        order.getPaymentDetail().getPaymentInfo().put("orderDate", LocalDateTime.now(Clock.systemDefaultZone()));
                         order.setCreatedDate(LocalDateTime.now());
                         orderRepository.save(order);
+                        timeCancel.setOrderId(order.getId());
+                        timeCancel.setOrderRepository(orderRepository);
+                        timeCancel.setPaymentUtils(paymentUtils);
+                        taskScheduler.schedule(timeCancel, new Date(System.currentTimeMillis() + Constant.PAYMENT_TIMEOUT)) ;
                         return ResponseEntity.status(HttpStatus.OK).body(
                                 new ResponseObject(true, "Payment init complete", links.getHref()));
                     }

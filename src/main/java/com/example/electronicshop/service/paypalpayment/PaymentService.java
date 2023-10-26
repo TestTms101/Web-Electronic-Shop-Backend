@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -58,6 +60,7 @@ private final OrderItemRepository orderItemRepository;
                 throw new NotFoundException("Can not found any order with id: " + id);
             }
             PaymentDetail paymentDetail = new PaymentDetail(null,paymentType.toUpperCase(),"", new HashMap<>());
+            paymentDetail.getPaymentInfo().put("orderDate", LocalDateTime.now(Clock.systemDefaultZone()));
             order.get().setPaymentDetail(paymentDetail);
             Delivery delivery = new Delivery(req.getName(), req.getPhone(),
                     req.getProvince(), req.getDistrict(), req.getWard(),req.getAddress());

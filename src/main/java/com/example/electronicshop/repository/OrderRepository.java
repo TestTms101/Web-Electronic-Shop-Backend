@@ -22,6 +22,7 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 //    Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
     Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
 
+    Optional<Order> findOrderByIdAndState(String orderId, String state);
 
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();

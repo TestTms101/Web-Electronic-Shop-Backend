@@ -43,7 +43,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CommentMapper commentMap;
-    private final OrderRepository orderRepository;
+//    private final OrderRepository orderRepository;
 
 
     public ResponseEntity<?> findByProductId(String productId, Pageable pageable) {
