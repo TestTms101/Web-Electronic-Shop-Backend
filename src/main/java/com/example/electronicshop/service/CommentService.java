@@ -48,13 +48,17 @@ public class CommentService {
 
     public ResponseEntity<?> findByProductId(String productId, Pageable pageable) {
         Page<Comment> comment= commentRepository.findAllByProduct_IdAndState(new ObjectId(productId),Constant.COMMENT_ENABLE, pageable);
-        if (comment.isEmpty()) throw new NotFoundException("Can not found any comment");
+        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any comment", ""));
+//            throw new NotFoundException("Can not found any comment");
         List<CommentRes> resList = comment.getContent().stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalQuantity", comment.getTotalElements());
         resp.put("totalPage", comment.getTotalPages());
-        if (comment.isEmpty()) throw new NotFoundException("Can not found any comment");
+        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any comment", ""));
+//        throw new NotFoundException("Can not found any comment");
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get comment by product success ", resp));
     }
@@ -119,7 +123,9 @@ public class CommentService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Block comment successfully ", comment)
             );
-        } throw new NotFoundException("Can not found comment with id: "+id);
+        } return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found comment with id: "+id, ""));
+//        throw new NotFoundException("Can not found comment with id: "+id);
     }
 
     public ResponseEntity<ResponseObject> setEnableComment(String id) {
@@ -130,7 +136,9 @@ public class CommentService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, " Comment successfully ", comment)
             );
-        } throw new NotFoundException("Can not found comment with id: "+id);
+        } return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found comment with id: "+id, ""));
+//        throw new NotFoundException("Can not found comment with id: "+id);
     }
     public ResponseEntity<ResponseObject> findAllComment(Pageable pageable){
         Page<Comment> comment = commentRepository.findAll(pageable);
@@ -162,7 +170,9 @@ public class CommentService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Delete comment successfully ", "")
             );
-        } throw new NotFoundException("Can not found comment with id: "+id);
+        } return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found comment with id: "+id, ""));
+//        throw new NotFoundException("Can not found comment with id: "+id);
     }
 
     @Transactional
@@ -182,8 +192,9 @@ public class CommentService {
                         new ResponseObject(true, "Delete comment successfully ", "")
                 );
             }
-        }
-        throw new NotFoundException("Can not found user with id: "+id);
+        }return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found user with id: "+id, ""));
+//        throw new NotFoundException("Can not found user with id: "+id);
     }
 
 }
