@@ -115,15 +115,16 @@ public class ProductService {
             if (category.isPresent()) {
                 List<ObjectId> subCat = category.get().getSubCategories()
                         .stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
-                products = productRepository.findProductsByCategoryOrderByCreatedDateDesc(new ObjectId(id),
+                products = productRepository.findProductsByCategoryOrderByCreatedDateAsc(new ObjectId(id),
                         subCat);
-            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(id,
+            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateAsc(id,
                     Constant.ENABLE);
         } catch (Exception e) {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");
         }
 
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
         ResponseEntity<?> resp = PageableToRes(resList);
         if (resp != null) return resp;
         return ResponseEntity.status(HttpStatus.OK).body(

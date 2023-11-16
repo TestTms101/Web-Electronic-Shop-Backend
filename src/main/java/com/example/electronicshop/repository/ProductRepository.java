@@ -18,13 +18,13 @@ import java.util.Optional;
 public interface ProductRepository extends MongoRepository<Product, String>{
     Optional<Product> findProductByIdAndState(String id, String state);
     Page<Product> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
-    @Query(sort = "{ 'createdDate' : -1 }")
-    List<Product> findAllByCategory_IdAndStateOrderByCreatedDateDesc(String catId, String state);
+    @Query(sort = "{ 'createdDate' : 1 }")
+    List<Product> findAllByCategory_IdAndStateOrderByCreatedDateAsc(String catId, String state);
 //    Page<Product> findAllByCategory_IdAndStateOrderBySaleDesc(String catId, String state, Pageable pageable);
 
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
-            "    'state' : 'enable'}")
-    List<Product> findProductsByCategoryOrderByCreatedDateDesc(ObjectId id, List<ObjectId> subCat);
+            "'state' : 'enable'}")
+    List<Product> findProductsByCategoryOrderByCreatedDateAsc(ObjectId id, List<ObjectId> subCat);
 //    @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
 //            "    'state' : 'enable'}")
 //    Page<Product> findProductsByCategoryOrderBySaleDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
