@@ -48,8 +48,8 @@ public class CommentService {
 
     public ResponseEntity<?> findByProductId(String productId, Pageable pageable) {
         Page<Comment> comment= commentRepository.findAllByProduct_IdAndState(new ObjectId(productId),Constant.COMMENT_ENABLE, pageable);
-        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any comment", ""));
+//        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any comment", ""));
 //            throw new NotFoundException("Can not found any comment");
         List<CommentRes> resList = comment.getContent().stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
@@ -57,7 +57,7 @@ public class CommentService {
         resp.put("totalQuantity", comment.getTotalElements());
         resp.put("totalPage", comment.getTotalPages());
         if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any comment", ""));
+                new ResponseObject(false, "Can not found any comment", resp));
 //        throw new NotFoundException("Can not found any comment");
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get comment by product success ", resp));
@@ -154,7 +154,7 @@ public class CommentService {
         }
         else
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(false, "can't find all comment ", ""));
+                    new ResponseObject(false, "can't find all comment ", resp));
     }
     @Transactional
     public ResponseEntity<ResponseObject> deleteCommemt(String id) {
