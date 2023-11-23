@@ -5,6 +5,7 @@ import com.example.electronicshop.models.enity.Order;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -26,13 +27,11 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
-    Page<Order> findAllByLastModifiedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    Page<Order> findAllByCreatedDateBetweenAndState(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-
-    //    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
+//    List<Order> getOrderByUser_IdAndState(ObjectId userId, String state);
     Page<Order> getOrderByUser_IdAndState(ObjectId userId, String state, Pageable pageable);
 
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByLastModifiedDateBetweenAndStateOrderByLastModifiedDateAsc(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    List<Order> findAllBy(TextCriteria textCriteria);
 }

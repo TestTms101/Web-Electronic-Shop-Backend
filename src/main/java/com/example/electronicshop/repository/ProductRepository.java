@@ -20,7 +20,6 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
     @Query(sort = "{ 'createdDate' : 1 }")
     List<Product> findAllByCategory_IdAndStateOrderByCreatedDateAsc(String catId, String state);
-//    Page<Product> findAllByCategory_IdAndStateOrderBySaleDesc(String catId, String state, Pageable pageable);
 
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "'state' : 'enable'}")
@@ -36,8 +35,9 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query("{$text: { $search: ?0,$language: \"en\" }}")
 //    @Query("{name: { $regex: ?0 }}")
     List<Product> findAllBy(TextCriteria textCriteria);
+    Page<Product> findProductBy(TextCriteria textCriteria, Pageable pageable);
+
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
-//    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
 //    Optional<Product> findBy(String id, ObjectId option_id);
@@ -46,10 +46,6 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query(value = "{'id': ?0, 'images.id_image': ?1}")
 //    Optional<Product> findByIdAndImagesId(String id, String image_id);
     Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);
-    Page<Product> findAllByStateOrderByPriceDesc(String state, Pageable pageable);
-    Page<Product> findAllByStateOrderByPriceAsc(String state, Pageable pageable);
-    Page<Product> findAllByStateOrderByNameDesc(String state, Pageable pageable);
-    Page<Product> findAllByStateOrderByNameAsc(String state, Pageable pageable);
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
 }

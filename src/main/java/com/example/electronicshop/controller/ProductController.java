@@ -36,13 +36,13 @@ public class ProductController {
     public ResponseEntity<?> findAllProductHomePage (){
         return productService.findAllProductHomePage();
     }
-//    @GetMapping(path = "/search")
-//    public ResponseEntity<?> search (@RequestParam("q") String query,
-//                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
-//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-//        return productService.search(query, pageable);
-//    }
+    @GetMapping(path = "/searchadmin")
+    public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
+                                     @ParameterObject Pageable pageable){
+        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+        return productService.searchAdmin(query, sortBy,pageable);
+    }
 
     @GetMapping(path = "/search")
     public ResponseEntity<?> search (@RequestParam("query") String query){
