@@ -32,6 +32,10 @@ public class ProductController {
         return productService.findByCategoryId(id);
     }
 
+    @GetMapping(path = "/home")
+    public ResponseEntity<?> findAllProductHomePage (){
+        return productService.findAllProductHomePage();
+    }
 //    @GetMapping(path = "/search")
 //    public ResponseEntity<?> search (@RequestParam("q") String query,
 //                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){

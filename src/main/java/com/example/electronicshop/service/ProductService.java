@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,12 +68,35 @@ public class ProductService {
         return null;
     }
 
-    public ResponseEntity<?> findAllOrderbyNameDesc(Pageable pageable) {
-        Page<Product> products = productRepository.findAllByStateOrderByNameDesc(Constant.ENABLE, pageable);
-        List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        ResponseEntity<?> resp = addPageableToRes(products, resList);
-        if (resp != null) return resp;
-        throw new NotFoundException("Can not found any product");
+//    private ResponseEntity<?> addPageableHomePage(Category category, List<ProductRes> resList) {
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("categoryId", category.getId());
+//        resp.put("title", category.getName());
+//        resp.put("items", resList);
+//        if (resList.size() >0 )
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(true, "Get all product success", resp));
+//        return null;
+//    }
+    public ResponseEntity<?> findAllProductHomePage() {
+        List<Category> list = categoryRepository.findCategoryByState(Constant.ENABLE);
+        List<Product> products;
+        List<Map<String, Object>> resp = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        for (Category i: list) {
+            products = productRepository.findAllByCategory_IdAndState(new ObjectId(i.getId()),Constant.ENABLE);
+            List<ProductRes> productRes = products.stream().map(productMapper::toProductRes).toList();
+//            ResponseEntity<?> response = addPageableHomePage(i,productRes);
+            map.put("categoryId",i.getId());
+            map.put("title", i.getName());
+            map.put("items",productRes);
+//            map.put("responseEntity", response);
+            resp.add(map);
+//            return response;
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all category success", resp));
+
     }
     public ResponseEntity<?> findAllOrderbyNameAsc(Pageable pageable) {
         Page<Product> products = productRepository.findAllByStateOrderByNameAsc(Constant.ENABLE, pageable);

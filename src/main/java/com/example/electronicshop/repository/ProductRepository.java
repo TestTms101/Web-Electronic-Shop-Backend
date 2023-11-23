@@ -36,7 +36,7 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query("{$text: { $search: ?0,$language: \"en\" }}")
 //    @Query("{name: { $regex: ?0 }}")
     List<Product> findAllBy(TextCriteria textCriteria);
-
+    List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
 //    Page<Product> findByTagsOrderByCreatedDateDesc(String tags, Pageable pageable);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //
