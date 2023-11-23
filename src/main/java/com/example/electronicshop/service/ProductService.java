@@ -69,15 +69,16 @@ public class ProductService {
 
     public ResponseEntity<?> findAllProductHomePage() {
         List<Category> list = categoryRepository.findCategoryByState(Constant.ENABLE);
-        List<Product> products;
+//        List<Product> products;
         List<ProductRes> productRes;
         List<Map<String, Object>> resp = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
+//        Map<String, Object> map = new HashMap<>();
         for (Category i: list) {
-            products = productRepository.findAllByCategory_IdAndState(new ObjectId(i.getId()),Constant.ENABLE);
+            List<Product> products = productRepository.findAllByCategory_IdAndState(new ObjectId(i.getId()),Constant.ENABLE);
             if(products.size()>10)
                 productRes = products.stream().map(productMapper::toProductRes).toList().subList(0,10);
             else productRes = products.stream().map(productMapper::toProductRes).toList();
+            Map<String, Object> map = new HashMap<>();
             map.put("categoryId",i.getId());
             map.put("title", i.getName());
             map.put("items",productRes);
@@ -126,6 +127,20 @@ public class ProductService {
     public ResponseEntity<?> search(String key) {
         List<Product> products;
         try {
+            products= productRepository.findAllBy(TextCriteria
+                    .forDefaultLanguage().matchingAny(key));
+        } catch (Exception e) {
+            throw new NotFoundException("Can not found any product with: "+key);
+        }
+        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).toList();
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all product success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any product with: "+key, resList));
+    }
+    public ResponseEntity<?> searchAdmin(String key, String sortBy, Pageable pageable) {
+        Page<Product> products;
+        try {
 //            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
 //                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
 //                                .forDefaultLanguage().matchingAny(key),pageable);
@@ -136,12 +151,24 @@ public class ProductService {
 //
 //            }else products= productRepository.findAllBy(TextCriteria
 //                    .forDefaultLanguage().matchingAny(key), pageable);
-            products= productRepository.findAllBy(TextCriteria
-                    .forDefaultLanguage().matchingAny(key));
+            products= productRepository.findProductBy(TextCriteria
+                    .forDefaultLanguage().matchingAny(key),pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
-        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).toList();
+        List<ProductRes> resList = new ArrayList<>(products.getContent().stream().map(productMapper::toProductRes).toList());
+//        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        if (sortBy.equals("") || sortBy.equals("latest"))
+            resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        else if (sortBy.equals("oldest"))
+            resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
+        else if (sortBy.equals("sales"))
+            resList.sort(Comparator.comparing(ProductRes::getSale).reversed());
+        else if (sortBy.equals("priceDesc"))
+            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
+        else         resList.sort(Comparator.comparing(ProductRes::getDiscount));
+        ResponseEntity<?> resp = addPageableToRes(products,resList);
+
 //        Iterator<ProductRes> iterator = resList.iterator();
 //        while (iterator.hasNext()) {
 //            ProductRes product = iterator.next();
@@ -157,11 +184,10 @@ public class ProductService {
 //                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
 //            resList.sort(Comparator.comparing(ProductRes::getDiscount));
 //        ResponseEntity<?> resp = PageableToRes(resList);
-        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all product success", resList));
+        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all product success", resp));
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
-//        throw new NotFoundException("Can not found any product with: "+key);
     }
 
     public ResponseEntity<?> addProduct(ProductReq req) {
