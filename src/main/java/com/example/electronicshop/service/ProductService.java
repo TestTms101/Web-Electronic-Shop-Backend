@@ -70,11 +70,14 @@ public class ProductService {
     public ResponseEntity<?> findAllProductHomePage() {
         List<Category> list = categoryRepository.findCategoryByState(Constant.ENABLE);
         List<Product> products;
+        List<ProductRes> productRes;
         List<Map<String, Object>> resp = new ArrayList<>();
         Map<String, Object> map = new HashMap<>();
         for (Category i: list) {
             products = productRepository.findAllByCategory_IdAndState(new ObjectId(i.getId()),Constant.ENABLE);
-            List<ProductRes> productRes = products.stream().map(productMapper::toProductRes).toList();
+            if(products.size()>10)
+                productRes = products.stream().map(productMapper::toProductRes).toList().subList(0,10);
+            else productRes = products.stream().map(productMapper::toProductRes).toList();
             map.put("categoryId",i.getId());
             map.put("title", i.getName());
             map.put("items",productRes);
