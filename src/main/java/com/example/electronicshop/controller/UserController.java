@@ -69,7 +69,17 @@ public class UserController {
         return userService.setRoleByAdmin(userId,req);
     }
 
+    @GetMapping(path = "/admin/users/filterstate/{state}")
+    public ResponseEntity<?> filterStateCategory (@PathVariable("state") String state) {
+        return userService.filterState(state);
+    }
 
+    @GetMapping(path = "/admin/users/search")
+    public ResponseEntity<?> searchadmin (@RequestParam("q") String query, @ParameterObject Pageable pageable){
+        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+        return userService.searchAdmin(query,pageable);
+    }
     @PutMapping(path = "/users/{userId}")
     public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
                                           @PathVariable("userId") String userId,

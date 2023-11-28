@@ -1,13 +1,17 @@
 package com.example.electronicshop.service;
 
 import com.example.electronicshop.communication.request.*;
+import com.example.electronicshop.communication.response.CategoryResponse;
+import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.UserMap;
 import com.example.electronicshop.models.ResponseObject;
+import com.example.electronicshop.models.enity.Category;
 import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.models.enity.UserImage;
+import com.example.electronicshop.models.product.Product;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.UserRepository;
@@ -15,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -107,7 +112,35 @@ public class UserService {
         throw new NotFoundException("Can not found user with id " + id );
     }
 
+    public ResponseEntity<?> filterState(String state) {
+        List<User> users;
+        if (state.equals("active"))
+            users=userRepository.findUserByState(Constant.USER_ACTIVE);
+        else if (state.equals("block"))
+            users=userRepository.findUserByState(Constant.USER_NOT_ACTIVE);
+        else if (state.equals("not_verify"))
+            users=userRepository.findUserByState(Constant.USER_NOT_VERIFY);
+        else users=userRepository.findAll();
+        List<UserResponse> resList = users.stream().map(userMapper::thisUserRespone).toList();
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all user success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any user ", resList));
+    }
 
+    public ResponseEntity<?> searchAdmin(String key, Pageable pageable) {
+        Page<User> users;
+        try {
+            users= userRepository.findUserBy(key,pageable);
+        } catch (Exception e) {
+            throw new NotFoundException("Can not found any user with: "+key);
+        }
+        List<UserResponse> resList = new ArrayList<>(users.getContent().stream().map(userMapper::thisUserRespone).toList());
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all user success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any user with: "+key, resList));
+    }
 
     @Transactional
     public ResponseEntity<?> updateUser(String id, UserRequest userReq) {

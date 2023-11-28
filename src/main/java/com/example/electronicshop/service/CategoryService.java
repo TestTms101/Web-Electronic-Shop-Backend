@@ -70,7 +70,7 @@ public class CategoryService {
             categories=categoryRepository.findCategoryByState(Constant.ENABLE);
         else categories=categoryRepository.findAll();
         List<CategoryResponse> resList = categories.stream().map(categoryMap::toCategoryRes).toList();
-        if (resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get all category success", resList));
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any category with: ", resList));

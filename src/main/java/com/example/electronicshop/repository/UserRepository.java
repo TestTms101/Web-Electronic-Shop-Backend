@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +22,9 @@ public interface UserRepository extends MongoRepository<User,String> {
     Optional<User> findUsersByEmail(String email);
     Optional<User> findUserByIdAndState(String id, String state);
     Page<User> findUsersByRole(String role, Pageable pageable);
-    List<User> findAllBy(TextCriteria textCriteria);
+    List<User> findUserByState(String state);
+    @Query("{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }},{phone: { $regex: ?0, $options: 'si' }}]}")
+    Page<User> findUserBy(String string, Pageable pageable);
 
 //    @Query("{'email': ?0, 'state': ?1}")
 //    Optional<User> findEmailAndState(String email, String state);
