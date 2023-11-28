@@ -113,14 +113,12 @@ public class UserService {
     }
 
     public ResponseEntity<?> filterState(String state) {
-        List<User> users;
-        if (state.equals("active"))
-            users=userRepository.findUserByState(Constant.USER_ACTIVE);
-        else if (state.equals("block"))
-            users=userRepository.findUserByState(Constant.USER_NOT_ACTIVE);
-        else if (state.equals("not_verify"))
-            users=userRepository.findUserByState(Constant.USER_NOT_VERIFY);
-        else users=userRepository.findAll();
+        List<User> users = switch (state) {
+            case "active" -> userRepository.findUserByState(Constant.USER_ACTIVE);
+            case "block" -> userRepository.findUserByState(Constant.USER_NOT_ACTIVE);
+            case "not_verify" -> userRepository.findUserByState(Constant.USER_NOT_VERIFY);
+            default -> userRepository.findAll();
+        };
         List<UserResponse> resList = users.stream().map(userMapper::thisUserRespone).toList();
         if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get all user success", resList));
@@ -128,10 +126,15 @@ public class UserService {
                 new ResponseObject(false, "Can not found any user ", resList));
     }
 
-    public ResponseEntity<?> searchAdmin(String key, Pageable pageable) {
+    public ResponseEntity<?> searchAdmin(String key, String state, Pageable pageable) {
         Page<User> users;
         try {
-            users= userRepository.findUserBy(key,pageable);
+            users = switch (state) {
+                case "active" -> userRepository.findUserBy(key, Constant.USER_ACTIVE, pageable);
+                case "block" -> userRepository.findUserBy(key, Constant.USER_NOT_ACTIVE, pageable);
+                case "not_verify" -> userRepository.findUserBy(key, Constant.USER_NOT_VERIFY, pageable);
+                default -> userRepository.findAllBy(key, pageable);
+            };
         } catch (Exception e) {
             throw new NotFoundException("Can not found any user with: "+key);
         }

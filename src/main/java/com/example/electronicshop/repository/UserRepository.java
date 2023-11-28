@@ -23,9 +23,13 @@ public interface UserRepository extends MongoRepository<User,String> {
     Optional<User> findUserByIdAndState(String id, String state);
     Page<User> findUsersByRole(String role, Pageable pageable);
     List<User> findUserByState(String state);
-    @Query("{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }},{phone: { $regex: ?0, $options: 'si' }}]}")
-    Page<User> findUserBy(String string, Pageable pageable);
+    @Query("{$and:[{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }}," +
+            "{phone: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
+    Page<User> findUserBy(String string, String state, Pageable pageable);
 
+    @Query("{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }}," +
+            "{phone: { $regex: ?0, $options: 'si' }}]}")
+    Page<User> findAllBy(String string, Pageable pageable);
 //    @Query("{'email': ?0, 'state': ?1}")
 //    Optional<User> findEmailAndState(String email, String state);
     boolean existsByEmail(String email);

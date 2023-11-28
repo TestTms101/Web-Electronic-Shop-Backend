@@ -75,10 +75,11 @@ public class UserController {
     }
 
     @GetMapping(path = "/admin/users/search")
-    public ResponseEntity<?> searchadmin (@RequestParam("q") String query, @ParameterObject Pageable pageable){
-        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return userService.searchAdmin(query,pageable);
+    public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("state") String state,
+                                          @ParameterObject Pageable pageable){
+//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+        return userService.searchAdmin(query,state,pageable);
     }
     @PutMapping(path = "/users/{userId}")
     public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
