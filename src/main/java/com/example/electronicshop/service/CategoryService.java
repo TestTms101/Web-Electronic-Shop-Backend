@@ -22,17 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 //    private final CloudinaryConfig cloudinary;
-//    private final CategoryMap categoryMap;
+    private final CategoryMap categoryMap;
 
     public ResponseEntity<ResponseObject> findAll() {
         List<Category> list = categoryRepository.findAll();
@@ -65,58 +62,19 @@ public class CategoryService {
                     new ResponseObject(false, "Cannot find category ", ""));
     }
 
-//    public ResponseEntity<?> searchAdmin(String key, String sortBy, Pageable pageable) {
-//        Page<Category> categories;
-//        try {
-////            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
-////                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
-////                                .forDefaultLanguage().matchingAny(key),pageable);
-////
-////            } else if (Objects.equals(sortBy, "sales")) {
-////                products= productRepository.findByOrderBySaleDesc(TextCriteria
-////                            .forDefaultLanguage().matchingAny(key), pageable);
-////
-////            }else products= productRepository.findAllBy(TextCriteria
-////                    .forDefaultLanguage().matchingAny(key), pageable);
-//            categories= categoryRepository.findAllBy(TextCriteria
-//                    .forDefaultLanguage().matchingAny(key),pageable);
-//        } catch (Exception e) {
-//            throw new NotFoundException("Can not found any product with: "+key);
-//        }
-//        List<ProductRes> resList = new ArrayList<>(categories.getContent().stream().map(productMapper::toProductRes).toList());
-////        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
-//        if (sortBy.equals("") || sortBy.equals("latest"))
-//            resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
-//        else if (sortBy.equals("oldest"))
-//            resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
-//        else if (sortBy.equals("sales"))
-//            resList.sort(Comparator.comparing(ProductRes::getSale).reversed());
-//        else if (sortBy.equals("priceDesc"))
-//            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-//        else         resList.sort(Comparator.comparing(ProductRes::getDiscount));
-//        ResponseEntity<?> resp = addPageableToRes(products,resList);
-//
-////        Iterator<ProductRes> iterator = resList.iterator();
-////        while (iterator.hasNext()) {
-////            ProductRes product = iterator.next();
-////            BigDecimal productPrice = product.getPrice();
-////            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
-////                iterator.remove();
-////            }
-////        }
-////        if(Objects.equals(sortBy, "priceDesc")){
-////            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-////        }
-////        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
-////                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
-////            resList.sort(Comparator.comparing(ProductRes::getDiscount));
-////        ResponseEntity<?> resp = PageableToRes(resList);
-//        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(true, "Get all product success", resp));
-//        else return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(false, "Can not found any product with: "+key, resList));
-//    }
-
+    public ResponseEntity<?> filterState(String state) {
+        List<Category> categories;
+        if (state.equals("disable"))
+            categories=categoryRepository.findCategoryByState(Constant.DISABLE);
+        else if (state.equals("enable"))
+            categories=categoryRepository.findCategoryByState(Constant.ENABLE);
+        else categories=categoryRepository.findAll();
+        List<CategoryResponse> resList = categories.stream().map(categoryMap::toCategoryRes).toList();
+        if (resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all category success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any category with: ", resList));
+    }
     public ResponseEntity<ResponseObject> createCategory(CategoryRequest categoryRequest) {
         if (categoryRequest.getName() != null) {
             Optional<Category> foundCategory = categoryRepository.findCategoryByNameAndState(categoryRequest.getName(), categoryRequest.getState());
