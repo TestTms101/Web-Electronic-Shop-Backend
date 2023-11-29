@@ -159,11 +159,11 @@ public class ProductService {
         List<ProductRes> resList = new ArrayList<>(products.getContent().stream().map(productMapper::toProductRes).toList());
 //        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
         switch (sortBy) {
-            case "", "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+            case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
             case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
             case "sales" -> resList.sort(Comparator.comparing(ProductRes::getSale).reversed());
             case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-            default -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
+            case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
         }
         ResponseEntity<?> resp = addPageableToRes(products,resList);
 

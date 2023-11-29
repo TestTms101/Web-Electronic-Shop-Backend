@@ -36,7 +36,7 @@ public class ProductController {
     public ResponseEntity<?> findAllProductHomePage (){
         return productService.findAllProductHomePage();
     }
-    @GetMapping(path = "/searchadmin")
+    @GetMapping(path = "/admin/searchadmin")
     public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
                                      @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
