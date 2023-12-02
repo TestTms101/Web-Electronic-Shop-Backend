@@ -139,12 +139,21 @@ public class UserService {
             throw new NotFoundException("Can not found any user with: "+key);
         }
         List<UserResponse> resList = new ArrayList<>(users.getContent().stream().map(userMapper::thisUserRespone).toList());
-        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all user success", resList));
+        ResponseEntity<?> resp = addPageableToRes(users, resList);
+        if (!resList.isEmpty()) return resp;
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any user with: "+key, resList));
     }
-
+    private ResponseEntity<?> addPageableToRes(Page<User> users, List<UserResponse> resList) {
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", users.getTotalElements());
+        resp.put("totalPage", users.getTotalPages());
+        if (resList.size() >0 )
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get all users success", resp));
+        return null;
+    }
     @Transactional
     public ResponseEntity<?> updateUser(String id, UserRequest userReq) {
         Optional<User> user = userRepository.findUserByIdAndState(id, Constant.USER_ACTIVE);

@@ -41,7 +41,7 @@ public class ProductController {
                                      @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.searchAdmin(query, sortBy,pageable);
+        return productService.searchAdmin(query, sortBy, "admin",pageable);
     }
 
     @GetMapping(path = "/products/search")
@@ -49,7 +49,7 @@ public class ProductController {
                                      @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.searchAdmin(query, sortBy,pageable);
+        return productService.searchAdmin(query, sortBy, "client",pageable);
     }
     @GetMapping(path = "/products/soldDesc")
     public ResponseEntity<?> findAllByStateOrderBySoldDesc (@ParameterObject Pageable pageable){

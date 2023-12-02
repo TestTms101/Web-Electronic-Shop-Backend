@@ -1,6 +1,7 @@
 package com.example.electronicshop.repository;
 
 import com.example.electronicshop.communication.StateCountAggregate;
+import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.models.product.Product;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -36,7 +37,9 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query("{name: { $regex: ?0 }}")
     List<Product> findAllBy(TextCriteria textCriteria);
     Page<Product> findProductBy(TextCriteria textCriteria, Pageable pageable);
-
+//    @Query("{$and:[{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }}," +
+//            "{phone: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
+//    Page<Product> findUserBy(String string, String state, Pageable pageable);
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //

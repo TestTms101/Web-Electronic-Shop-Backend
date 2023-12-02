@@ -138,7 +138,7 @@ public class ProductService {
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
     }
-    public ResponseEntity<?> searchAdmin(String key, String sortBy, Pageable pageable) {
+    public ResponseEntity<?> searchAdmin(String key, String sortBy, String role, Pageable pageable) {
         Page<Product> products;
         try {
 //            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
@@ -182,8 +182,7 @@ public class ProductService {
 //                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
 //            resList.sort(Comparator.comparing(ProductRes::getDiscount));
 //        ResponseEntity<?> resp = PageableToRes(resList);
-        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all product success", resp));
+        if (resp!=null) return resp;
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
     }
