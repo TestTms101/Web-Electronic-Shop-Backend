@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.communication.request.*;
 import com.example.electronicshop.communication.response.CategoryResponse;
 import com.example.electronicshop.communication.response.ProductRes;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -153,6 +155,17 @@ public class UserService {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get all users success", resp));
         return null;
+    }
+    public ResponseEntity<?> getAllCountUsers() {
+        List<StateCountAggregate> resp;
+        try {
+            resp = userRepository.countAllByState();
+            resp.add(new StateCountAggregate("all",userRepository.countAllBy()));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get count by users success", resp));
+        } catch (Exception e) {
+            throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+        }
     }
     @Transactional
     public ResponseEntity<?> updateUser(String id, UserRequest userReq) {

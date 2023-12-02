@@ -81,6 +81,12 @@ public class UserController {
 //            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return userService.searchAdmin(query,state,pageable);
     }
+
+    @GetMapping(path = "/admin/users/count")
+    public ResponseEntity<?> getCountByState (){
+        return userService.getAllCountUsers();
+    }
+
     @PutMapping(path = "/users/{userId}")
     public ResponseEntity<?> updateUser ( @RequestBody UserRequest req,
                                           @PathVariable("userId") String userId,
