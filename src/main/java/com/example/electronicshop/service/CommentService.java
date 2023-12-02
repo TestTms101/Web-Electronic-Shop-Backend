@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.communication.request.UserRequest;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.Constant;
@@ -29,10 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -155,6 +153,20 @@ public class CommentService {
         else
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(false, "can't find all comment ", resp));
+    }
+    public ResponseEntity<?> getAllCountComments() {
+        try {
+            List<StateCountAggregate> resp = new ArrayList<>();
+//            resp = userRepository.countAllByState();
+            resp.add(new StateCountAggregate("all",commentRepository.countAllBy()));
+            resp.add(new StateCountAggregate("enable",commentRepository.countByState(Constant.COMMENT_ENABLE)));
+            resp.add(new StateCountAggregate("block",commentRepository.countByState(Constant.COMMENT_BLOCK)));
+            resp.sort(Comparator.comparing(StateCountAggregate::getCount).reversed());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get count by Comments success", resp));
+        } catch (Exception e) {
+            throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+        }
     }
     @Transactional
     public ResponseEntity<ResponseObject> deleteCommemt(String id) {

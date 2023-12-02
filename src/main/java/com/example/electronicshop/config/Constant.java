@@ -5,6 +5,7 @@ import java.util.List;
 public class Constant {
     public static final String ENABLE = "enable";
     public static final String DISABLE = "disable";
+    //COMMENT STATE
     public static final String COMMENT_BLOCK="block";
     public static final String COMMENT_ENABLE = "enable";
     //ROLE

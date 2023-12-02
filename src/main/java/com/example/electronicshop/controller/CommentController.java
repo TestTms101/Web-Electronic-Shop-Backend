@@ -36,7 +36,10 @@ public class CommentController {
             direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
         return commentService.findAllComment(pageable);
     }
-
+    @GetMapping(path = "/admin/comment/count")
+    public ResponseEntity<?> getCountByState (){
+        return commentService.getAllCountComments();
+    }
     @GetMapping(path = "/comment/datedesc/{productId}")
     public ResponseEntity<?> findByProductIdOrderByDateDESC (@PathVariable("productId") String productId,
                                             @SortDefault(sort = "createdDate", direction = Sort.Direction.DESC)

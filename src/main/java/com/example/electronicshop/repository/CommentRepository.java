@@ -1,11 +1,13 @@
 package com.example.electronicshop.repository;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.models.enity.Comment;
 import com.example.electronicshop.models.enity.Order;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +24,6 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
     List<Comment> findAllBy(TextCriteria textCriteria);
 
     Page<Comment> findAll(Pageable pageable);
+    Long countAllBy();
+    Long countByState(String state);
 }

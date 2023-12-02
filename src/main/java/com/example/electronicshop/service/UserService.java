@@ -157,10 +157,14 @@ public class UserService {
         return null;
     }
     public ResponseEntity<?> getAllCountUsers() {
-        List<StateCountAggregate> resp;
         try {
-            resp = userRepository.countAllByState();
+            List<StateCountAggregate> resp = new ArrayList<>();
+//            resp = userRepository.countAllByState();
             resp.add(new StateCountAggregate("all",userRepository.countAllBy()));
+            resp.add(new StateCountAggregate("not_verify",userRepository.countByState(Constant.USER_NOT_VERIFY)));
+            resp.add(new StateCountAggregate("active",userRepository.countByState(Constant.USER_ACTIVE)));
+            resp.add(new StateCountAggregate("block",userRepository.countByState(Constant.USER_NOT_ACTIVE)));
+            resp.sort(Comparator.comparing(StateCountAggregate::getCount).reversed());
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get count by users success", resp));
         } catch (Exception e) {

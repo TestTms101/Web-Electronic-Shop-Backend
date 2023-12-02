@@ -37,5 +37,6 @@ public interface UserRepository extends MongoRepository<User,String> {
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
     Long countAllBy();
+    Long countByState(String state);
 
 }
