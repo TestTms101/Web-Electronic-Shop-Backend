@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @RestController
 @AllArgsConstructor
@@ -32,9 +33,17 @@ public class CommentController {
     }
 
     @GetMapping(path = "/admin/manage/comment/findall")
-    public ResponseEntity<?> findAllComment(@SortDefault(sort = "createdDate",
-            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable) {
-        return commentService.findAllComment(pageable);
+    public ResponseEntity<?> findAllComment(@RequestParam("sortBy") String sortBy,
+                                            @RequestParam("state") String state,
+                                            @ParameterObject Pageable pageable) {
+        return commentService.findAllComment(sortBy,state,pageable);
+    }
+    @GetMapping(path = "/admin/comment/{productId}")
+    public ResponseEntity<?> search (@PathVariable("productId") String productId,
+                                     @RequestParam("sortBy") String sortBy,
+                                     @RequestParam("state") String state,
+                                     @ParameterObject Pageable pageable){
+        return commentService.findByProductIdAndCreateDateAndState(productId,sortBy,state,pageable);
     }
     @GetMapping(path = "/admin/comment/count")
     public ResponseEntity<?> getCountByState (){

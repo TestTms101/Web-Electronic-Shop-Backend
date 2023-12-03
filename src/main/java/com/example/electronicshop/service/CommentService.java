@@ -2,6 +2,7 @@ package com.example.electronicshop.service;
 
 import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.communication.request.UserRequest;
+import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.communication.response.UserResponse;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.CommentMapper;
@@ -61,6 +62,29 @@ public class CommentService {
                 new ResponseObject(true, "Get comment by product success ", resp));
     }
 
+    public ResponseEntity<?> findByProductIdAndCreateDateAndState(String productId, String sortBy, String state, Pageable pageable) {
+        Page<Comment> comment = switch (state) {
+            case "enable" ->
+                    commentRepository.findAllByProduct_IdAndState(new ObjectId(productId), Constant.COMMENT_ENABLE, pageable);
+            case "block" ->
+                    commentRepository.findAllByProduct_IdAndState(new ObjectId(productId), Constant.COMMENT_BLOCK, pageable);
+            default -> commentRepository.findCommentsByProduct_Id(new ObjectId(productId), pageable);
+        };
+        List<CommentRes> resList = comment.getContent().stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
+        if (sortBy.equals("oldest")) {
+            resList.sort(Comparator.comparing(CommentRes::getCreatedDate));
+        } else {
+            resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
+        }
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", comment.getTotalElements());
+        resp.put("totalPage", comment.getTotalPages());
+        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any comment", resp));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get comment by product success ", resp));
+    }
 
     @Transactional
     @Synchronized
@@ -138,9 +162,21 @@ public class CommentService {
                 new ResponseObject(false, "Can not found comment with id: "+id, ""));
 //        throw new NotFoundException("Can not found comment with id: "+id);
     }
-    public ResponseEntity<ResponseObject> findAllComment(Pageable pageable){
-        Page<Comment> comment = commentRepository.findAll(pageable);
+    public ResponseEntity<ResponseObject> findAllComment(String sortBy, String state, Pageable pageable){
+//        Page<Comment> comment = commentRepository.findAll(pageable);
+        Page<Comment> comment = switch (state) {
+            case "enable" ->
+                    commentRepository.findAllByState(Constant.COMMENT_ENABLE, pageable);
+            case "block" ->
+                    commentRepository.findAllByState(Constant.COMMENT_BLOCK, pageable);
+            default -> commentRepository.findAll(pageable);
+        };
         List<CommentRes> resList = comment.stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
+        if (sortBy.equals("oldest")) {
+            resList.sort(Comparator.comparing(CommentRes::getCreatedDate));
+        } else {
+            resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
+        }
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalComment", comment.getTotalElements());

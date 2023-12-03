@@ -21,9 +21,9 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
     /* Page<Comment> findAllByUser_Id(String userId, Pageable pageable);*/
 //    Optional<Comment> findCommentByIdAndState(String Id, String userId);
     Optional<Comment> findCommentByIdAndUser_IdAndState(ObjectId commentId, ObjectId userId,String State);
-    List<Comment> findAllBy(TextCriteria textCriteria);
-
-    Page<Comment> findAll(Pageable pageable);
+    Page<Comment> findAllByState(String state,Pageable pageable);
+    Page<Comment> findCommentsByProduct_Id(ObjectId productId, Pageable pageable);
     Long countAllBy();
     Long countByState(String state);
+
 }
