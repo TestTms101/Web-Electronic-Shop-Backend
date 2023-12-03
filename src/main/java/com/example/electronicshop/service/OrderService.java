@@ -1,15 +1,21 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.response.CommentRes;
 import com.example.electronicshop.communication.response.OrderRes;
+import com.example.electronicshop.communication.response.OrdersSaleRes;
+import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.OrderMapper;
 import com.example.electronicshop.models.ResponseObject;
+import com.example.electronicshop.models.enity.Comment;
 import com.example.electronicshop.models.enity.Order;
+import com.example.electronicshop.models.product.Product;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
 import com.example.electronicshop.service.paypalpayment.PaymentUtils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +36,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
@@ -98,6 +105,58 @@ public class OrderService {
 //        throw new NotFoundException("Can not found order with id: " + id);
     }
 
+    public ResponseEntity<?> searchAndSortAndFilter(String key,String from, String to, String sortBy, String state, Pageable pageable) {
+        LocalDateTime fromDate = LocalDateTime.now();
+        LocalDateTime toDate = LocalDateTime.now();
+        String pattern = "dd-MM-yyyy";
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(pattern);
+        try {
+            if (!from.isBlank()) fromDate = LocalDate.parse(from, df).atStartOfDay();
+            if (!to.isBlank()) toDate = LocalDate.parse(to, df).atStartOfDay();
+        } catch (DateTimeParseException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
+        }
+        Page<Order> orderList = switch (state) {
+            case "enable" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
+            case "cancel" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_CANCEL,pageable);
+            case "pendingpay" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDINGPAY,pageable);
+            case "pending" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDING,pageable);
+            case "delivery" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_DELIVERY,pageable);
+            case "complete" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_COMPLETE,pageable);
+            case "process" ->
+                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PROCESS,pageable);
+            default ->orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
+        };
+        List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
+        if (sortBy.equals("oldest")) {
+            resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
+        } else {
+            resList.sort(Comparator.comparing(OrderRes::getCreatedDate).reversed());
+        }
+        ResponseEntity<?> resp = addPageableToRes(orderList,resList);
+        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all order success", resp));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any order with: "+key, resList));
+    }
+    private ResponseEntity<?> addPageableToRes(Page<Order> products, List<OrderRes> resList) {
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("list", resList);
+        resp.put("totalQuantity", products.getTotalElements());
+        resp.put("totalPage", products.getTotalPages());
+        if (resList.size() >0 )
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get all product success", resp));
+        return null;
+    }
     public ResponseEntity<?> cancelOrder(String id, String userId) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent() && order.get().getUser().getId().equals(userId)) {

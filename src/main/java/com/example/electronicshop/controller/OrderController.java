@@ -54,7 +54,15 @@ public class OrderController {
             return orderService.findOrderById(orderId, user.getId());
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
-
+    @GetMapping(path = "/admin/orders")
+    public ResponseEntity<?> getStats (@RequestParam("q") String query,
+                                       @RequestParam("sortBy") String sortBy,
+                                       @RequestParam(value = "from", defaultValue = "") String from,
+                                       @RequestParam(value = "to", defaultValue = "") String to,
+                                       @RequestParam("state") String state,
+                                       @ParameterObject Pageable pageable){
+        return orderService.searchAndSortAndFilter(query,from, to,sortBy,state,pageable);
+    }
     @PutMapping(path = "/orders/cancel/{orderId}")
     public ResponseEntity<?> cancelOrder (@PathVariable String orderId,
                                           HttpServletRequest request){
