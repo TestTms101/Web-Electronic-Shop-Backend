@@ -37,6 +37,7 @@ public class ProductController {
     public ResponseEntity<?> findAllProductHomePage (){
         return productService.findAllProductHomePage();
     }
+
     @GetMapping(path = "/admin/products/search")
     public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
                                           @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
@@ -57,17 +58,17 @@ public class ProductController {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query, sortBy, "enable",minPrice,maxPrice,pageable);
     }
+
+    @GetMapping(path = "/admin/products/count")
+    public ResponseEntity<?> getCountByState (){
+        return productService.getAllCountProducts();
+    }
+
     @GetMapping(path = "/products/soldDesc")
     public ResponseEntity<?> findAllByStateOrderBySoldDesc (@ParameterObject Pageable pageable){
         return productService.findAllOrderbySoldDesc(pageable);
     }
-//    @GetMapping(path = "/products/byTags")
-//    public ResponseEntity<?> searchByTags (@RequestParam("q") String query,
-//                                     @PageableDefault(sort = "score") @ParameterObject Pageable pageable){
-//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-//        return productService.findbyTags(query, pageable);
-//    }
+
     @GetMapping(path = "/products/byStateEnable")
     public ResponseEntity<?> findAllByState (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
                                                  @ParameterObject Pageable pageable){
@@ -79,6 +80,7 @@ public class ProductController {
                                                @ParameterObject Pageable pageable){
         return productService.findAll("all",pageable);
     }
+
     @GetMapping(path = "/products/byStateDisable")
     public ResponseEntity<?> findAll (@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC)
                                           @ParameterObject Pageable pageable){
@@ -104,6 +106,7 @@ public class ProductController {
     public ResponseEntity<?> updateImage (@PathVariable("id") String id,@RequestParam (value = "url") List<MultipartFile> req){
         return productService.addImagesToProduct(id, req);
     }
+
     @PutMapping("/products/update/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") String id,
                                            @Valid @RequestBody ProductReq req) {
@@ -117,25 +120,9 @@ public class ProductController {
 
     @PutMapping("/products/setstateenable/{id}")
     public ResponseEntity<?> setStateProduct(@PathVariable("id") String id) {return productService.updateStateProduct(id);}
+
     @DeleteMapping("/products/destroy/{id}")
     public ResponseEntity<?> destroyProduct(@PathVariable("id") String id) {
         return productService.destroyProduct(id);
     }
-//    @GetMapping(path = "/products/nameDesc")
-//    public ResponseEntity<?> findAllByStateOrderByNameDesc (@ParameterObject Pageable pageable){
-//        return productService.findAllOrderbyNameDesc(pageable);
-//    }
-//    @GetMapping(path = "/products/nameAsc")
-//    public ResponseEntity<?> findAllByStateOrderByNameAsc (@ParameterObject Pageable pageable){
-//        return productService.findAllOrderbyNameAsc(pageable);
-//    }
-//    @GetMapping(path = "/products/priceDesc")
-//    public ResponseEntity<?> findAllByStateOrderByPriceDesc (@ParameterObject Pageable pageable){
-//        return productService.findAllOrderbyPriceDesc(pageable);
-//    }
-//    @GetMapping(path = "/products/priceAsc")
-//    public ResponseEntity<?> findAllByStateOrderByPriceAsc (@ParameterObject Pageable pageable){
-//        return productService.findAllOrderbyPriceAsc(pageable);
-//    }
-
 }

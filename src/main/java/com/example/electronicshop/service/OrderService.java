@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.communication.response.CommentRes;
 import com.example.electronicshop.communication.response.OrderRes;
 import com.example.electronicshop.communication.response.OrdersSaleRes;
@@ -55,19 +56,7 @@ public class OrderService {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get orders success", resp));
     }
-//    public ResponseEntity<?> findAll(String state) {
-//        List<Order> orders;
-//        if (state.isBlank()) orders = orderRepository.findAll();
-//        else orders = orderRepository.findAllByState(state);
-//        if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
-//        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes2).collect(Collectors.toList());
-//        Map<String, Object> resp = new HashMap<>();
-//        resp.put("list", resList);
-//        resp.put("totalQuantity",orders.stream().count());
-////        resp.put("totalPage");
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject("true", "Get orders success", resp));
-//    }
+
     public ResponseEntity<?> findAllNoEnable( Pageable pageable) {
         Page<Order> orders;
          orders = orderRepository.findAllByStateNoEnable( pageable);
@@ -90,7 +79,6 @@ public class OrderService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found order with id: " + id, ""));
-//        throw new NotFoundException("Can not found order with id: " + id);
     }
 
     public ResponseEntity<?> findOrderById(String id, String userId) {
@@ -102,7 +90,6 @@ public class OrderService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found order with id: " + id, ""));
-//        throw new NotFoundException("Can not found order with id: " + id);
     }
 
     public ResponseEntity<?> searchAndSortAndFilter(String key,String from, String to, String sortBy, String state, Pageable pageable) {
@@ -122,23 +109,6 @@ public class OrderService {
         if (state.equals("")|| state.equals("all"))
             orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
         else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state,pageable);
-//        Page<Order> orderList = switch (state) {
-////            case "enable" ->
-////                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
-//            case "cancel" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_CANCEL,pageable);
-//            case "pendingpay" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDINGPAY,pageable);
-//            case "pending" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDING,pageable);
-//            case "delivery" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_DELIVERY,pageable);
-//            case "complete" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_COMPLETE,pageable);
-//            case "process" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PROCESS,pageable);
-//            default ->orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
-//        };
         List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
         if (sortBy.equals("oldest")) {
             resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
@@ -151,6 +121,25 @@ public class OrderService {
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any order with: "+key, resList));
     }
+
+    public ResponseEntity<?> getAllCountOrders() {
+        try {
+            List<StateCountAggregate> resp = new ArrayList<>();
+            resp.add(new StateCountAggregate("all",orderRepository.countByStateNotEnable()));
+            resp.add(new StateCountAggregate("complete",orderRepository.countByState(Constant.ORDER_STATE_COMPLETE)));
+            resp.add(new StateCountAggregate("process",orderRepository.countByState(Constant.ORDER_STATE_PROCESS)));
+            resp.add(new StateCountAggregate("delivery",orderRepository.countByState(Constant.ORDER_STATE_DELIVERY)));
+            resp.add(new StateCountAggregate("pending",orderRepository.countByState(Constant.ORDER_STATE_PENDING)));
+            resp.add(new StateCountAggregate("pendingpay",orderRepository.countByState(Constant.ORDER_STATE_PENDINGPAY)));
+            resp.add(new StateCountAggregate("cancel",orderRepository.countByState(Constant.ORDER_STATE_CANCEL)));
+            resp.sort(Comparator.comparing(StateCountAggregate::getCount).reversed());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get count by Orders success", resp));
+        } catch (Exception e) {
+            throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+        }
+    }
+
     private ResponseEntity<?> addPageableToRes(Page<Order> products, List<OrderRes> resList) {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
@@ -161,6 +150,7 @@ public class OrderService {
                     new ResponseObject(true, "Get all product success", resp));
         return null;
     }
+
     public ResponseEntity<?> cancelOrder(String id, String userId) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent() && order.get().getUser().getId().equals(userId)) {
@@ -180,6 +170,7 @@ public class OrderService {
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
+
     public ResponseEntity<?> setDeliveryOrderByAdmin(String id) {
         Optional<Order> order = orderRepository.findById(id);
         if (order.isPresent() && order.get().getState().equals(Constant.ORDER_STATE_PENDING) || order.get().getState().equals(Constant.ORDER_STATE_PENDINGPAY)) {
@@ -219,19 +210,7 @@ public class OrderService {
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
-//    public ResponseEntity<?> findAllOrderByUserId(String userId,Pageable pageable) {
-//        Page<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId),pageable);
-//        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
-//        Map<String, Object> resp = new HashMap<>();
-//        resp.put("list", resList);
-//        resp.put("totalOrder", orders.getTotalElements());
-//        resp.put("totalPage", orders.getTotalPages());
-//        if(resList.size()>0){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("true", "Get order success", resp));
-//        }
-//        throw new NotFoundException("Can not found any order" );
-//    }
+
     public ResponseEntity<?> findAllOrderByUserId(String userId, Pageable pageable) {
         Page<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId), pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
@@ -244,20 +223,8 @@ public class OrderService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any order", ""));
-//        throw new NotFoundException("Can not found any order" );
     }
-//    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
-//    {
-//        List<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE);
-//        List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
-//        Map<String, Object> resp = new HashMap<>();
-//        resp.put("list", resList);
-//        if(resList.size()>0){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("true", "Get order success", resp));
-//        }
-//        throw new NotFoundException("Can not found any order" );
-//    }
+
     public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
     {
         Page<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE, pageable);

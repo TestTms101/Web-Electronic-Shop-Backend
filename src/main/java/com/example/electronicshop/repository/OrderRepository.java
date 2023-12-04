@@ -2,7 +2,6 @@ package com.example.electronicshop.repository;
 
 import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.models.enity.Order;
-import com.example.electronicshop.models.enity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Optional<Order> findOrderByUser_IdAndState(ObjectId userId, String state);
     Page<Order> findAllByState(String state, Pageable pageable);
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
-//    Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
     Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
 
     Optional<Order> findOrderByIdAndState(String orderId, String state);
@@ -32,7 +30,8 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByLastModifiedDateBetweenAndStateOrderByLastModifiedDateAsc(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
     Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(String id, String name, LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-//    @Query("{'$or': [{'_id': {$regex: ?0, $options: 'i'}}, {'delivery.shipName': {$regex: ?0, $options: 'si'}}]}")
-//    Page<Order> findAllBy(String key, Pageable pageable);
     Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(String id, String name, LocalDateTime from, LocalDateTime to, Pageable pageable);
+    @Query(value = "{ 'state' : { $ne: 'enable' } }", count = true)
+    Long countByStateNotEnable();
+    Long countByState(String state);
 }

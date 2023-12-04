@@ -28,29 +28,15 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
 //            "    'state' : 'enable'}")
 //    Page<Product> findProductsByCategoryOrderBySaleDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
-//    Page<Product> findByOrderByCreatedDateDesc(TextCriteria textCriteria, Pageable pageable);
-//    Page<Product> findByOrderBySaleDesc(TextCriteria textCriteria, Pageable pageable);
-//    @Query("{'discount': {$gte: ?0}}")
-//    Page<Product> findByDiscountBetween(Long min, Long max, Pageable pageable);
-//    @Query(sort = "{ 'createDate' : -1 }")
-//    @Query("{$text: { $search: ?0,$language: \"en\" }}")
-//    @Query("{name: { $regex: ?0 }}")
 //    @Query("{$and:[{$or:[{name: { $regex: ?0, $options: 'si' }},{description: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
 //    @Query("{discount: {$and:[{$gte: ?0},{$lte: ?1}]}}")
     Page<Product> findAllByIdOrNameOrDescriptionRegex(String id, String name, String descrip, Pageable pageable);
     Page<Product> findAllByIdOrNameOrDescriptionRegexAndState(String id, String name, String descrip, String state, Pageable pageable);
-
-    List<Product> findAllBy(TextCriteria textCriteria);
-    Page<Product> findProductBy(TextCriteria textCriteria, Pageable pageable);
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
-//
-//    Optional<Product> findBy(String id, ObjectId option_id);
-//    @Query(value = "{'id': ?0, 'options.value': ?1}")
-//    Optional<Product> findByIdAndOptionsValue(String id, String value);
-//    @Query(value = "{'id': ?0, 'images.id_image': ?1}")
-//    Optional<Product> findByIdAndImagesId(String id, String image_id);
     Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
+    Long countAllBy();
+    Long countByState(String state);
 }

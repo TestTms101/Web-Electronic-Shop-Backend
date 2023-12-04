@@ -28,18 +28,15 @@ public class OrderController {
                                       @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
         return orderService.findAll(state, pageable);
     }
-
 //    @GetMapping(path = "/admin/manage/orders")
 //    public ResponseEntity<?> findAll (@RequestParam(defaultValue = "") String state,
 //                                      @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC)){
 //        return orderService.findAll(state);
 //    }
-
     @GetMapping(path = "/admin/manage/ordersEnable")
     public ResponseEntity<?> findAllNoEnable (@PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
         return orderService.findAllNoEnable( pageable);
     }
-
 
     @GetMapping(path = "/admin/manage/orders/{orderId}")
     public ResponseEntity<?> findOrderById (@PathVariable String orderId){
@@ -54,6 +51,7 @@ public class OrderController {
             return orderService.findOrderById(orderId, user.getId());
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
+
     @GetMapping(path = "/admin/orders")
     public ResponseEntity<?> getStats (@RequestParam("q") String query,
                                        @RequestParam("sortBy") String sortBy,
@@ -63,32 +61,34 @@ public class OrderController {
                                        @ParameterObject Pageable pageable){
         return orderService.searchAndSortAndFilter(query,from, to,sortBy,state,pageable);
     }
+
+    @GetMapping(path = "/admin/orders/count")
+    public ResponseEntity<?> getCountByState (){
+        return orderService.getAllCountOrders();
+    }
+
     @PutMapping(path = "/orders/cancel/{orderId}")
     public ResponseEntity<?> cancelOrder (@PathVariable String orderId,
                                           HttpServletRequest request){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         return orderService.cancelOrder(orderId, user.getId());
     }
+
     @PutMapping(path = "/admin/manage/orders/setcomplete/{orderId}")
     public ResponseEntity<?> setCompletelOrderAdmin (@PathVariable String orderId){;
         return orderService.setCompleteOrderByAdmin(orderId);
     }
+
     @PutMapping(path = "/admin/manage/orders/setdelivery/{orderId}")
     public ResponseEntity<?> setDeliverylOrderAdmin (@PathVariable String orderId){;
         return orderService.setDeliveryOrderByAdmin(orderId);
     }
+
     @PutMapping(path = "/admin/manage/orders/setcancel/{orderId}")
     public ResponseEntity<?> setCancelOrderAdmin (@PathVariable String orderId){;
         return orderService.setCancelOrderByAdmin(orderId);
     }
-//    @GetMapping(path = "/orders/getallorder")
-//    public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@PageableDefault (size = 5) @SortDefault(sort = "createdDate",
-//            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
-//        User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
-//        if (!user.getId().isBlank())
-//            return orderService.findAllOrderByUserId(user.getId(),pageable);
-//        throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
-//    }
+
     @GetMapping(path = "/orders/getallorder")
     public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@SortDefault(sort = "createdDate",
             direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
@@ -97,6 +97,7 @@ public class OrderController {
             return orderService.findAllOrderByUserId(user.getId(),pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
+
     @GetMapping(path = "/orders/getallordercomplete")
     public ResponseEntity<?> userFindAllOrderComplete (HttpServletRequest request,@SortDefault(sort = "createdDate",
             direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){

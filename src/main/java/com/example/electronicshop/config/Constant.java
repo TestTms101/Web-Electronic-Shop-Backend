@@ -3,6 +3,7 @@ package com.example.electronicshop.config;
 import java.util.List;
 
 public class Constant {
+    //PRODUCT
     public static final String ENABLE = "enable";
     public static final String DISABLE = "disable";
     //COMMENT STATE

@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.ProductMapper;
@@ -51,6 +52,7 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product");
     }
+
     public ResponseEntity<?> findAllOrderbySoldDesc(Pageable pageable) {
         Page<Product> products = productRepository.findAllByStateOrderBySoldDesc(Constant.ENABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
@@ -58,6 +60,7 @@ public class ProductService {
         if (resp != null) return resp;
         throw new NotFoundException("Can not found any product");
     }
+
     private ResponseEntity<?> addPageableToRes(Page<Product> products, List<ProductRes> resList) {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
@@ -71,10 +74,8 @@ public class ProductService {
 
     public ResponseEntity<?> findAllProductHomePage() {
         List<Category> list = categoryRepository.findCategoryByState(Constant.ENABLE);
-//        List<Product> products;
         List<ProductRes> productRes;
         List<Map<String, Object>> resp = new ArrayList<>();
-//        Map<String, Object> map = new HashMap<>();
         for (Category i: list) {
             List<Product> products = productRepository.findAllByCategory_IdAndState(new ObjectId(i.getId()),Constant.ENABLE);
             if(products.size()>10)
@@ -100,7 +101,6 @@ public class ProductService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with id: " + id, ""));
-//        throw new ("Can not found any product with id: "+id);
     }
 
     public ResponseEntity<?> findByCategoryId(String id) {
@@ -126,23 +126,11 @@ public class ProductService {
                 new ResponseObject(false, "Can not found any product with category id: "+id, resList));
     }
 
-//    public ResponseEntity<?> searchtest(String key) {
-//        List<Product> products;
-//        try {
-//            products= productRepository.findAllBy(TextCriteria
-//                    .forDefaultLanguage().matchingAny(key));
-//        } catch (Exception e) {
-//            throw new NotFoundException("Can not found any product with: "+key);
-//        }
-//        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).toList();
-//        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(true, "Get all product success", resList));
-//        else return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(false, "Can not found any product with: "+key, resList));
-//    }
     public ResponseEntity<?> search(String key, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         Page<Product> products;
         try {
+//            products= productRepository.findAllBy(TextCriteria
+//                    .forDefaultLanguage().matchingAny(key));
             if(state.equals(""))
                 products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
             else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
@@ -170,12 +158,24 @@ public class ProductService {
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
     }
-
+    public ResponseEntity<?> getAllCountProducts() {
+        try {
+            List<StateCountAggregate> resp = new ArrayList<>();
+//            resp = userRepository.countAllByState();
+            resp.add(new StateCountAggregate("all",productRepository.countAllBy()));
+            resp.add(new StateCountAggregate("enable",productRepository.countByState(Constant.ENABLE)));
+            resp.add(new StateCountAggregate("disable",productRepository.countByState(Constant.DISABLE)));
+            resp.sort(Comparator.comparing(StateCountAggregate::getCount).reversed());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get count by Products success", resp));
+        } catch (Exception e) {
+            throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+        }
+    }
     public ResponseEntity<?> addProduct(ProductReq req) {
         if (req != null) {
             Product product = productMapper.toProduct(req);
             try {
-//                processUploadImage(req.getImages(),product);
                 productRepository.save(product);
             } catch (Exception e) {
                 throw new AppException(HttpStatus.CONFLICT.value(), "Product name already exists");
@@ -301,6 +301,7 @@ public class ProductService {
             );
         } throw new NotFoundException("Can not found product with id: "+id);
     }
+
     @Transactional
     public ResponseEntity<?> updateProduct(String id, ProductReq req) {
         Optional<Product> product = productRepository.findById(id);
@@ -363,7 +364,6 @@ public class ProductService {
         if (product.isPresent()) {
             try {
                 productRepository.deleteById(product.get().getId());
-//                productOptionRepository.deleteByProduct_Id(product.get().getId());
             } catch (Exception e) {
                 log.error(e.getMessage());
                 throw new NotFoundException("Error when destroy product with id: "+id);
