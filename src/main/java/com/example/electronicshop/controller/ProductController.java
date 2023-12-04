@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -36,20 +37,25 @@ public class ProductController {
     public ResponseEntity<?> findAllProductHomePage (){
         return productService.findAllProductHomePage();
     }
-    @GetMapping(path = "/admin/products/searchadmin")
+    @GetMapping(path = "/admin/products/search")
     public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
-                                     @ParameterObject Pageable pageable){
+                                          @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
+                                          @RequestParam(value = "maxPrice", defaultValue = "") BigDecimal maxPrice,
+                                          @RequestParam(value = "state", defaultValue = "") String state,
+                                          @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.searchAdmin(query, sortBy, "admin",pageable);
+        return productService.search(query, sortBy, state,minPrice,maxPrice,pageable);
     }
 
     @GetMapping(path = "/products/search")
     public ResponseEntity<?> search (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
+                                     @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
+                                     @RequestParam(value = "maxPrice", defaultValue = "") BigDecimal maxPrice,
                                      @ParameterObject Pageable pageable){
         if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
-        return productService.searchAdmin(query, sortBy, "client",pageable);
+        return productService.search(query, sortBy, "enable",minPrice,maxPrice,pageable);
     }
     @GetMapping(path = "/products/soldDesc")
     public ResponseEntity<?> findAllByStateOrderBySoldDesc (@ParameterObject Pageable pageable){

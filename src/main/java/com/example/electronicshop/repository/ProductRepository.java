@@ -35,11 +35,13 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    @Query(sort = "{ 'createDate' : -1 }")
 //    @Query("{$text: { $search: ?0,$language: \"en\" }}")
 //    @Query("{name: { $regex: ?0 }}")
+//    @Query("{$and:[{$or:[{name: { $regex: ?0, $options: 'si' }},{description: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
+//    @Query("{discount: {$and:[{$gte: ?0},{$lte: ?1}]}}")
+    Page<Product> findAllByIdOrNameOrDescriptionRegex(String id, String name, String descrip, Pageable pageable);
+    Page<Product> findAllByIdOrNameOrDescriptionRegexAndState(String id, String name, String descrip, String state, Pageable pageable);
+
     List<Product> findAllBy(TextCriteria textCriteria);
     Page<Product> findProductBy(TextCriteria textCriteria, Pageable pageable);
-//    @Query("{$and:[{$or:[{email: { $regex: ?0, $options: 'si' }},{name: { $regex: ?0, $options: 'si' }}," +
-//            "{phone: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
-//    Page<Product> findUserBy(String string, String state, Pageable pageable);
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
 //

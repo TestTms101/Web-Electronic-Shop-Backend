@@ -64,7 +64,7 @@ public class  Product {
     @NotBlank(message = "State is required")
     private String state;
     @CreatedDate
-    @JsonFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+//    @JsonFormat(pattern = "MM/dd/yyyy HH:mm:ss")
     LocalDateTime createdDate;
 
     public Product(String name, String slugify, BigDecimal price,int quantity, double sale, String description, Category category, String state, LocalDateTime createdDate) {

@@ -30,9 +30,9 @@ public class Comment {
     private User user;
     private String state;
     @CreatedDate
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @LastModifiedDate
     LocalDateTime lastUpdateDate;
 

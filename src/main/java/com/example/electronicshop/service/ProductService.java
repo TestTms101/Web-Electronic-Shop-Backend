@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -124,40 +126,38 @@ public class ProductService {
                 new ResponseObject(false, "Can not found any product with category id: "+id, resList));
     }
 
-    public ResponseEntity<?> search(String key) {
-        List<Product> products;
-        try {
-            products= productRepository.findAllBy(TextCriteria
-                    .forDefaultLanguage().matchingAny(key));
-        } catch (Exception e) {
-            throw new NotFoundException("Can not found any product with: "+key);
-        }
-        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).toList();
-        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all product success", resList));
-        else return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any product with: "+key, resList));
-    }
-    public ResponseEntity<?> searchAdmin(String key, String sortBy, String role, Pageable pageable) {
+//    public ResponseEntity<?> searchtest(String key) {
+//        List<Product> products;
+//        try {
+//            products= productRepository.findAllBy(TextCriteria
+//                    .forDefaultLanguage().matchingAny(key));
+//        } catch (Exception e) {
+//            throw new NotFoundException("Can not found any product with: "+key);
+//        }
+//        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).toList();
+//        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(true, "Get all product success", resList));
+//        else return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any product with: "+key, resList));
+//    }
+    public ResponseEntity<?> search(String key, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         Page<Product> products;
         try {
-//            if(Objects.equals(sortBy, "") ||Objects.equals(sortBy, "latest")) {
-//                products = productRepository.findByOrderByCreatedDateDesc(TextCriteria
-//                                .forDefaultLanguage().matchingAny(key),pageable);
-//
-//            } else if (Objects.equals(sortBy, "sales")) {
-//                products= productRepository.findByOrderBySaleDesc(TextCriteria
-//                            .forDefaultLanguage().matchingAny(key), pageable);
-//
-//            }else products= productRepository.findAllBy(TextCriteria
-//                    .forDefaultLanguage().matchingAny(key), pageable);
-            products= productRepository.findProductBy(TextCriteria
-                    .forDefaultLanguage().matchingAny(key),pageable);
+            if(state.equals(""))
+                products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
+            else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
         } catch (Exception e) {
             throw new NotFoundException("Can not found any product with: "+key);
         }
         List<ProductRes> resList = new ArrayList<>(products.getContent().stream().map(productMapper::toProductRes).toList());
-//        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        Iterator<ProductRes> iterator = resList.iterator();
+        while (iterator.hasNext()) {
+            ProductRes product = iterator.next();
+            BigDecimal productPrice = product.getDiscount();
+            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
+                iterator.remove();
+            }
+        }
         switch (sortBy) {
             case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
             case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
@@ -165,24 +165,8 @@ public class ProductService {
             case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
             case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
         }
-        ResponseEntity<?> resp = addPageableToRes(products,resList);
-
-//        Iterator<ProductRes> iterator = resList.iterator();
-//        while (iterator.hasNext()) {
-//            ProductRes product = iterator.next();
-//            BigDecimal productPrice = product.getPrice();
-//            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
-//                iterator.remove();
-//            }
-//        }
-//        if(Objects.equals(sortBy, "priceDesc")){
-//            resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-//        }
-//        if(!Objects.equals(sortBy, "priceDesc") ||!Objects.equals(sortBy, "")
-//                ||!Objects.equals(sortBy, "sales") ||!Objects.equals(sortBy, "latest"))
-//            resList.sort(Comparator.comparing(ProductRes::getDiscount));
-//        ResponseEntity<?> resp = PageableToRes(resList);
-        if (resp!=null) return resp;
+        if (resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all product success", resList));
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
     }

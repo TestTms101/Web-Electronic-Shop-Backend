@@ -119,8 +119,8 @@ public class OrderService {
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
         Page<Order> orderList = switch (state) {
-            case "enable" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
+//            case "enable" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
             case "cancel" ->
                     orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_CANCEL,pageable);
             case "pendingpay" ->
