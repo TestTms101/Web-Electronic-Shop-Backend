@@ -118,23 +118,27 @@ public class OrderService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-        Page<Order> orderList = switch (state) {
-//            case "enable" ->
-//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
-            case "cancel" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_CANCEL,pageable);
-            case "pendingpay" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDINGPAY,pageable);
-            case "pending" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDING,pageable);
-            case "delivery" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_DELIVERY,pageable);
-            case "complete" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_COMPLETE,pageable);
-            case "process" ->
-                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PROCESS,pageable);
-            default ->orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
-        };
+        Page<Order> orderList;
+        if (state.equals("")|| state.equals("all"))
+            orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
+        else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state,pageable);
+//        Page<Order> orderList = switch (state) {
+////            case "enable" ->
+////                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_ENABLE,pageable);
+//            case "cancel" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_CANCEL,pageable);
+//            case "pendingpay" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDINGPAY,pageable);
+//            case "pending" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PENDING,pageable);
+//            case "delivery" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_DELIVERY,pageable);
+//            case "complete" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_COMPLETE,pageable);
+//            case "process" ->
+//                    orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,Constant.ORDER_STATE_PROCESS,pageable);
+//            default ->orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
+//        };
         List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
         if (sortBy.equals("oldest")) {
             resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
