@@ -31,9 +31,9 @@ public class OrderRes {
     private Delivery delivery;
     private String state;
     @CreatedDate
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     LocalDateTime createdDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+//    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @LastModifiedDate
     LocalDateTime lastModifiedDate;
 
