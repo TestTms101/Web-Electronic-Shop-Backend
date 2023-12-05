@@ -40,22 +40,22 @@ public class ProductController {
 
     @GetMapping(path = "/admin/products/search")
     public ResponseEntity<?> searchadmin (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
-                                          @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
-                                          @RequestParam(value = "maxPrice", defaultValue = "") BigDecimal maxPrice,
+                                          @RequestParam(value = "minPrice", defaultValue = "0") BigDecimal minPrice,
+                                          @RequestParam(value = "maxPrice", defaultValue = "99999999999999") BigDecimal maxPrice,
                                           @RequestParam(value = "state", defaultValue = "") String state,
                                           @ParameterObject Pageable pageable){
-        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query, sortBy, state,minPrice,maxPrice,pageable);
     }
 
     @GetMapping(path = "/products/search")
     public ResponseEntity<?> search (@RequestParam("q") String query,@RequestParam("sortBy") String sortBy,
-                                     @RequestParam(value = "minPrice", defaultValue = "") BigDecimal minPrice,
-                                     @RequestParam(value = "maxPrice", defaultValue = "") BigDecimal maxPrice,
+                                     @RequestParam(value = "minPrice", defaultValue = "0") BigDecimal minPrice,
+                                     @RequestParam(value = "maxPrice", defaultValue = "99999999999999") BigDecimal maxPrice,
                                      @ParameterObject Pageable pageable){
-        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
+//        if (query.isEmpty() || query.matches(".*[%<>&;'\0-].*"))
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Invalid keyword");
         return productService.search(query, sortBy, "enable",minPrice,maxPrice,pageable);
     }
 
