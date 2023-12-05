@@ -48,17 +48,19 @@ public class ProductService {
         else if(state=="enable") products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.ENABLE, pageable);
         else products = productRepository.findAllByStateOrderByCreatedDateDesc(Constant.DISABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        ResponseEntity<?> resp = addPageableToRes(products, resList);
-        if (resp != null) return resp;
-        throw new NotFoundException("Can not found any product");
+        return addPageableToRes(products, resList);
+//        ResponseEntity<?> resp = addPageableToRes(products, resList);
+//        if (resp != null) return resp;
+//        throw new NotFoundException("Can not found any product");
     }
 
     public ResponseEntity<?> findAllOrderbySoldDesc(Pageable pageable) {
         Page<Product> products = productRepository.findAllByStateOrderBySoldDesc(Constant.ENABLE, pageable);
         List<ProductRes> resList = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        ResponseEntity<?> resp = addPageableToRes(products, resList);
-        if (resp != null) return resp;
-        throw new NotFoundException("Can not found any product");
+        return addPageableToRes(products, resList);
+//        ResponseEntity<?> resp = addPageableToRes(products, resList);
+//        if (resp != null) return resp;
+//        throw new NotFoundException("Can not found any product");
     }
 
     private ResponseEntity<?> addPageableToRes(Page<Product> products, List<ProductRes> resList) {
@@ -69,7 +71,8 @@ public class ProductService {
         if (resList.size() >0 )
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get all product success", resp));
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can't not find product ", resp));
     }
 
     public ResponseEntity<?> findAllProductHomePage() {

@@ -47,21 +47,28 @@ public class CommentService {
 
     public ResponseEntity<?> findByProductId(String productId, Pageable pageable) {
         Page<Comment> comment= commentRepository.findAllByProduct_IdAndState(new ObjectId(productId),Constant.COMMENT_ENABLE, pageable);
-//        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(false, "Can not found any comment", ""));
-//            throw new NotFoundException("Can not found any comment");
         List<CommentRes> resList = comment.getContent().stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
+        return addPageableToRes(comment,resList);
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("list", resList);
+//        resp.put("totalQuantity", comment.getTotalElements());
+//        resp.put("totalPage", comment.getTotalPages());
+//        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any comment", resp));
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(true, "Get comment by product success ", resp));
+    }
+    private ResponseEntity<?> addPageableToRes(Page<Comment> comments, List<CommentRes> resList) {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
-        resp.put("totalQuantity", comment.getTotalElements());
-        resp.put("totalPage", comment.getTotalPages());
-        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any comment", resp));
-//        throw new NotFoundException("Can not found any comment");
+        resp.put("totalQuantity", comments.getTotalElements());
+        resp.put("totalPage", comments.getTotalPages());
+        if (resList.size() >0 )
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Get comment success ", resp));
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get comment by product success ", resp));
+                new ResponseObject(false, "Can not found any comment", resp));
     }
-
     public ResponseEntity<?> findByProductIdAndCreateDateAndState(String productId, String sortBy, String state, Pageable pageable) {
         Page<Comment> comment = switch (state) {
             case "enable" ->
@@ -76,14 +83,7 @@ public class CommentService {
         } else {
             resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
         }
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("list", resList);
-        resp.put("totalQuantity", comment.getTotalElements());
-        resp.put("totalPage", comment.getTotalPages());
-        if (comment.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any comment", resp));
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get comment by product success ", resp));
+        return addPageableToRes(comment,resList);
     }
 
     @Transactional
@@ -105,7 +105,6 @@ public class CommentService {
                 }
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(false, "Can not found product with id: " + req.getProductId(), ""));
-//                throw new NotFoundException("Can not found product with id: " + req.getProductId());
         } return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found user with id: " + userId, ""));
 //        throw new NotFoundException("Can not found user with id: " + userId);
@@ -114,7 +113,6 @@ public class CommentService {
 
     @Transactional
     public ResponseEntity<?> editCommentByUser(String id, String userid, CommentReq commentReq) {
-//        Optional<Comment> comment = commentRepository.findCommentByIdAndState(id,Constant.COMMENT_ENABLE);
         Optional<Comment> comment = commentRepository.findCommentByIdAndUser_IdAndState(new ObjectId(id),new ObjectId(userid),Constant.COMMENT_ENABLE);
         Optional<User> user = userRepository.findUserByIdAndState(userid,Constant.USER_ACTIVE);
         if(user.isPresent()) {
@@ -126,15 +124,11 @@ public class CommentService {
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(true, "Update comment successfully", comment)
                 );
-
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     new ResponseObject(false, "Cannot edit comment ", ""));
         }return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found user with id: " + userid, ""));
-//        throw new NotFoundException("Can not found user with id: " + userid);
-
-
     }
 
     public ResponseEntity<ResponseObject> blockComment(String id) {
@@ -163,7 +157,6 @@ public class CommentService {
 //        throw new NotFoundException("Can not found comment with id: "+id);
     }
     public ResponseEntity<ResponseObject> findAllComment(String sortBy, String state, Pageable pageable){
-//        Page<Comment> comment = commentRepository.findAll(pageable);
         Page<Comment> comment = switch (state) {
             case "enable" ->
                     commentRepository.findAllByState(Constant.COMMENT_ENABLE, pageable);
@@ -177,18 +170,19 @@ public class CommentService {
         } else {
             resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
         }
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("list", resList);
-        resp.put("totalComment", comment.getTotalElements());
-        resp.put("totalPage", comment.getTotalPages());
-        if(resList.size()>0)
-        {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(true, "find all comment successfully ", resp));
-        }
-        else
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(false, "can't find all comment ", resp));
+        return (ResponseEntity<ResponseObject>) addPageableToRes(comment,resList);
+//        Map<String, Object> resp = new HashMap<>();
+//        resp.put("list", resList);
+//        resp.put("totalComment", comment.getTotalElements());
+//        resp.put("totalPage", comment.getTotalPages());
+//        if(resList.size()>0)
+//        {
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(true, "find all comment successfully ", resp));
+//        }
+//        else
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(false, "can't find all comment ", resp));
     }
     public ResponseEntity<?> getAllCountComments() {
         try {

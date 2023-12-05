@@ -115,11 +115,12 @@ public class OrderService {
         } else {
             resList.sort(Comparator.comparing(OrderRes::getCreatedDate).reversed());
         }
-        ResponseEntity<?> resp = addPageableToRes(orderList,resList);
-        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all order success", resp));
-        else return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any order with: "+key, resList));
+        return addPageableToRes(orderList, resList);
+//        ResponseEntity<?> resp = addPageableToRes(orderList,resList);
+//        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(true, "Get all order success", resp));
+//        else return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any order with: "+key, resList));
     }
 
     public ResponseEntity<?> getAllCountOrders() {
@@ -148,7 +149,8 @@ public class OrderService {
         if (resList.size() >0 )
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get all product success", resp));
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any order: ", resp));
     }
 
     public ResponseEntity<?> cancelOrder(String id, String userId) {

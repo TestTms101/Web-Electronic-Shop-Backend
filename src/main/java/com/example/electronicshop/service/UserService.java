@@ -53,7 +53,8 @@ public class UserService {
         if (userResList.size() > 0)
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get all user", resp));
-        throw new NotFoundException("Can not found any user");
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can't not find user ", resp));
     }
 
     public ResponseEntity<ResponseObject> findAllByRole(String role,Pageable pageable) {
@@ -141,10 +142,11 @@ public class UserService {
             throw new NotFoundException("Can not found any user with: "+key);
         }
         List<UserResponse> resList = new ArrayList<>(users.getContent().stream().map(userMapper::thisUserRespone).toList());
-        ResponseEntity<?> resp = addPageableToRes(users, resList);
-        if (!resList.isEmpty()) return resp;
-        else return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any user with: "+key, resList));
+//        ResponseEntity<?> resp = addPageableToRes(users, resList);
+        return addPageableToRes(users, resList);
+//        if (!resList.isEmpty()) return resp;
+//        else return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any user with: "+key, resList));
     }
     private ResponseEntity<?> addPageableToRes(Page<User> users, List<UserResponse> resList) {
         Map<String, Object> resp = new HashMap<>();
@@ -154,7 +156,8 @@ public class UserService {
         if (resList.size() >0 )
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get all users success", resp));
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can't not find user ", resp));
     }
     public ResponseEntity<?> getAllCountUsers() {
         try {
