@@ -131,15 +131,9 @@ public class ProductService {
 
     public ResponseEntity<?> search(String key, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         Page<Product> products;
-        try {
-//            products= productRepository.findAllBy(TextCriteria
-//                    .forDefaultLanguage().matchingAny(key));
-            if(state.equals(""))
-                products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
-            else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
-        } catch (Exception e) {
-            throw new NotFoundException("Can not found any product with: "+key);
-        }
+        if(state.equals(""))
+            products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
+        else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
         List<ProductRes> resList = new ArrayList<>(products.getContent().stream().map(productMapper::toProductRes).toList());
         Iterator<ProductRes> iterator = resList.iterator();
         while (iterator.hasNext()) {
@@ -157,9 +151,9 @@ public class ProductService {
             case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
         }
         if (resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all product success", resList));
-        else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all product success", resList));
     }
     public ResponseEntity<?> getAllCountProducts() {
         try {
