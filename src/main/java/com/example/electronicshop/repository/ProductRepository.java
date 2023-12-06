@@ -30,8 +30,8 @@ public interface ProductRepository extends MongoRepository<Product, String>{
 //    Page<Product> findProductsByCategoryOrderBySaleDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
 //    @Query("{$and:[{$or:[{name: { $regex: ?0, $options: 'si' }},{description: { $regex: ?0, $options: 'si' }}]},{'state': ?1}]}")
 //    @Query("{discount: {$and:[{$gte: ?0},{$lte: ?1}]}}")
-    Page<Product> findAllByIdOrNameOrDescriptionRegex(String id, String name, String descrip, Pageable pageable);
-    Page<Product> findAllByIdOrNameOrDescriptionRegexAndState(String id, String name, String descrip, String state, Pageable pageable);
+    List<Product> findAllByIdOrNameOrDescriptionRegex(String id, String name, String descrip);
+    List<Product> findAllByIdOrNameOrDescriptionRegexAndState(String id, String name, String descrip, String state);
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
 //    List<Product> findAllByIdIsIn(List<String> productIds);
     Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);

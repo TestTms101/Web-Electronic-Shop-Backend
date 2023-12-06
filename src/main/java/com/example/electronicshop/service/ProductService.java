@@ -130,16 +130,16 @@ public class ProductService {
     }
 
     public ResponseEntity<?> search(String key, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
-        Page<Product> products;
+        List<Product> products;
         if(state.equals(""))
-            products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
-        else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
-        List<ProductRes> resList = new ArrayList<>();
-        List<ProductRes> list = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        resList.addAll(list);
-        products.nextPageable();
-        list=products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        resList.addAll(list);
+            products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key);
+        else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state);
+//        List<ProductRes> resList = new ArrayList<>();
+        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
+//        resList.addAll(list);
+//        products.nextPageable();
+//        list=products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+//        resList.addAll(list);
         Iterator<ProductRes> iterator = resList.iterator();
         while (iterator.hasNext()) {
             ProductRes product = iterator.next();
