@@ -151,7 +151,7 @@ public class ProductService {
         switch (sortBy) {
             case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
             case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
-            case "sales" -> resList.sort(Comparator.comparing(ProductRes::getSale).reversed());
+            case "sold" -> resList.sort(Comparator.comparing(ProductRes::getSold).reversed());
             case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
             case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
         }
