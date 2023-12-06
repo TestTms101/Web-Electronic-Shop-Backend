@@ -134,7 +134,12 @@ public class ProductService {
         if(state.equals(""))
             products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key,pageable);
         else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state,pageable);
-        List<ProductRes> resList = new ArrayList<>(products.getContent().stream().map(productMapper::toProductRes).toList());
+        List<ProductRes> resList = new ArrayList<>();
+        List<ProductRes> list = products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        resList.addAll(list);
+        products.nextPageable();
+        list=products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
+        resList.addAll(list);
         Iterator<ProductRes> iterator = resList.iterator();
         while (iterator.hasNext()) {
             ProductRes product = iterator.next();
