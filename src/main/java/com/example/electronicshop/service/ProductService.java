@@ -106,29 +106,69 @@ public class ProductService {
                 new ResponseObject(false, "Can not found any product with id: " + id, ""));
     }
 
-    public ResponseEntity<?> findByCategoryId(String id) {
+//    public ResponseEntity<?> findByCategoryId(String id) {
+//        List<Product> products;
+//        try {
+//            Optional<Category> category = categoryRepository.findCategoryByIdAndState(id, Constant.ENABLE);
+//            if (category.isPresent()) {
+//                List<ObjectId> subCat = category.get().getSubCategories()
+//                        .stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
+//                products = productRepository.findProductsByCategoryOrderByCreatedDateAsc(new ObjectId(id),
+//                        subCat);
+//            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateAsc(new ObjectId(id),
+//                    Constant.ENABLE);
+//        } catch (Exception e) {
+//            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");
+//        }
+//
+//        List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
+//        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+//        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(true, "Get all product success", resList));
+//        else return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(false, "Can not found any product with category id: "+id, resList));
+//    }
+    public ResponseEntity<?> searchCategoryId(String id, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice) {
         List<Product> products;
-        try {
-            Optional<Category> category = categoryRepository.findCategoryByIdAndState(id, Constant.ENABLE);
-            if (category.isPresent()) {
-                List<ObjectId> subCat = category.get().getSubCategories()
-                        .stream().map(c -> new ObjectId(c.getId())).collect(Collectors.toList());
-                products = productRepository.findProductsByCategoryOrderByCreatedDateAsc(new ObjectId(id),
-                        subCat);
-            } else products = productRepository.findAllByCategory_IdAndStateOrderByCreatedDateAsc(id,
-                    Constant.ENABLE);
-        } catch (Exception e) {
-            throw new AppException(HttpStatus.BAD_REQUEST.value(), "Error when finding");
+        if(state.equals("")){
+            switch (sortBy) {
+                case "latest" -> products=productRepository.findAllByCategory_IdOrderByCreatedDateDesc(new ObjectId(id));
+                case "oldest" -> products=productRepository.findAllByCategory_IdOrderByCreatedDateAsc(new ObjectId(id));
+                case "sold" -> products=productRepository.findAllByCategory_IdOrderBySoldDesc(new ObjectId(id));
+                case "priceDesc" -> products=productRepository.findAllByCategory_IdOrderByDiscountDesc(new ObjectId(id));
+                default -> products=productRepository.findAllByCategory_IdOrderByDiscountAsc(new ObjectId(id));
+            }
+        }else {
+            switch (sortBy) {
+                case "latest" -> products=productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(new ObjectId(id),state);
+                case "oldest" -> products=productRepository.findAllByCategory_IdAndStateOrderByCreatedDateAsc(new ObjectId(id),state);
+                case "sold" -> products=productRepository.findAllByCategory_IdAndStateOrderBySoldDesc(new ObjectId(id),state);
+                case "priceDesc" -> products=productRepository.findAllByCategory_IdAndStateOrderByDiscountDesc(new ObjectId(id),state);
+                default -> products=productRepository.findAllByCategory_IdAndStateOrderByDiscountAsc(new ObjectId(id),state);
+            }
         }
-
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
-        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        Iterator<ProductRes> iterator = resList.iterator();
+        while (iterator.hasNext()) {
+            ProductRes product = iterator.next();
+            BigDecimal productPrice = product.getDiscount();
+            if (productPrice.compareTo(minPrice) < 0 || productPrice.compareTo(maxPrice) > 0) {
+                iterator.remove();
+            }
+        }
+//        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+//        switch (sortBy) {
+//            case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+//            case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
+//            case "sold" -> resList.sort(Comparator.comparing(ProductRes::getSold).reversed());
+//            case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
+//            case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
+//        }
         if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get all product success", resList));
         else return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with category id: "+id, resList));
     }
-
     public ResponseEntity<?> search(String key, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         List<Product> products;
         if(state.equals(""))

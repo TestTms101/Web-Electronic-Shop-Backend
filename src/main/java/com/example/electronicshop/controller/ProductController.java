@@ -28,11 +28,18 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @GetMapping(path = "/products/category/{id}")
-    public ResponseEntity<?> findByCategoryId (@PathVariable("id") String id){
-        return productService.findByCategoryId(id);
+//    @GetMapping(path = "/products/category/{id}")
+//    public ResponseEntity<?> findByCategoryId (@PathVariable("id") String id){
+//        return productService.findByCategoryId(id);
+//    }
+    @GetMapping(path = "/products/searchcategory")
+    public ResponseEntity<?> findByCategoryId (@RequestParam("id") String id,@RequestParam("sortBy") String sortBy,
+                                               @RequestParam(value = "state", defaultValue = "") String state,
+                                               @RequestParam(value = "minPrice", defaultValue = "0") BigDecimal minPrice,
+                                               @RequestParam(value = "maxPrice", defaultValue = "99999999999999") BigDecimal maxPrice
+                                               ){
+        return productService.searchCategoryId(id,sortBy,state,minPrice,maxPrice);
     }
-
     @GetMapping(path = "/products/home")
     public ResponseEntity<?> findAllProductHomePage (){
         return productService.findAllProductHomePage();
