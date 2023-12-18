@@ -83,7 +83,11 @@ public class CommentService {
         } else {
             resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
         }
-        return addPageableToRes(comment,resList);
+//        return addPageableToRes(comment,resList);
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all comment success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any comment with: "+productId, resList));
     }
 
     @Transactional

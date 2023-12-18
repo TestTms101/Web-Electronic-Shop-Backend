@@ -115,12 +115,10 @@ public class OrderService {
         } else {
             resList.sort(Comparator.comparing(OrderRes::getCreatedDate).reversed());
         }
-        return addPageableToRes(orderList, resList);
-//        ResponseEntity<?> resp = addPageableToRes(orderList,resList);
-//        if (resp!=null) return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(true, "Get all order success", resp));
-//        else return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(false, "Can not found any order with: "+key, resList));
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all order success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any order with: "+key, resList));
     }
 
     public ResponseEntity<?> getAllCountOrders() {
@@ -141,17 +139,6 @@ public class OrderService {
         }
     }
 
-    private ResponseEntity<?> addPageableToRes(Page<Order> products, List<OrderRes> resList) {
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("list", resList);
-        resp.put("totalQuantity", products.getTotalElements());
-        resp.put("totalPage", products.getTotalPages());
-        if (resList.size() >0 )
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(true, "Get all product success", resp));
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any order: ", resp));
-    }
 
     public ResponseEntity<?> cancelOrder(String id, String userId) {
         Optional<Order> order = orderRepository.findById(id);

@@ -21,21 +21,9 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
 //    @Query(sort = "{ 'createdDate' : 1 }")
 //    List<Product> findAllByCategory_IdAndStateOrderByCreatedDateAsc(String catId, String state);
-
     @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
             "'state' : 'enable'}")
     List<Product> findProductsByCategoryOrderByCreatedDateAsc(ObjectId id, List<ObjectId> subCat);
-    List<Product> findAllByCategory_IdOrderByCreatedDateDesc(ObjectId id);
-    List<Product> findAllByCategory_IdOrderByCreatedDateAsc(ObjectId id);
-    List<Product> findAllByCategory_IdOrderBySoldDesc(ObjectId id);
-    List<Product> findAllByCategory_IdOrderByDiscountDesc(ObjectId id);
-    List<Product> findAllByCategory_IdOrderByDiscountAsc(ObjectId id);
-    List<Product> findAllByCategory_IdAndStateOrderByCreatedDateDesc(ObjectId id, String state);
-    List<Product> findAllByCategory_IdAndStateOrderByCreatedDateAsc(ObjectId id, String state);
-    List<Product> findAllByCategory_IdAndStateOrderBySoldDesc(ObjectId id, String state);
-    List<Product> findAllByCategory_IdAndStateOrderByDiscountDesc(ObjectId id, String state);
-    List<Product> findAllByCategory_IdAndStateOrderByDiscountAsc(ObjectId id, String state);
-
 //    @Query(value = "{ $or: [{'category' : ?0},{'category':{$in: ?1}}] ," +
 //            "    'state' : 'enable'}")
 //    Page<Product> findProductsByCategoryOrderBySaleDesc(ObjectId id, List<ObjectId> subCat, Pageable pageable);
@@ -44,7 +32,8 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     List<Product> findAllByIdOrNameOrDescriptionRegex(String id, String name, String descrip);
     List<Product> findAllByIdOrNameOrDescriptionRegexAndState(String id, String name, String descrip, String state);
     List<Product> findAllByCategory_IdAndState(ObjectId catId, String state);
-//    List<Product> findAllByIdIsIn(List<String> productIds);
+    List<Product> findAllByCategory_Id(ObjectId catId);
+    //    List<Product> findAllByIdIsIn(List<String> productIds);
     Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();

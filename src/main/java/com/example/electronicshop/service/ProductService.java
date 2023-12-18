@@ -131,21 +131,9 @@ public class ProductService {
     public ResponseEntity<?> searchCategoryId(String id, String sortBy, String state, BigDecimal minPrice, BigDecimal maxPrice) {
         List<Product> products;
         if(state.equals("")){
-            switch (sortBy) {
-                case "latest" -> products=productRepository.findAllByCategory_IdOrderByCreatedDateDesc(new ObjectId(id));
-                case "oldest" -> products=productRepository.findAllByCategory_IdOrderByCreatedDateAsc(new ObjectId(id));
-                case "sold" -> products=productRepository.findAllByCategory_IdOrderBySoldDesc(new ObjectId(id));
-                case "priceDesc" -> products=productRepository.findAllByCategory_IdOrderByDiscountDesc(new ObjectId(id));
-                default -> products=productRepository.findAllByCategory_IdOrderByDiscountAsc(new ObjectId(id));
-            }
+            products = productRepository.findAllByCategory_Id(new ObjectId(id));
         }else {
-            switch (sortBy) {
-                case "latest" -> products=productRepository.findAllByCategory_IdAndStateOrderByCreatedDateDesc(new ObjectId(id),state);
-                case "oldest" -> products=productRepository.findAllByCategory_IdAndStateOrderByCreatedDateAsc(new ObjectId(id),state);
-                case "sold" -> products=productRepository.findAllByCategory_IdAndStateOrderBySoldDesc(new ObjectId(id),state);
-                case "priceDesc" -> products=productRepository.findAllByCategory_IdAndStateOrderByDiscountDesc(new ObjectId(id),state);
-                default -> products=productRepository.findAllByCategory_IdAndStateOrderByDiscountAsc(new ObjectId(id),state);
-            }
+            products = productRepository.findAllByCategory_IdAndState(new ObjectId(id),state);
         }
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
         Iterator<ProductRes> iterator = resList.iterator();
@@ -156,14 +144,14 @@ public class ProductService {
                 iterator.remove();
             }
         }
-//        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
-//        switch (sortBy) {
-//            case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
-//            case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
-//            case "sold" -> resList.sort(Comparator.comparing(ProductRes::getSold).reversed());
-//            case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-//            case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
-//        }
+        resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        switch (sortBy) {
+            case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
+            case "sold" -> resList.sort(Comparator.comparing(ProductRes::getSold).reversed());
+            case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
+            case "priceAsc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
+            default -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+        }
         if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(true, "Get all product success", resList));
         else return ResponseEntity.status(HttpStatus.OK).body(
@@ -174,12 +162,7 @@ public class ProductService {
         if(state.equals(""))
             products=productRepository.findAllByIdOrNameOrDescriptionRegex(key,key,key);
         else products=productRepository.findAllByIdOrNameOrDescriptionRegexAndState(key,key,key,state);
-//        List<ProductRes> resList = new ArrayList<>();
         List<ProductRes> resList = products.stream().map(productMapper::toProductRes).collect(Collectors.toList());
-//        resList.addAll(list);
-//        products.nextPageable();
-//        list=products.getContent().stream().map(productMapper::toProductRes).collect(Collectors.toList());
-//        resList.addAll(list);
         Iterator<ProductRes> iterator = resList.iterator();
         while (iterator.hasNext()) {
             ProductRes product = iterator.next();
@@ -189,11 +172,12 @@ public class ProductService {
             }
         }
         switch (sortBy) {
-            case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
+//            case "latest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
             case "oldest" -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate));
             case "sold" -> resList.sort(Comparator.comparing(ProductRes::getSold).reversed());
             case "priceDesc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount).reversed());
-            case "" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
+            case "priceAsc" -> resList.sort(Comparator.comparing(ProductRes::getDiscount));
+            default -> resList.sort(Comparator.comparing(ProductRes::getCreatedDate).reversed());
         }
         if (resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(false, "Can not found any product with: "+key, resList));
