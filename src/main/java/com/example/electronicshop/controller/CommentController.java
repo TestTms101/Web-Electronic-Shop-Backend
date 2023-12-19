@@ -34,9 +34,8 @@ public class CommentController {
 
     @GetMapping(path = "/admin/manage/comment/findall")
     public ResponseEntity<?> findAllComment(@RequestParam("sortBy") String sortBy,
-                                            @RequestParam("state") String state,
-                                            @ParameterObject Pageable pageable) {
-        return commentService.findAllComment(sortBy,state,pageable);
+                                            @RequestParam("state") String state) {
+        return commentService.findAllComment(sortBy,state);
     }
     @GetMapping(path = "/admin/comment/{productId}")
     public ResponseEntity<?> search (@PathVariable("productId") String productId,

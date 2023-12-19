@@ -70,14 +70,11 @@ public class CommentService {
                 new ResponseObject(false, "Can not found any comment", resp));
     }
     public ResponseEntity<?> findByProductIdAndCreateDateAndState(String productId, String sortBy, String state, Pageable pageable) {
-        Page<Comment> comment = switch (state) {
-            case "enable" ->
-                    commentRepository.findAllByProduct_IdAndState(new ObjectId(productId), Constant.COMMENT_ENABLE, pageable);
-            case "block" ->
-                    commentRepository.findAllByProduct_IdAndState(new ObjectId(productId), Constant.COMMENT_BLOCK, pageable);
-            default -> commentRepository.findCommentsByProduct_Id(new ObjectId(productId), pageable);
+        List<Comment> comment = switch (state) {
+            case "" ->commentRepository.findCommentsByProduct_Id(new ObjectId(productId));
+            default -> commentRepository.findCommentsByProduct_IdAndState(new ObjectId(productId), state);
         };
-        List<CommentRes> resList = comment.getContent().stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
+        List<CommentRes> resList = comment.stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
         if (sortBy.equals("oldest")) {
             resList.sort(Comparator.comparing(CommentRes::getCreatedDate));
         } else {
@@ -160,13 +157,10 @@ public class CommentService {
                 new ResponseObject(false, "Can not found comment with id: "+id, ""));
 //        throw new NotFoundException("Can not found comment with id: "+id);
     }
-    public ResponseEntity<ResponseObject> findAllComment(String sortBy, String state, Pageable pageable){
-        Page<Comment> comment = switch (state) {
-            case "enable" ->
-                    commentRepository.findAllByState(Constant.COMMENT_ENABLE, pageable);
-            case "block" ->
-                    commentRepository.findAllByState(Constant.COMMENT_BLOCK, pageable);
-            default -> commentRepository.findAll(pageable);
+    public ResponseEntity<ResponseObject> findAllComment(String sortBy, String state){
+        List<Comment> comment = switch (state) {
+            case "" ->commentRepository.findAll();
+            default ->commentRepository.findAllByState(state);
         };
         List<CommentRes> resList = comment.stream().map(commentMap::toAllCommentRes).collect(Collectors.toList());
         if (sortBy.equals("oldest")) {
@@ -174,7 +168,11 @@ public class CommentService {
         } else {
             resList.sort(Comparator.comparing(CommentRes::getCreatedDate).reversed());
         }
-        return (ResponseEntity<ResponseObject>) addPageableToRes(comment,resList);
+        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all comment success", resList));
+        else return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(false, "Can not found any comment", resList));
+//        return (ResponseEntity<ResponseObject>) addPageableToRes(comment,resList);
 //        Map<String, Object> resp = new HashMap<>();
 //        resp.put("list", resList);
 //        resp.put("totalComment", comment.getTotalElements());

@@ -29,8 +29,8 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByLastModifiedDateBetweenAndStateOrderByLastModifiedDateAsc(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(String id, String name, LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(String id, String name, LocalDateTime from, LocalDateTime to, Pageable pageable);
+    List<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(String id, String name, LocalDateTime from, LocalDateTime to, String state);
+    List<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(String id, String name, LocalDateTime from, LocalDateTime to);
     @Query(value = "{ 'state' : { $ne: 'enable' } }", count = true)
     Long countByStateNotEnable();
     Long countByState(String state);

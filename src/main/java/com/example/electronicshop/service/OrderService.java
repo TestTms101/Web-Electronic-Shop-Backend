@@ -105,10 +105,10 @@ public class OrderService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-        Page<Order> orderList;
+        List<Order> orderList;
         if (state.equals("")|| state.equals("all"))
-            orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate,pageable);
-        else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state,pageable);
+            orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate);
+        else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state);
         List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
         if (sortBy.equals("oldest")) {
             resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
