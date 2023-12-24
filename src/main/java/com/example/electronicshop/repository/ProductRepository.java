@@ -1,5 +1,6 @@
 package com.example.electronicshop.repository;
 
+import com.example.electronicshop.communication.CategoryQuantitySold;
 import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.models.enity.User;
 import com.example.electronicshop.models.product.Product;
@@ -37,6 +38,8 @@ public interface ProductRepository extends MongoRepository<Product, String>{
     Page<Product> findAllByStateOrderBySoldDesc(String state, Pageable pageable);
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
+    @Aggregation("{ $group: { _id: '$category', totalQuantitySold: { $sum: '$sold' } } }")
+    List<CategoryQuantitySold> getTotalQuantitySoldByCategory();
     Long countAllBy();
     Long countByState(String state);
 }

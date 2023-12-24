@@ -1,5 +1,6 @@
 package com.example.electronicshop.service;
 
+import com.example.electronicshop.communication.CategoryQuantitySold;
 import com.example.electronicshop.communication.StateCountAggregate;
 import com.example.electronicshop.config.CloudinaryConfig;
 import com.example.electronicshop.config.Constant;
@@ -197,6 +198,21 @@ public class ProductService {
         } catch (Exception e) {
             throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
         }
+    }
+    public ResponseEntity<?> getTotalQuantitySoldByCategory() {
+//        try {
+//
+//        } catch (Exception e) {
+//            throw new AppException(HttpStatus.EXPECTATION_FAILED.value(), e.getMessage());
+//        }
+        List<CategoryQuantitySold> resp;
+//            resp.add(new StateCountAggregate("all",productRepository.countAllBy()));
+//            resp.add(new StateCountAggregate("enable",productRepository.countByState(Constant.ENABLE)));
+//            resp.add(new StateCountAggregate("disable",productRepository.countByState(Constant.DISABLE)));
+        resp=productRepository.getTotalQuantitySoldByCategory();
+//            resp.sort(Comparator.comparing(CategoryQuantitySold::getCount).reversed());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get count by Products success", resp));
     }
     public ResponseEntity<?> addProduct(ProductReq req) {
         if (req != null) {

@@ -70,7 +70,10 @@ public class ProductController {
     public ResponseEntity<?> getCountByState (){
         return productService.getAllCountProducts();
     }
-
+    @GetMapping(path = "/admin/products/quantitysold")
+    public ResponseEntity<?> getTotalQuantitySoldByCategory (){
+        return productService.getTotalQuantitySoldByCategory();
+    }
     @GetMapping(path = "/products/soldDesc")
     public ResponseEntity<?> findAllByStateOrderBySoldDesc (@ParameterObject Pageable pageable){
         return productService.findAllOrderbySoldDesc(pageable);
