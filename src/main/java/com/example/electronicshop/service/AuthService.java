@@ -55,13 +55,18 @@ public class AuthService {
             CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
             String accesstoken = jwtUtils.generateTokenFromUserId(user.getUser());
             LoginResponese res = userMapper.toLoginRes(user.getUser());
-            res.setAccessToken(accesstoken);
-
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(true, "Log in successfully ", res)
-            );
-
-
+            if (user.getUser().getState().equals(Constant.USER_ACTIVE)){
+                res.setAccessToken(accesstoken);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(true, "Log in successfully ", res)
+                );
+            }else {
+                user.getUser().setToken(null);
+                userRepository.save(user.getUser());
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(false, "Your account has been locked" , "")
+                );
+            }
     }
 
 
@@ -97,6 +102,7 @@ public class AuthService {
     public ResponseEntity<ResponseObject> registerSocial(RegisterSocial req) {
 //        if (userRepository.existsByEmail(req.getEmail()))
 //            throw new AppException(HttpStatus.CONFLICT.value(), "Email already exists");
+
         User user = userMapper.toSocial(req);
         if (!userRepository.existsByEmail(req.getEmail()))
         {
@@ -112,10 +118,22 @@ public class AuthService {
         Optional<User> user1 = userRepository.findUsersByEmail(user.getEmail());
         String accesstoken = jwtUtils.generateTokenFromUserId(user1.get());
         LoginResponese res = userMapper.toLoginRes(user1.get());
-        res.setAccessToken(accesstoken);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ResponseObject(true, "Successfully ", res)
-        );
+        if (user1.get().getState().equals(Constant.USER_ACTIVE)){
+            res.setAccessToken(accesstoken);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(true, "Log in successfully ", res)
+            );
+        }else {
+            user1.get().setToken(null);
+            userRepository.save(user1.get());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(false, "Your account has been locked" , "")
+            );
+        }
+//        res.setAccessToken(accesstoken);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(
+//                new ResponseObject(true, "Successfully ", res)
+//        );
 
     }
     public ResponseEntity<?> sendMailGetOTP(String email) {
