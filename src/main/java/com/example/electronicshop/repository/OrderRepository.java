@@ -19,18 +19,17 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Page<Order> findAllByState(String state, Pageable pageable);
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
     Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
-
     Optional<Order> findOrderByIdAndState(String orderId, String state);
-
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();
     Page<Order> getOrderByUser_IdAndState(ObjectId userId, String state, Pageable pageable);
-
     @Query(value=" {state: {'$nin': ['enable']}}")
     Page<Order> findAllByStateNoEnable( Pageable pageable);
     Page<Order> countAllByLastModifiedDateBetweenAndStateOrderByLastModifiedDateAsc(LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
-    List<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(String id, String name, LocalDateTime from, LocalDateTime to, String state);
-    List<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(String id, String name, LocalDateTime from, LocalDateTime to);
+    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndStateOrderByCreatedDateDesc(String id, String name, LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndStateOrderByCreatedDateAsc(String id, String name, LocalDateTime from, LocalDateTime to, String state, Pageable pageable);
+    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenOrderByCreatedDateDesc(String id, String name, LocalDateTime from, LocalDateTime to, Pageable pageable);
+    Page<Order> findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenOrderByCreatedDateAsc(String id, String name, LocalDateTime from, LocalDateTime to, Pageable pageable);
     @Query(value = "{ 'state' : { $ne: 'enable' } }", count = true)
     Long countByStateNotEnable();
     Long countByState(String state);
