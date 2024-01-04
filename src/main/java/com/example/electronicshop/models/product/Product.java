@@ -51,7 +51,7 @@ public class  Product {
     private BigDecimal discount;
     private double rate = 0;
 //    @NotBlank(message = "summary is required")
-//    private String summary;
+    private String summary;
 
 //    private List<ProductOption> options = new ArrayList<>();
 //    @NotBlank(message = "tags is required")
@@ -81,14 +81,14 @@ public class  Product {
         this.createdDate = createdDate;
     }
 
-    public Product(String name, String slugify, BigDecimal price, int quantity, double sale, BigDecimal discount, String description, Category category, String state, LocalDateTime createdDate) {
+    public Product(String name, String slugify, BigDecimal price, int quantity, double sale, String summary, BigDecimal discount, String description, Category category, String state, LocalDateTime createdDate) {
         this.name = name;
         this.slugify = slugify;
         this.price = price;
         this.quantity = quantity;
         this.sale = sale;
+        this.summary = summary;
         this.discount = discount;
-//        this.summary = summary;
 //        this.tags = tags;
         this.description = description;
         this.category = category;
