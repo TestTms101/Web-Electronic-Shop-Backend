@@ -96,16 +96,6 @@ public class OrderService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-//        List<Order> orderList;
-//        if (state.equals("")|| state.equals("all"))
-//            orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate);
-//        else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state);
-//        List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
-//        if (sortBy.equals("oldest")) {
-//            resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
-//        } else {
-//            resList.sort(Comparator.comparing(OrderRes::getCreatedDate).reversed());
-//        }
 
         toDate = toDate.plusDays(1);
 
@@ -125,10 +115,10 @@ public class OrderService {
             }
         }
 
-        //        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(true, "Get all order success", resList));
-//        else return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(false, "Can not found any order with: "+key, resList));
+        if (orderList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(false, "Can not found any order with: " + key, orderList));
+        }
 
         Map<String, Object> map = new HashMap<>();
         map.put("list", orderList.getContent());
