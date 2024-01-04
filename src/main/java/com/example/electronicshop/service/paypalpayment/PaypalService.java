@@ -7,9 +7,8 @@ import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.repository.OrderRepository;
-import com.example.electronicshop.utils.MoneyUtils;
-import com.example.electronicshop.utils.StringUtils;
-import com.example.electronicshop.utils.TimeCancel;
+import com.example.electronicshop.service.MailService;
+import com.example.electronicshop.utils.*;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -43,6 +42,8 @@ public class PaypalService extends  PaymentFactory{
     private final OrderRepository orderRepository;
     private final TimeCancel timeCancel;
     private final TaskScheduler taskScheduler;
+    private final MailService mailService;
+    private final EmailUtils emailUtils;
 
     @Override
     @Transactional
@@ -103,6 +104,9 @@ public class PaypalService extends  PaymentFactory{
                     order.get().getPaymentDetail().getPaymentInfo().put("isPaid", true);
                     order.get().setState(Constant.ORDER_STATE_PENDINGPAY);
                     orderRepository.save(order.get());
+                    emailUtils.setOrder(order.get());
+                    emailUtils.setMailService(mailService);
+                    taskScheduler.schedule(emailUtils, new Date(System.currentTimeMillis()));
                 }
                 response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
                 return ResponseEntity.status(HttpStatus.OK).body(

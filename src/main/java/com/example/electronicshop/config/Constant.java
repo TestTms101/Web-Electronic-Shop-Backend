@@ -14,7 +14,7 @@ public class Constant {
     public static final String ROLE_USER = "role_user";
 
     //USER STATE
-        public static final String USER_ACTIVE = "active";
+    public static final String USER_ACTIVE = "active";
     public static final String USER_NOT_ACTIVE = "block";
     public static final String USER_NOT_VERIFY = "not_verify";
     //ORDER STATE
@@ -30,5 +30,5 @@ public class Constant {
     public static final String PAY_COD = "cod";
     public static final String PAY_PAYPAL = "paypal";
     public static final String PAY_VNPAY = "vnpay";
-    public static final int PAYMENT_TIMEOUT = 10 * 60 * 100;// 1p
+    public static final int PAYMENT_TIMEOUT = 5 * 60 * 1000;// 5p
 }

@@ -6,6 +6,8 @@ import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
+import com.example.electronicshop.service.MailService;
+import com.example.electronicshop.utils.EmailUtils;
 import com.example.electronicshop.utils.TimeCancel;
 import com.example.electronicshop.utils.VNPayUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,8 @@ public class VNPayService extends PaymentFactory {
     private final PaymentUtils paymentUtils;
     private final TimeCancel timeCancel;
     private final TaskScheduler taskScheduler;
-
+    private final MailService mailService;
+    private final EmailUtils emailUtils;
 
     @SneakyThrows
     @Override
@@ -94,6 +97,9 @@ public class VNPayService extends PaymentFactory {
             order.get().getPaymentDetail().getPaymentInfo().put("isPaid", true);
             order.get().setState(Constant.ORDER_STATE_PENDINGPAY);
             orderRepository.save(order.get());
+            emailUtils.setOrder(order.get());
+            emailUtils.setMailService(mailService);
+            taskScheduler.schedule(emailUtils, new Date(System.currentTimeMillis()));
             response.sendRedirect(PaymentService.CLIENT_REDIRECT + "true&cancel=false");
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Payment Completed", "")

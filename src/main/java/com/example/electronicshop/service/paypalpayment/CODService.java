@@ -5,15 +5,19 @@ import com.example.electronicshop.models.ResponseObject;
 import com.example.electronicshop.models.enity.Order;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
+import com.example.electronicshop.service.MailService;
+import com.example.electronicshop.utils.EmailUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -22,6 +26,9 @@ import java.util.Optional;
 public class CODService extends PaymentFactory{
     private PaymentUtils paymentUtils;
     private final OrderRepository orderRepository;
+    private final TaskScheduler taskScheduler;
+    private final MailService mailService;
+    private final EmailUtils emailUtils;
 
     @Override
     @Transactional
@@ -34,6 +41,9 @@ public class CODService extends PaymentFactory{
                 order.setCreatedDate(LocalDateTime.now());
                 order.getPaymentDetail().getPaymentInfo().put("isPaid", false);
                 orderRepository.save(order);
+                emailUtils.setOrder(order);
+                emailUtils.setMailService(mailService);
+                taskScheduler.schedule(emailUtils, new Date(System.currentTimeMillis()));
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(true, " Pay by COD successfully", ""));
             }

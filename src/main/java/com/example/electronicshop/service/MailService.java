@@ -24,9 +24,9 @@ public class MailService {
     private Configuration configuration;
 
     final String VERIFY_TEMPLATE = "verify-template.ftl";
-    final String ORDER_TEMPLATE = "order-template.ftl";
+    final String ORDER_TEMPLATE = "mail-template.ftl";
     final String RESET_TEMPLATE ="reset-template.ftl";
-    final String FROM_EMAIL = "electronicshop133@gmail.com";
+    final String FROM_EMAIL = "transang8320001@gmail.com";
     final String TYPE_EMAIL = "text/html";
     final String TITLE_EMAIL_VERIFY = "Mã xác minh Electric Shop Website";
     final String TITLE_EMAIL_ORDER = "Xác nhận đơn hàng ";
@@ -45,11 +45,11 @@ public class MailService {
             template = configuration.getTemplate(VERIFY_TEMPLATE);
             model.put("title", TITLE_EMAIL_VERIFY);
         }
-        else if (type.equals(MailType.ORDER)){
+        if (type.equals(MailType.ORDER)){
             template = configuration.getTemplate(ORDER_TEMPLATE);
             model.put("title", TITLE_EMAIL_ORDER);
         }
-        else if (type.equals(MailType.Resetpassword)){
+        if (type.equals(MailType.Resetpassword)){
             template = configuration.getTemplate(RESET_TEMPLATE);
             model.put("title", TITLE_EMAIL_RESET);
         }

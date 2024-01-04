@@ -32,8 +32,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class PaymentService{
-    public static String CLIENT_REDIRECT = "http://localhost:3000/redirect/payment?success=";
-//   public static String CLIENT_REDIRECT =  "https://tlcn-fe.vercel.app/redirect/payment?success=";
+//    public static String CLIENT_REDIRECT = "http://localhost:3000/redirect/payment?success=";
+   public static String CLIENT_REDIRECT =  "https://kltn-user-page.vercel.app/redirect/payment?success=";
     private final ApplicationContext context;
     private final OrderRepository orderRepository;
 private final OrderItemRepository orderItemRepository;
