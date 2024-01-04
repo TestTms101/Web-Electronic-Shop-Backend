@@ -1,16 +1,11 @@
 package com.example.electronicshop.service;
 
 import com.example.electronicshop.communication.StateCountAggregate;
-import com.example.electronicshop.communication.response.CommentRes;
 import com.example.electronicshop.communication.response.OrderRes;
-import com.example.electronicshop.communication.response.OrdersSaleRes;
-import com.example.electronicshop.communication.response.ProductRes;
 import com.example.electronicshop.config.Constant;
 import com.example.electronicshop.map.OrderMapper;
 import com.example.electronicshop.models.ResponseObject;
-import com.example.electronicshop.models.enity.Comment;
 import com.example.electronicshop.models.enity.Order;
-import com.example.electronicshop.models.product.Product;
 import com.example.electronicshop.notification.AppException;
 import com.example.electronicshop.notification.NotFoundException;
 import com.example.electronicshop.repository.OrderRepository;
@@ -19,15 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -57,9 +48,9 @@ public class OrderService {
                 new ResponseObject(true, "Get orders success", resp));
     }
 
-    public ResponseEntity<?> findAllNoEnable( Pageable pageable) {
+    public ResponseEntity<?> findAllNoEnable(Pageable pageable) {
         Page<Order> orders;
-         orders = orderRepository.findAllByStateNoEnable( pageable);
+        orders = orderRepository.findAllByStateNoEnable(pageable);
         if (orders.isEmpty()) throw new NotFoundException("Can not found any orders");
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderRes2).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
@@ -92,7 +83,7 @@ public class OrderService {
                 new ResponseObject(false, "Can not found order with id: " + id, ""));
     }
 
-    public ResponseEntity<?> searchAndSortAndFilter(String key,String from, String to, String sortBy, String state, Pageable pageable) {
+    public ResponseEntity<?> searchAndSortAndFilter(String key, String from, String to, String sortBy, String state, Pageable pageable) {
         LocalDateTime fromDate = LocalDateTime.now();
         LocalDateTime toDate = LocalDateTime.now();
         String pattern = "dd-MM-yyyy";
@@ -105,32 +96,48 @@ public class OrderService {
             e.printStackTrace();
             throw new AppException(HttpStatus.BAD_REQUEST.value(), "Incorrect date format");
         }
-        List<Order> orderList;
-        if (state.equals("")|| state.equals("all"))
-            orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetween(key,key,fromDate,toDate);
-        else orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndState(key,key,fromDate,toDate,state);
-        List<OrderRes> resList = new ArrayList<>(orderList.stream().map(orderMapper::toOrderRes2).toList());
-        if (sortBy.equals("oldest")) {
-            resList.sort(Comparator.comparing(OrderRes::getCreatedDate));
+
+        toDate = toDate.plusDays(1);
+
+        Page<Order> orderList;
+
+        if (state.equals("") || state.equals("all")) {
+            if (sortBy.equals("") || sortBy.equals("lasted")) {
+                orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenOrderByCreatedDateDesc(key, key, fromDate, toDate, pageable);
+            } else {
+                orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenOrderByCreatedDateAsc(key, key, fromDate, toDate, pageable);
+            }
         } else {
-            resList.sort(Comparator.comparing(OrderRes::getCreatedDate).reversed());
+            if (sortBy.equals("") || sortBy.equals("lasted")) {
+                orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndStateOrderByCreatedDateDesc(key, key, fromDate, toDate, state, pageable);
+            } else {
+                orderList = orderRepository.findByIdOrDelivery_ShipNameRegexAndCreatedDateBetweenAndStateOrderByCreatedDateAsc(key, key, fromDate, toDate, state, pageable);
+            }
         }
-        if (!resList.isEmpty()) return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(true, "Get all order success", resList));
-        else return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(false, "Can not found any order with: "+key, resList));
+
+        if (orderList.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(false, "Can not found any order with: " + key, orderList));
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", orderList.getContent());
+        map.put("totalPage", orderList.getTotalPages());
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(true, "Get all order success", map));
     }
 
     public ResponseEntity<?> getAllCountOrders() {
         try {
             List<StateCountAggregate> resp = new ArrayList<>();
-            resp.add(new StateCountAggregate("all",orderRepository.countByStateNotEnable()));
-            resp.add(new StateCountAggregate("complete",orderRepository.countByState(Constant.ORDER_STATE_COMPLETE)));
-            resp.add(new StateCountAggregate("process",orderRepository.countByState(Constant.ORDER_STATE_PROCESS)));
-            resp.add(new StateCountAggregate("delivery",orderRepository.countByState(Constant.ORDER_STATE_DELIVERY)));
-            resp.add(new StateCountAggregate("pending",orderRepository.countByState(Constant.ORDER_STATE_PENDING)));
-            resp.add(new StateCountAggregate("pendingpay",orderRepository.countByState(Constant.ORDER_STATE_PENDINGPAY)));
-            resp.add(new StateCountAggregate("cancel",orderRepository.countByState(Constant.ORDER_STATE_CANCEL)));
+            resp.add(new StateCountAggregate("all", orderRepository.countByStateNotEnable()));
+            resp.add(new StateCountAggregate("complete", orderRepository.countByState(Constant.ORDER_STATE_COMPLETE)));
+            resp.add(new StateCountAggregate("process", orderRepository.countByState(Constant.ORDER_STATE_PROCESS)));
+            resp.add(new StateCountAggregate("delivery", orderRepository.countByState(Constant.ORDER_STATE_DELIVERY)));
+            resp.add(new StateCountAggregate("pending", orderRepository.countByState(Constant.ORDER_STATE_PENDING)));
+            resp.add(new StateCountAggregate("pendingpay", orderRepository.countByState(Constant.ORDER_STATE_PENDINGPAY)));
+            resp.add(new StateCountAggregate("cancel", orderRepository.countByState(Constant.ORDER_STATE_CANCEL)));
             resp.sort(Comparator.comparing(StateCountAggregate::getCount).reversed());
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get count by Orders success", resp));
@@ -147,10 +154,10 @@ public class OrderService {
                     order.get().getState().equals(Constant.ORDER_STATE_ENABLE) ||
                     order.get().getState().equals(Constant.ORDER_STATE_PROCESS)) {
                 String checkUpdateQuantityProduct = paymentUtils.checkingUpdateQuantityProduct(order.get(), false);
-                String checkUpdateSold =paymentUtils.setSoldProduct(order.get(),false);
+                String checkUpdateSold = paymentUtils.setSoldProduct(order.get(), false);
                 order.get().setState(Constant.ORDER_STATE_CANCEL);
                 orderRepository.save(order.get());
-                if (checkUpdateQuantityProduct == null&& checkUpdateSold==null) {
+                if (checkUpdateQuantityProduct == null && checkUpdateSold == null) {
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(true, "Cancel order successfully", ""));
                 }
@@ -167,17 +174,17 @@ public class OrderService {
             orderRepository.save(order.get());
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Delivery order successfully", order));
-        } else throw new NotFoundException("Can not found or delivery order with id: "+ id);
+        } else throw new NotFoundException("Can not found or delivery order with id: " + id);
     }
 
     public ResponseEntity<?> setCompleteOrderByAdmin(String id) {
         Optional<Order> order = orderRepository.findById(id);
-        if (order.isPresent() ) {
-            if (order.get().getState().equals(Constant.ORDER_STATE_DELIVERY) ) {
+        if (order.isPresent()) {
+            if (order.get().getState().equals(Constant.ORDER_STATE_DELIVERY)) {
                 order.get().setState(Constant.ORDER_STATE_COMPLETE);
                 order.get().setLastModifiedDate(LocalDateTime.now());
                 orderRepository.save(order.get());
-              {
+                {
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(true, "Complete order successfully", order));
                 }
@@ -189,13 +196,13 @@ public class OrderService {
 
     public ResponseEntity<?> setCancelOrderByAdmin(String id) {
         Optional<Order> order = orderRepository.findById(id);
-        if (order.isPresent() ) {
-                order.get().setState(Constant.ORDER_STATE_CANCEL);
-                orderRepository.save(order.get());
-                {
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(true, "Cancel order successfully", order));
-                }
+        if (order.isPresent()) {
+            order.get().setState(Constant.ORDER_STATE_CANCEL);
+            orderRepository.save(order.get());
+            {
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(true, "Cancel order successfully", order));
+            }
         }
         throw new NotFoundException("Can not found order with id: " + id);
     }
@@ -206,7 +213,7 @@ public class OrderService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalOrder", orders.getTotalElements());
-        if(resList.size()>0){
+        if (resList.size() > 0) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", resp));
         }
@@ -214,13 +221,12 @@ public class OrderService {
                 new ResponseObject(false, "Can not found any order", ""));
     }
 
-    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable)
-    {
-        Page<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId),Constant.ORDER_STATE_COMPLETE, pageable);
+    public ResponseEntity<?> findAllOrderCompleteByUserId(String userId, Pageable pageable) {
+        Page<Order> orders = orderRepository.getOrderByUser_IdAndState(new ObjectId(userId), Constant.ORDER_STATE_COMPLETE, pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
-        if(resList.size()>0){
+        if (resList.size() > 0) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", resp));
         }

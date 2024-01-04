@@ -22,6 +22,11 @@ public interface CommentRepository extends MongoRepository<Comment, String> {
 //    Optional<Comment> findCommentByIdAndState(String Id, String userId);
     Optional<Comment> findCommentByIdAndUser_IdAndState(ObjectId commentId, ObjectId userId,String State);
     List<Comment> findAllByState(String state);
+
+    Page<Comment> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    Page<Comment> findAllByOrderByCreatedDateAsc(Pageable pageable);
+    Page<Comment> findAllByStateOrderByCreatedDateDesc(String state, Pageable pageable);
+    Page<Comment> findAllByStateOrderByCreatedDateAsc(String state, Pageable pageable);
     List<Comment> findCommentsByProduct_Id(ObjectId productId);
     List<Comment> findCommentsByProduct_IdAndState(ObjectId productId, String state);
     Long countAllBy();

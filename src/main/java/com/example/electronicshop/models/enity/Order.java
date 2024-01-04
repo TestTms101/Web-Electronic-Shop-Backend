@@ -36,12 +36,11 @@ public class Order {
     private PaymentDetail paymentDetail = new PaymentDetail();
     @NotBlank(message = "State is required")
     private String state;
-    @CreatedDate
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+
     LocalDateTime createdDate;
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @LastModifiedDate
     LocalDateTime lastModifiedDate;
+
     @Transient
     private long totalProduct = 0;
     @Transient
