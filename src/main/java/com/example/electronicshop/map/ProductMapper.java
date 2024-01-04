@@ -29,7 +29,7 @@ public class ProductMapper {
 //                .setScale(0, RoundingMode.HALF_EVEN).multiply(BigDecimal.valueOf(1000)).stripTrailingZeros().toPlainString();
         if (category.isEmpty())
             throw new NotFoundException("Can not found category or brand");
-        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(),req.subdiscount() ,
+        return new Product(req.getName(),req.getSlugify(),req.getPrice(), req.getQuantity(), req.getSale(), req.getSummary(), req.subdiscount() ,
                 req.getDescription(),category.get(),Constant.ENABLE, LocalDateTime.now());
     }
 

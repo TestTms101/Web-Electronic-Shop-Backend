@@ -27,7 +27,7 @@ public class ProductReq {
     private BigDecimal price;
     private double sale;
 //    @NotBlank(message = "summary is required")
-//    private String summary;
+    private String summary;
 //    private List<String> tags;
     @NotBlank(message = "Description is required")
     private String description;
