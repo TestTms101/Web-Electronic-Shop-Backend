@@ -207,8 +207,11 @@ public class OrderService {
         throw new NotFoundException("Can not found order with id: " + id);
     }
 
-    public ResponseEntity<?> findAllOrderByUserId(String userId, Pageable pageable) {
-        Page<Order> orders = orderRepository.findOrderByUser_Id(new ObjectId(userId), pageable);
+    public ResponseEntity<?> findAllOrderByUserId(String userId, String state, Pageable pageable) {
+        Page<Order> orders;
+        if(state.equals("all")||state.equals(""))
+            orders = orderRepository.findOrderByUser_Id(new ObjectId(userId), pageable);
+        else orders = orderRepository.findOrderByUser_IdAndState(new ObjectId(userId),state,pageable);
         List<OrderRes> resList = orders.stream().map(orderMapper::toOrderDetailRes).collect(Collectors.toList());
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);

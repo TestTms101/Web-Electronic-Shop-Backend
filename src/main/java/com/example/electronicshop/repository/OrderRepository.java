@@ -19,6 +19,7 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     Page<Order> findAllByState(String state, Pageable pageable);
     Optional<Order> findOrderByPaymentDetail_PaymentTokenAndState(String token, String state);
     Page<Order> findOrderByUser_Id(ObjectId userId, Pageable pageable);
+    Page<Order> findOrderByUser_IdAndState(ObjectId userId, String state, Pageable pageable);
     Optional<Order> findOrderByIdAndState(String orderId, String state);
     @Aggregation("{ $group: { _id : $state, count: { $sum: 1 } } }")
     List<StateCountAggregate> countAllByState();

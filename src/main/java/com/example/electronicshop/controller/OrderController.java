@@ -91,10 +91,10 @@ public class OrderController {
 
     @GetMapping(path = "/orders/getallorder")
     public ResponseEntity<?> userFindAllOrder (HttpServletRequest request,@SortDefault(sort = "createdDate",
-            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable ){
+            direction = Sort.Direction.DESC) @ParameterObject Pageable pageable, @RequestParam("state") String state){
         User user = jwtUtils.getUserFromJWT(jwtUtils.getJwtFromHeader(request));
         if (!user.getId().isBlank())
-            return orderService.findAllOrderByUserId(user.getId(),pageable);
+            return orderService.findAllOrderByUserId(user.getId(), state,pageable);
         throw new AppException(HttpStatus.FORBIDDEN.value(), "You don't have permission! Token is invalid");
     }
 
