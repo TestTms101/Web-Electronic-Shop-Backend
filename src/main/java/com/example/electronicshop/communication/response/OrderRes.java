@@ -22,6 +22,8 @@ public class OrderRes {
     private String email;
     private String phone;
     private long totalProduct = 0;
+    private BigDecimal subtotal;
+    private BigDecimal fee;
     private BigDecimal totalPrice;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CartItemRes> items = new ArrayList<>();
@@ -66,6 +68,21 @@ public class OrderRes {
         this.email = email;
         this.phone = phone;
         this.totalProduct = totalProduct;
+        this.totalPrice = totalPrice;
+        this.state = state;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public OrderRes(String id, String userId, String userName, String email, String phone, long totalProduct, BigDecimal subtotal, BigDecimal fee, BigDecimal totalPrice, String state, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.phone = phone;
+        this.totalProduct = totalProduct;
+        this.subtotal = subtotal;
+        this.fee = fee;
         this.totalPrice = totalPrice;
         this.state = state;
         this.createdDate = createdDate;
