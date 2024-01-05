@@ -216,6 +216,7 @@ public class OrderService {
         Map<String, Object> resp = new HashMap<>();
         resp.put("list", resList);
         resp.put("totalOrder", orders.getTotalElements());
+        resp.put("totalPage", orders.getTotalPages());
         if (resList.size() > 0) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(true, "Get order success", resp));
