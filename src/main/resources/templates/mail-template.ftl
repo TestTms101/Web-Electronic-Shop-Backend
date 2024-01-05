@@ -71,7 +71,7 @@
                                                             <td align="center" style="padding:0;Margin:0;position:relative"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px"><img class="adapt-img" src="https://fbgnkuz.stripocdn.email/content/guids/bannerImgGuid/images/image17043428289946953.png" alt title width="100%" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:40px;padding-right:40px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Thank you for trusting and purchasing Ickai products! Keeping our loyal customers satisfied is our top priority.</p></td>
+                                                            <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:40px;padding-right:40px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Cám ơn đã mua hàng ở shop của hàng chúng tôi! Sự hài lòng của bạn là ưu tiên hàng đầu của chúng tôi</p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -91,7 +91,7 @@
                                                 <td class="es-m-p20b" align="center" valign="top" style="padding:0;Margin:0;width:472px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:48px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:40px;font-style:normal;font-weight:bold;color:#402218">ORDER INFO</h1><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:48px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:40px;font-style:normal;font-weight:bold;color:#402218">Thông tin khách hàng</h1><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -114,10 +114,10 @@
                                                 <td class="es-m-p20b" align="left" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Date Shipped&nbsp;</h3></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Ngày đặt hàng&nbsp;</h3></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${total}</p></td>
+                                                            <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${presenttime}</p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -125,10 +125,10 @@
                                                 <td class="es-m-p20b" align="left" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0;padding-top:20px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Shipped Via</h3></td>
+                                                            <td align="left" style="padding:0;Margin:0;padding-top:20px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Nơi vận chuyển</h3></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">1 Vo Van Ngan, Linh Chieu Ward,</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Thu Duc City, Ho Chi Minh City.</p></td>
+                                                            <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">1 Võ Văn Ngân, Phường Linh Chiểu,</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Thành phố Thủ Đức, Thành phố Hồ Chí Minh.</p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -138,7 +138,7 @@
                                                 <td align="left" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Tracking Number</h3></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Số điện thoại</h3></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${phone}<br></p></td>
@@ -149,7 +149,7 @@
                                                 <td align="left" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0;padding-top:20px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Shipped To</h3></td>
+                                                            <td align="left" style="padding:0;Margin:0;padding-top:20px"><h3 style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">Nơi nhận hàng</h3></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-top:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${address}</p></td>
@@ -172,7 +172,7 @@
                                                 <td class="es-m-p20b" align="center" valign="top" style="padding:0;Margin:0;width:472px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:48px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:40px;font-style:normal;font-weight:bold;color:#402218">ORDER DETAIL</h1><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h1 style="Margin:0;line-height:48px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:40px;font-style:normal;font-weight:bold;color:#402218">Chi tiết đơn hàng</h1><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -187,6 +187,7 @@
                                                     </table></td>
                                             </tr>
                                         </table><!--[if mso]></td></tr></table><![endif]--></td>
+
                                 </tr>
                                 <tr>
                                     <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-left:20px;padding-right:20px">
@@ -195,69 +196,66 @@
                                                 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">Order Number: ${orderId}</h2></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:18px;font-style:normal;font-weight:bold;color:#402218">Mã đơn hàng: ${orderId}</h2></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
                                         </table></td>
                                 </tr>
-                                <tr>
-                                    <#list items?keys as key>
-                                    <td class="esdev-adapt-off" align="left" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-top:30px">
-                                        <table cellpadding="0" cellspacing="0" class="esdev-mso-table" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:560px">
-                                            <tr>
-                                                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                                                    <table cellpadding="0" cellspacing="0" class="es-left" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
-                                                        <tr>
-                                                            <td class="es-m-p0r" align="center" style="padding:0;Margin:0;width:125px">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                                    <tr>
-                                                                        <td align="center" style="padding:0;Margin:0;font-size:0px"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px">
-                                                                            <img class="p_image adapt-img" src="hinh" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="125"></a></td>
-                                                                    </tr>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table></td>
-                                                <td style="padding:0;Margin:0;width:20px"></td>
-                                                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                                                    <table cellpadding="0" cellspacing="0" class="es-left" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
-                                                        <tr>
-                                                            <td align="center" style="padding:0;Margin:0;width:165px">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                                    <tr>
-                                                                        <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h3 class="p_name" style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">${key}</h3></td>
-                                                                    </tr>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table></td>
-                                                <td style="padding:0;Margin:0;width:20px"></td>
-                                                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                                                    <table cellpadding="0" cellspacing="0" class="es-left" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
-                                                        <tr>
-                                                            <td align="center" style="padding:0;Margin:0;width:105px">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                                    <tr>
-                                                                        <td align="left" style="padding:0;Margin:0"><p class="p_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Qty:<br>${total}</p></td>
-                                                                    </tr>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table></td>
-                                                <td style="padding:0;Margin:0;width:20px"></td>
-                                                <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                                                    <table cellpadding="0" cellspacing="0" class="es-right" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
-                                                        <tr>
-                                                            <td align="left" style="padding:0;Margin:0;width:105px">
-                                                                <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                                    <tr>
-                                                                        <td align="left" style="padding:0;Margin:0"><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Item Price<br>${items[key]}</p></td>
-                                                                    </tr>
-                                                                </table></td>
-                                                        </tr>
-                                                    </table></td>
-                                            </tr>
-                                        </table></td>
-                                    </#list>
-                                </tr>
+                                <#list orders?keys as key>
+                                    <tr>
+                                        <td bgcolor="#fff" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                            <span align ="left" style="float: left;">${key}</span>
+                                            <b align ="right" style="float: right;margin-top: 7px;">${orders[key]}</b>
+                                        </td>
+                                    </tr>
+                                </#list>
+<#--                                </#list>-->
+<#--                                    <#list orders?keys as key>-->
+<#--                                        <td class="esdev-adapt-off" align="left" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-top:30px">-->
+<#--                                            <table cellpadding="0" cellspacing="0" class="esdev-mso-table" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:560px">-->
+<#--                                                <tr>-->
+<#--                                                    <td style="padding:0;Margin:0;width:20px"></td>-->
+<#--                                                    <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">-->
+<#--                                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">-->
+<#--                                                            <tr>-->
+<#--                                                                <td align="center" style="padding:0;Margin:0;width:165px">-->
+<#--                                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">-->
+<#--                                                                        <tr>-->
+<#--                                                                            <td align="left" style="padding:0;Margin:0;padding-top:5px;padding-bottom:5px"><h3 class="p_name" style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">${key}</h3></td>-->
+<#--                                                                        </tr>-->
+<#--                                                                    </table></td>-->
+<#--                                                            </tr>-->
+<#--                                                        </table></td>-->
+<#--                                                    <td style="padding:0;Margin:0;width:20px"></td>-->
+<#--                                                    <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">-->
+<#--                                                        <table cellpadding="0" cellspacing="0" class="es-left" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">-->
+<#--                                                            <tr>-->
+<#--                                                                <td align="center" style="padding:0;Margin:0;width:105px">-->
+<#--                                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">-->
+<#--                                                                        <tr>-->
+<#--                                                                            <td align="left" style="padding:0;Margin:0"><p class="p_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Qty:<br>${orders[key].quantity}</p></td>-->
+<#--                                                                        </tr>-->
+<#--                                                                    </table></td>-->
+<#--                                                            </tr>-->
+<#--                                                        </table></td>-->
+<#--                                                    <td style="padding:0;Margin:0;width:20px"></td>-->
+<#--                                                    <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">-->
+<#--                                                        <table cellpadding="0" cellspacing="0" class="es-right" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">-->
+<#--                                                            <tr>-->
+<#--                                                                <td align="left" style="padding:0;Margin:0;width:105px">-->
+<#--                                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">-->
+<#--                                                                        <tr>-->
+<#--                                                                            <td align="left" style="padding:0;Margin:0"><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Item Price<br>${orders[key].price}</p></td>-->
+<#--                                                                        </tr>-->
+<#--                                                                    </table></td>-->
+<#--                                                            </tr>-->
+<#--                                                        </table></td>-->
+<#--                                                </tr>-->
+<#--                                            </table>-->
+<#--                                        </td>-->
+<#--                                    </#list>-->
+<#--                                </tr>-->
                                 <tr>
                                     <td align="left" bgcolor="#C5B6AA" style="padding:20px;Margin:0;background-color:#c5b6aa">
                                         <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
@@ -265,7 +263,7 @@
                                                 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="left" style="padding:0;Margin:0"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">PURCHASE SUMMARY</h2><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
+                                                            <td align="left" style="padding:0;Margin:0"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">Tổng giá trị đơn hàng</h2><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -281,7 +279,7 @@
                                                             <td align="center" style="padding:0;Margin:0;width:435px">
                                                                 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                                     <tr>
-                                                                        <td align="left" class="es-m-txt-l" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Payment:</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Subtotal:<br>Shipping:</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Order Total:</p></td>
+                                                                        <td align="left" class="es-m-txt-l" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Phương thức thanh toán:</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Giá tạm tính:<br>Phí vận chuyển:</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Tổng đơn hàng:</p></td>
                                                                     </tr>
                                                                 </table></td>
                                                         </tr>
@@ -293,7 +291,7 @@
                                                             <td align="left" style="padding:0;Margin:0;width:105px">
                                                                 <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                                     <tr>
-                                                                        <td align="left" style="padding:0;Margin:0"><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${paymentType}</p><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${total}<br>${total}</p><h3 class="p_price" style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">${total}</h3></td>
+                                                                        <td align="left" style="padding:0;Margin:0"><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${paymentType}</p><p class="p_price" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">${subtotal}<br>${ship}</p><h3 class="p_price" style="Margin:0;line-height:24px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:20px;font-style:normal;font-weight:bold;color:#402218">${total}</h3></td>
                                                                     </tr>
                                                                 </table></td>
                                                         </tr>
@@ -315,7 +313,7 @@
                                                 <td align="center" valign="top" style="padding:0;Margin:0;width:600px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                         <tr>
-                                                            <td align="center" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-bottom:30px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#7F8B52;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a href="#" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:15px 20px 15px 20px;display:inline-block;background:#7F8B52;border-radius:0px;font-family:Oswald, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #7F8B52">Continue shopping</a></span></td>
+                                                            <td align="center" style="padding:0;Margin:0;padding-left:20px;padding-right:20px;padding-bottom:30px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#7F8B52;border-width:0px;display:inline-block;border-radius:0px;width:auto"><a href="https://kltn-user-page.vercel.app/" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:20px;padding:15px 20px 15px 20px;display:inline-block;background:#7F8B52;border-radius:0px;font-family:Oswald, sans-serif;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid #7F8B52">Tiếp tục mua hàng</a></span></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://fbgnkuz.stripocdn.email/content/guids/CABINET_f9a1aa031b0165640302dd0498af20c9/images/71311626942018157.png" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="600"></td>
@@ -331,10 +329,10 @@
                                                 <td class="es-m-p20b" align="center" valign="top" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;border-left:1px solid #402218;border-right:1px solid #402218;border-top:1px solid #402218;border-bottom:1px solid #402218">
                                                         <tr>
-                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-left:10px;padding-right:10px"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">WE'RE HERE TO HELP</h2><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
+                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-left:10px;padding-right:10px"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">THÔNG TIN LIÊN HỆ</h2><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px;display:none"><br></p></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Call 01675431663 or email tms2121212121@Gmail.com<br></p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">for expert support.</p></td>
+                                                            <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Gọi đến 01675431663 hoặc gửi qua email tms2121212121@Gmail.com<br></p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">nếu bạn cần sự giúp đỡ của chúng tôi</p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -344,10 +342,10 @@
                                                 <td align="left" style="padding:0;Margin:0;width:270px">
                                                     <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;border-left:1px solid #402218;border-right:1px solid #402218;border-top:1px solid #402218;border-bottom:1px solid #402218">
                                                         <tr>
-                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-left:10px;padding-right:10px"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">OUR GUARANTEE</h2></td>
+                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-left:10px;padding-right:10px"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:Oswald, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#402218">Đảm bảo của chúng tôi</h2></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px"><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Your satisfaction is 100% guaranteed.</p></td>
+                                                            <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px"><p class="b_description" style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:21px;color:#402218;font-size:14px">Sự hài lòng của bạn được đảm bảo 100%.</p></td>
                                                         </tr>
                                                     </table></td>
                                             </tr>
@@ -369,37 +367,7 @@
                             </table></td>
                     </tr>
                 </table>
-                <table cellpadding="0" cellspacing="0" class="es-footer" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top">
-                    <tr>
-                        <td align="center" style="padding:0;Margin:0">
-                            <table class="es-footer-body" align="center" cellpadding="0" cellspacing="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#ffffff;width:600px" bgcolor="#ffffff">
-                                <tr>
-                                    <td align="left" style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:20px;padding-right:20px">
-                                        <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                            <tr>
-                                                <td align="left" style="padding:0;Margin:0;width:560px">
-                                                    <table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                        <tr>
-                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px;font-size:0">
-                                                                <table cellpadding="0" cellspacing="0" class="es-table-not-adapt es-social" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                                    <tr>
-                                                                        <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px"><img title="Facebook" src="https://fbgnkuz.stripocdn.email/content/assets/img/social-icons/logo-colored/facebook-logo-colored.png" alt="Fb" width="24" height="24" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></td>
-                                                                        <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px"><img title="Twitter" src="https://fbgnkuz.stripocdn.email/content/assets/img/social-icons/logo-colored/twitter-logo-colored.png" alt="Tw" width="24" height="24" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></td>
-                                                                        <td align="center" valign="top" style="padding:0;Margin:0;padding-right:20px"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px"><img title="Instagram" src="https://fbgnkuz.stripocdn.email/content/assets/img/social-icons/logo-colored/instagram-logo-colored.png" alt="Inst" width="24" height="24" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></td>
-                                                                        <td align="center" valign="top" style="padding:0;Margin:0"><a target="_blank" href="#" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#402218;font-size:14px"><img title="Youtube" src="https://fbgnkuz.stripocdn.email/content/assets/img/social-icons/logo-colored/youtube-logo-colored.png" alt="Yt" width="24" height="24" style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"></a></td>
-                                                                    </tr>
-                                                                </table></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="center" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:18px;color:#402218;font-size:12px">You are receiving this email because you have made a purchase on our site. Make sure our messages reach your Inbox (not your bulk or spam folder).<br></p></td>
-                                                        </tr>
-                                                    </table></td>
-                                            </tr>
-                                        </table></td>
-                                </tr>
-                            </table></td>
-                    </tr>
-                </table></td>
+                </td>
         </tr>
     </table>
 </div>

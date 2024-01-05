@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -32,25 +33,23 @@ public class EmailUtils implements Runnable{
         String paid = "Chưa thanh toán";
 
         model.put("orderId", order.getId());
-        model.put("total", currencyFormatter.format(order.getTotalPrice()));
+        model.put("total", currencyFormatter.format(order.getTotalPrice().add(new BigDecimal(order.getDelivery().getDeliveryInfo().get("fee").toString()))));
         model.put("paymentType", order.getPaymentDetail().getPaymentType());
         if ((boolean) order.getPaymentDetail().getPaymentInfo().get("isPaid"))
             paid = "Đã thanh toán";
         model.put("isPaid", paid);
         model.put("name", order.getDelivery().getShipName());
+        model.put("presenttime", LocalDate.now());
         model.put("phone", order.getDelivery().getShipPhone());
-        model.put("address", order.getDelivery().getDeliveryInfo().getOrDefault("fullAddress", order.getDelivery().getShipAddress()));
-//        try {
-//            model.put("expectedTime", LocalDate.ofInstant
-//                    (Instant.ofEpochMilli((Long) order.getDelivery().getDeliveryInfo().get("expectedDeliveryTime")*1000),
-//                            TimeZone.getDefault().toZoneId()));
-//        } catch (Exception e) {
-//            model.put("expectedTime", LocalDate.now().plusDays(3));
-//        }
-
+        model.put("address", order.getDelivery().getShipAddress()+ ", "+
+                order.getDelivery().getShipWard()+ ", "+
+                order.getDelivery().getShipDistrict()+ ", "+
+                order.getDelivery().getShipProvince());
+        model.put("subtotal",order.getTotalPrice());
+        model.put("ship",new BigDecimal(order.getDelivery().getDeliveryInfo().get("fee").toString()));
         Map<String, String> items = new HashMap<>();
-        order.getItems().forEach(item -> items.put(String.format("%s <br/> <b>[%s cái]</b>", item.getItem().getName(), item.getQuantity()), currencyFormatter.format(item.getSubPrice())));
-        model.put("items", items);
+        order.getItems().forEach(item -> items.put(String.format("<img src=\"%s\" alt=\"\" width=\"42\" height=\"42\" style=\"vertical-align:middle\"> <span>%s</span> <br/> <span>[SL: %s]</span>", item.getItem().getImages().get(0).getUrl(),item.getItem().getName(), item.getQuantity()), currencyFormatter.format(item.getSubPrice())));
+        model.put("orders", items);
         mailService.sendEmail(order.getUser().getEmail(), model, MailType.ORDER);
     }
 }
